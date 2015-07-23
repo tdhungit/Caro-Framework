@@ -24,7 +24,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <br><br>
-                <p class="pull-right"><a href="http://www.bootply.com">Template from Bootply</a> &nbsp; ©Copyright 2013 ACME<sup>TM</sup> Brand.</p>
+                <p class="pull-right">
+                    ©Copyright 2015 Jacky - CaroCRM<sup>TM</sup>. &nbsp;
+                    <a href="http://www.bootply.com">Template from Bootply</a>
+                </p>
                 <br><br>
             </div>
         </div>
