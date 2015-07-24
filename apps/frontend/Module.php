@@ -45,8 +45,8 @@ class Module
             $view = new View();
 
             $view->setViewsDir($config->application->viewsDir);
-            $view->setLayoutsDir('../../../common/layouts/');
-            $view->setTemplateAfter($config->system_view->theme . '/default');
+            $view->setLayoutsDir('../../../common/layouts/'. $config->system_view->theme . '/');
+            $view->setTemplateAfter('default');
 
             $view->registerEngines(array(
                 ".tpl" => function ($view, $di) {

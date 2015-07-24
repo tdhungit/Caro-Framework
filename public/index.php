@@ -5,6 +5,11 @@ error_reporting(E_ALL);
 try {
 
 	/**
+	 * load config
+	 */
+	$config = new \Phalcon\Config\Adapter\Ini('../apps/config/config.ini');
+
+	/**
 	 * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
 	 */
 	$di = new \Phalcon\DI\FactoryDefault();
@@ -20,6 +25,19 @@ try {
 			'module' => 'backend',
 			'controller' => 'index',
 			'action' => 'index'
+		));
+
+		$router->add('/admin/:controller/:action/:params', array(
+			'module' => 'backend',
+			'controller' => 1,
+			'action'     => 2,
+			'params'     => 3
+		));
+
+		$router->add('/admin/:controller', array(
+			'module' => 'backend',
+			'controller' => 1,
+			'action'     => 'index'
 		));
 
 		$router->add('/index', array(
@@ -40,9 +58,9 @@ try {
 	/**
 	 * The URL component is used to generate all kind of urls in the application
 	 */
-	$di->set('url', function() {
+	$di->set('url', function() use ($config) {
 		$url = new \Phalcon\Mvc\Url();
-		$url->setBaseUri('');
+		$url->setBaseUri($config->application->baseUrl);
 		return $url;
 	});
 

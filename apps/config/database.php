@@ -11,5 +11,5 @@ return array(
     'host'     => 'localhost',
     'username' => 'root',
     'password' => '',
-    'name'     => 'test',
+    'name'     => 'carofw',
 );

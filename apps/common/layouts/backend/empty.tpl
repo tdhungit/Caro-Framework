@@ -17,65 +17,7 @@
 
 <body>
 
-<div id="body-container">
-    <div id="body-content">
-        <div class="body-nav body-nav-horizontal body-nav-fixed">
-            <div class="container">
-                <ul>
-                    <li>
-                        <a href="#">
-                            <i class="icon-dashboard icon-large"></i> Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-calendar icon-large"></i> Schedule
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-map-marker icon-large"></i> Map It
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-tasks icon-large"></i> Widgets
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-cogs icon-large"></i> Settings
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-list-alt icon-large"></i> Forms
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-bar-chart icon-large"></i> Charts
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <section class="page container">
-            {{ get_content() }}
-        </section>
-    </div>
-</div>
-
-<footer class="application-footer">
-    <div class="container">
-        <p>Admin Page - Caro Framework</p>
-        <div class="disclaimer">
-            <p>Caro Framework. All right reserved.</p>
-            <p>Copyright Jacky 2015</p>
-        </div>
-    </div>
-</footer>
+{{ get_content() }}
 
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-transition.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-alert.js" type="text/javascript" ></script>
@@ -94,13 +36,5 @@
 <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-tablesorter.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-chosen.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/jquery/virtual-tour.js" type="text/javascript" ></script>
-<script type="text/javascript">
-    $(function() {
-        $('#sample-table').tablesorter();
-        $('#datepicker').datepicker();
-        $(".chosen").chosen();
-    });
-</script>
-
 </body>
 </html>
