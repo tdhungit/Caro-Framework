@@ -17,7 +17,11 @@
 
 <body>
 
-{{ get_content() }}
+<div id="body-container">
+    <div id="body-content">
+        {{ get_content() }}
+    </div>
+</div>
 
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-transition.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-alert.js" type="text/javascript" ></script>

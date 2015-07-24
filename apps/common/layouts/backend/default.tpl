@@ -62,6 +62,8 @@
         </div>
 
         <section class="page container">
+            {{ flash.output() }}
+
             {{ get_content() }}
         </section>
     </div>
