@@ -40,7 +40,14 @@ return array(
             ),
         ),
         'indexes' => array(
-
+            'idx_username' => array(
+                'type' => 'Unique',
+                'fields' => array('username')
+            ),
+            'idx_email' => array(
+                'type' => 'Unique',
+                'fields' => array('email')
+            )
         )
     ),
     'settings' => array(
@@ -56,7 +63,7 @@ return array(
             ),
         ),
         'indexes' => array(
-            'UNIQUE' => array(
+            'idx_unique' => array(
                 'type' => 'Unique',
                 'fields' => array('name')
             )
