@@ -19,7 +19,8 @@ class UsersController extends ControllerBase
     );
 
     protected $edit_view = array(
-
+        'title' => 'name',
+        'fields' => array('username', 'email', 'name')
     );
 
     protected $detail_view = array(
