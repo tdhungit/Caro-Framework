@@ -4,13 +4,13 @@
             <ul class="nav nav-list">
                 <li class="nav-header">Action</li>
                 <li class="active">
-                    <a href="{{ url('/admin/users/list') }}">
+                    <a href="{{ url('/admin') }}/{{ controller }}/list">
                         <i class="icon-chevron-right pull-right"></i>
                         View Users
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url('/admin/users/edit') }}">
+                    <a href="{{ url('/admin') }}/{{ controller }}/edit">
                         <i class="icon-chevron-right pull-right"></i>
                         Create User
                     </a>

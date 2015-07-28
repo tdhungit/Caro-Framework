@@ -53,7 +53,13 @@ class ControllerBase extends Controller
         $this->view->data = $list_data;
         $this->view->list_view = $this->list_view;
 
-        $exists = $this->view->exists(strtolower($this->controller_name) . '/' . strtolower($this->action_name));
+        $controller = strtolower($this->controller_name);
+        $action = strtolower($this->action_name);
+
+        $this->view->controller = $controller;
+        $this->view->action = $action;
+
+        $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
             $this->view->pick('view_default/list');
         }
