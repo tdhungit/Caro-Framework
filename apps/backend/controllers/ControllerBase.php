@@ -8,10 +8,6 @@ use Phalcon\Mvc\Controller;
 class ControllerBase extends Controller
 {
     protected $model_name;
-    protected $list_view;
-    protected $edit_view;
-    protected $detail_view;
-    protected $menu;
 
     protected $controller_name;
     protected $action_name;
@@ -19,12 +15,6 @@ class ControllerBase extends Controller
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
-        if (!$this->menu) {
-            $this->menu = array(
-                'View ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/list',
-                'Create ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/edit'
-            );
-        }
     }
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)
@@ -36,8 +26,15 @@ class ControllerBase extends Controller
     protected function getModel()
     {
         if ($this->model_name) {
-            $model = '\\Modules\Backend\Models\\' . $this->model_name;
-            return new $model();
+            $model_path = '\\Modules\Backend\Models\\' . $this->model_name;
+            $model = new $model_path();
+            if (!$model->menu) {
+                $model->menu = array(
+                    'View ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/list',
+                    'Create ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/edit'
+                );
+            }
+            return $model;
         }
 
         return null;
@@ -58,18 +55,21 @@ class ControllerBase extends Controller
         $list_data = $model::find();
 
         $this->view->data = $list_data;
-        $this->view->list_view = $this->list_view;
+        $this->view->list_view = $model->list_view;
 
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);
 
         $this->view->controller = $controller;
         $this->view->action = $action;
-        $this->view->menu = $this->menu;
+        $this->view->menu = $model->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/list');
+            if ($action == 'index') {
+                $action = 'list';
+            }
+            $this->view->pick('view_default/' . $action);
         }
     }
 
@@ -85,7 +85,7 @@ class ControllerBase extends Controller
             $data = $model::findFirst($id);
         }
 
-        $this->view->detail_view = $this->detail_view;
+        $this->view->detail_view = $model->detail_view;
         $this->view->data = $data;
 
         $controller = strtolower($this->controller_name);
@@ -93,11 +93,11 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
-        $this->view->menu = $this->menu;
+        $this->view->menu = $model->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/detail');
+            $this->view->pick('view_default/' . $action);
         }
     }
 
@@ -117,7 +117,7 @@ class ControllerBase extends Controller
             }
 
             // set data
-            foreach ($this->edit_view['fields'] as $field => $opt) {
+            foreach ($model->edit_view['fields'] as $field => $opt) {
                 $model->$field = $this->request->getPost($field);
             }
 
@@ -142,7 +142,7 @@ class ControllerBase extends Controller
             $data = $model::findFirst($id);
         }
 
-        $this->view->edit_view = $this->edit_view;
+        $this->view->edit_view = $model->edit_view;
         $this->view->data = $data;
 
         $controller = strtolower($this->controller_name);
@@ -150,11 +150,11 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
-        $this->view->menu = $this->menu;
+        $this->view->menu = $model->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/edit');
+            $this->view->pick('view_default/' . $action);
         }
     }
 
