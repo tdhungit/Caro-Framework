@@ -20,7 +20,14 @@ class UsersController extends ControllerBase
     public function groupsAction()
     {
         $this->model_name = 'UserGroups';
+        $this->action_detail = 'detailgroup';
         $this->indexAction();
+    }
+
+    public function detailgroupAction($id = null)
+    {
+        $this->model_name = 'UserGroups';
+        $this->detailAction($id);
     }
 
     public function editgroupAction($id = null)
@@ -31,11 +38,20 @@ class UsersController extends ControllerBase
 
     public function rolesAction()
     {
-
+        $this->model_name = 'AuthRoles';
+        $this->action_detail = 'detailrole';
+        $this->indexAction();
     }
 
-    public function editroleAction()
+    public function detailroleAction($id = null)
     {
+        $this->model_name = 'AuthRoles';
+        $this->detailAction($id);
+    }
 
+    public function editroleAction($id = null)
+    {
+        $this->model_name = 'AuthRoles';
+        $this->editAction($id);
     }
 }

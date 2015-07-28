@@ -11,6 +11,7 @@ class ControllerBase extends Controller
 
     protected $controller_name;
     protected $action_name;
+    protected $action_detail = 'detail';
 
     protected function initialize()
     {
@@ -67,6 +68,7 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
+        $this->view->action_detail = $this->action_detail;
         $this->view->menu = $model->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
@@ -78,7 +80,7 @@ class ControllerBase extends Controller
     /**
      * Detail
      */
-    public function detailAction($id)
+    public function detailAction($id = null)
     {
         $data = null;
 

@@ -89,7 +89,7 @@ return array(
             )
         )
     ),
-    'auth_role' => array(
+    'auth_roles' => array(
         'fields' => array(
             'name' => array(
                 'type' => Column::TYPE_VARCHAR,

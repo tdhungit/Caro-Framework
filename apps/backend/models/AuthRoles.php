@@ -3,15 +3,15 @@
  * Created by Jacky.
  * User: Jacky
  * Date: 7/28/2015
- * Time: 5:24 PM
+ * Time: 6:00 PM
  * Project: carofw
- * File: UserGroups.php
+ * File: AuthRoles.php
  */
 
 namespace Modules\Backend\Models;
 
 
-class UserGroups extends ModelBase
+class AuthRoles extends ModelBase
 {
     public $id;
     public $created;
@@ -27,9 +27,9 @@ class UserGroups extends ModelBase
             'label' => 'Name',
             'link' => true
         ),
-        'status' => array(
+        'description' => array(
             'type' => 'text',
-            'label' => 'Status'
+            'label' => 'Description'
         )
     );
 
@@ -39,11 +39,6 @@ class UserGroups extends ModelBase
             'name' => array(
                 'type' => 'text',
                 'label' => 'Name',
-                'required' => true
-            ),
-            'status' => array(
-                'type' => 'text',
-                'label' => 'Status',
                 'required' => true
             ),
             'description' => array(
@@ -60,10 +55,6 @@ class UserGroups extends ModelBase
             'name' => array(
                 'type' => 'text',
                 'label' => 'Name'
-            ),
-            'status' => array(
-                'type' => 'text',
-                'label' => 'Status'
             ),
             'description' => array(
                 'type' => 'text',

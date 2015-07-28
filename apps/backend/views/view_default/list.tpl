@@ -38,7 +38,7 @@
                             {% for name, view in list_view %}
                                 <td>
                                     {% if view['link'] is defined and view['link'] %}
-                                        <a href="{{ url('/admin/' ~ controller ~ '/detail/' ~ row.id) }}">{{ row.readAttribute(name) }}</a>
+                                        <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_detail ~ '/' ~ row.id) }}">{{ row.readAttribute(name) }}</a>
                                     {% else %}
                                         {{ row.readAttribute(name) }}
                                     {% endif %}
