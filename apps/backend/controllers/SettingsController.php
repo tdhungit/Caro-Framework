@@ -10,12 +10,16 @@
 
 namespace Modules\Backend\Controllers;
 
-use Phalcon\Annotations\Exception;
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
 
 class SettingsController extends ControllerBase
 {
+    public function indexAction()
+    {
+
+    }
+
     public function repairAction()
     {
         $tables = include __DIR__ . "/../../config/database_structures.php";
@@ -119,6 +123,9 @@ class SettingsController extends ControllerBase
                 $this->db->createTable($table_name, null, $new_columns);
             }
         }
+
+        $this->flash->success('Repair success!');
+        $this->response->redirect('/admin/settings');
     }
 
 }
