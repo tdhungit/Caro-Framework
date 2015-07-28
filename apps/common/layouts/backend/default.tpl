@@ -29,7 +29,7 @@
                     </li>
                     <li>
                         <a href="{{ url('/admin/users') }}">
-                            <i class="icon-user icon-large"></i> Schedule
+                            <i class="icon-user icon-large"></i> Users
                         </a>
                     </li>
                     <li>
