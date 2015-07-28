@@ -23,12 +23,17 @@ class ControllerBase extends Controller
         $this->action_name = $dispatcher->getActionName();
     }
 
+    /**
+     * get model
+     *
+     * @return null
+     */
     protected function getModel()
     {
         if ($this->model_name) {
             $model_path = '\\Modules\Backend\Models\\' . $this->model_name;
             $model = new $model_path();
-            if (!$model->menu) {
+            if (empty($model->menu)) {
                 $model->menu = array(
                     'View ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/list',
                     'Create ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/edit'
@@ -66,10 +71,7 @@ class ControllerBase extends Controller
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            if ($action == 'index') {
-                $action = 'list';
-            }
-            $this->view->pick('view_default/' . $action);
+            $this->view->pick('view_default/list');
         }
     }
 
@@ -97,7 +99,7 @@ class ControllerBase extends Controller
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/' . $action);
+            $this->view->pick('view_default/detail');
         }
     }
 
@@ -154,7 +156,7 @@ class ControllerBase extends Controller
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/' . $action);
+            $this->view->pick('view_default/edit');
         }
     }
 

@@ -19,12 +19,14 @@ class UsersController extends ControllerBase
 
     public function groupsAction()
     {
-
+        $this->model_name = 'UserGroups';
+        $this->indexAction();
     }
 
-    public function editgroupAction()
+    public function editgroupAction($id = null)
     {
-
+        $this->model_name = 'UserGroups';
+        $this->editAction($id);
     }
 
     public function rolesAction()

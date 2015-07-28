@@ -14,6 +14,11 @@ use Phalcon\Mvc\Model;
 
 class ModelBase extends Model
 {
+    public $list_view;
+    public $detail_view;
+    public $edit_view;
+    public $menu;
+
     /**
      * Inserts or updates a model instance. Returning true on success or false otherwise.
      * <code>
