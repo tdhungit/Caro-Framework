@@ -3,18 +3,14 @@
         <div class="blockoff-right">
             <ul class="nav nav-list">
                 <li class="nav-header">Action</li>
-                <li class="active">
-                    <a href="{{ url('/admin') }}/{{ controller }}/list">
-                        <i class="icon-chevron-right pull-right"></i>
-                        View Users
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url('/admin') }}/{{ controller }}/edit">
-                        <i class="icon-chevron-right pull-right"></i>
-                        Create User
-                    </a>
-                </li>
+                {% for l, m in menu %}
+                    <li>
+                        <a href="{{ url(m) }}">
+                            <i class="icon-chevron-right pull-right"></i>
+                            {{ l }}
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>

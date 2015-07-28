@@ -11,6 +11,7 @@ class ControllerBase extends Controller
     protected $list_view;
     protected $edit_view;
     protected $detail_view;
+    protected $menu;
 
     protected $controller_name;
     protected $action_name;
@@ -18,6 +19,12 @@ class ControllerBase extends Controller
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
+        if (!$this->menu) {
+            $this->menu = array(
+                'View ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/list',
+                'Create ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/edit'
+            );
+        }
     }
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)
@@ -58,6 +65,7 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
+        $this->view->menu = $this->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -85,6 +93,7 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
+        $this->view->menu = $this->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -118,6 +127,7 @@ class ControllerBase extends Controller
 
         $this->view->controller = $controller;
         $this->view->action = $action;
+        $this->view->menu = $this->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
