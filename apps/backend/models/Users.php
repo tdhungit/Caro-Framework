@@ -8,10 +8,9 @@
 
 namespace Modules\Backend\Models;
 
-use Phalcon\Mvc\Model;
 use Phalcon\Validation;
 
-class Users extends Model
+class Users extends ModelBase
 {
     public $id;
     public $created;

@@ -16,13 +16,14 @@
     </div>
 
     <div class="span12">
-        {{ form('/admin/users/edit', 'method': 'post', 'class': 'form-horizontal') }}
+        {{ form('/admin/' ~ controller ~ '/edit', 'method': 'post', 'class': 'form-horizontal') }}
         <fieldset>
             {% if data is null %}
                 <legend class="lead">Create {{ controller }}</legend>
             {% else %}
                 <legend class="lead">Edit {{ controller }} {{ data.readAttribute(edit_view['title']) }}</legend>
                 <br />
+                <input type="hidden" name="id" value="{{ data.id }}" />
             {% endif %}
 
             {% for field, field_opt in edit_view['fields'] %}
@@ -34,11 +35,11 @@
                 </div>
             {% endfor %}
         </fieldset>
-        {{ end_form() }}
 
         <footer id="submit-actions" class="form-actions">
             <button id="submit-button" type="submit" class="btn btn-primary" name="action" value="CONFIRM">Save</button>
             <button type="submit" class="btn" name="action" value="CANCEL">Cancel</button>
         </footer>
+        {{ end_form() }}
     </div>
 </div>

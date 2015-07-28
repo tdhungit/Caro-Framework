@@ -63,7 +63,17 @@ class UsersController extends ControllerBase
                 'type' => 'text',
                 'label' => 'Full name',
                 'required' => true
-            )
+            ),
+            'password' => array(
+                'type' => 'password',
+                'label' => 'Password',
+                'required' => true
+            ),
+            'status' => array(
+                'type' => 'text',
+                'label' => 'Status',
+                'required' => true
+            ),
         )
     );
 

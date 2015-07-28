@@ -82,7 +82,7 @@ class ControllerBase extends Controller
 
         $model = $this->getModel();
         if ($id) {
-            $data = $model::findFirst("id = $id");
+            $data = $model::findFirst($id);
         }
 
         $this->view->detail_view = $this->detail_view;
@@ -104,19 +104,41 @@ class ControllerBase extends Controller
     /**
      * Edit
      */
-    public function editAction($id)
+    public function editAction($id = null)
     {
+        // get model
+        $model = $this->getModel();
+
         // save data
         if ($this->request->isPost()) {
+            if (!empty($this->request->getPost('id'))) {
+                $data = $model::findFirst($id);
+            }
 
+            // set data
+            foreach ($this->edit_view['fields'] as $field => $opt) {
+                $model->$field = $this->request->getPost($field);
+            }
+
+            // save
+            if ($model->save() == false) {
+                $msg = '';
+                foreach ($model->getMessages() as $message) {
+                    $msg .= $message . '<br>';
+                }
+                $this->flash->error($msg);
+            } else {
+                $this->flash->success("Great, a new {$this->controller_name} was saved successfully!");
+            }
+
+            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_name);
         }
 
         // edit view data
         $data = null;
 
-        $model = $this->getModel();
         if ($id) {
-            $data = $model::findFirst("id = $id");
+            $data = $model::findFirst($id);
         }
 
         $this->view->edit_view = $this->edit_view;
