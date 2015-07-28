@@ -50,6 +50,59 @@ return array(
             )
         )
     ),
+    // ACL
+    'user_groups' => array(
+        'fields' => array(
+            'name' => array(
+                'type' => Column::TYPE_VARCHAR,
+                'size' => 255,
+                'notNull' => true
+            ),
+            'status' => array(
+                'type' => Column::TYPE_VARCHAR,
+                'size' => 255,
+                'notNull' => true
+            ),
+            'description' => array(
+                'type' => Column::TYPE_TEXT
+            ),
+        ),
+        'indexes' => array()
+    ),
+    'user_group_roles' => array(
+        'fields' => array(
+            'group_id' => array(
+                'type' => Column::TYPE_INTEGER,
+                'size' => 10,
+                'notNull' => true
+            ),
+            'auth_role_id' => array(
+                'type' => Column::TYPE_INTEGER,
+                'size' => 10,
+                'notNull' => true
+            )
+        ),
+        'indexes' => array(
+            'idx_unique' => array(
+                'type' => 'Unique',
+                'fields' => array('group_id', 'auth_role_id')
+            )
+        )
+    ),
+    'auth_role' => array(
+        'fields' => array(
+            'name' => array(
+                'type' => Column::TYPE_VARCHAR,
+                'size' => 255,
+                'notNull' => true
+            ),
+            'description' => array(
+                'type' => Column::TYPE_TEXT
+            ),
+        ),
+        'indexes' => array()
+    ),
+
     'settings' => array(
         'fields' => array(
             'name' => array(
@@ -69,4 +122,5 @@ return array(
             )
         )
     ),
+
 );

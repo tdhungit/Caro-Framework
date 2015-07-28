@@ -6,11 +6,23 @@
  * Time: 2:05 PM
  */
 
-namespace CaroFW\Controllers;
-
-use Modules\Backend\Controllers\ControllerBase;
+namespace Modules\Backend\Controllers;
 
 class UsersController extends ControllerBase
 {
+    protected $model_name = 'Users';
 
+    protected $list_view = array(
+        'username' => 'Username',
+        'email' => 'Email',
+        'name' => 'Full name'
+    );
+
+    protected $edit_view = array(
+
+    );
+
+    protected $detail_view = array(
+
+    );
 }

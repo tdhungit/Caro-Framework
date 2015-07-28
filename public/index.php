@@ -4,6 +4,8 @@ error_reporting(E_ALL);
 
 try {
 
+    //define('APP_PATH', realpath('..') . '/');
+
     /**
      * load config
      */

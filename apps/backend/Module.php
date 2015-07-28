@@ -7,6 +7,7 @@ use Phalcon\Mvc\View;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Db\Adapter\Pdo\Mysql as MySQLAdapter;
+use Phalcon\Events\Manager as EventsManager;
 
 class Module
 {
@@ -19,6 +20,11 @@ class Module
         $loader->registerNamespaces(array(
             'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
             'Modules\Backend\Models' => __DIR__ . '/models/',
+            'Modules\Backend\Plugins' => __DIR__ . '/plugins/',
+        ));
+
+        $loader->registerDirs(array(
+            __DIR__ . '/plugins/'
         ));
 
         $loader->register();
@@ -33,8 +39,16 @@ class Module
         $config = include __DIR__ . "/config/config.php";
 
         $di['dispatcher'] = function () {
+            // Security
+            $eventsManager = new EventsManager;
+            // Check if the user is allowed to access certain action using the SecurityPlugin
+            //$eventsManager->attach('dispatch:beforeDispatch', new Plugins\SecurityPlugin);
+            // Handle exceptions and not-found exceptions using NotFoundPlugin
+            //$eventsManager->attach('dispatch:beforeException', new Plugins\NotFoundPlugin);
+
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("Modules\Backend\Controllers");
+            $dispatcher->setEventsManager($eventsManager);
             return $dispatcher;
         };
 
