@@ -23,38 +23,18 @@
             <div class="container">
                 <ul>
                     <li>
-                        <a href="#">
+                        <a href="{{ url('/admin/dashboard') }}">
                             <i class="icon-dashboard icon-large"></i> Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <i class="icon-calendar icon-large"></i> Schedule
+                        <a href="{{ url('/admin/users') }}">
+                            <i class="icon-user icon-large"></i> Schedule
                         </a>
                     </li>
                     <li>
-                        <a href="#">
-                            <i class="icon-map-marker icon-large"></i> Map It
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-tasks icon-large"></i> Widgets
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
+                        <a href="{{ url('/admin/settings') }}">
                             <i class="icon-cogs icon-large"></i> Settings
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-list-alt icon-large"></i> Forms
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="icon-bar-chart icon-large"></i> Charts
                         </a>
                     </li>
                 </ul>
