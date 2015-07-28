@@ -111,7 +111,8 @@ class ControllerBase extends Controller
 
         // save data
         if ($this->request->isPost()) {
-            if (!empty($this->request->getPost('id'))) {
+            $post_id = $this->request->getPost('id');
+            if (!empty($post_id)) {
                 $data = $model::findFirst($id);
             }
 

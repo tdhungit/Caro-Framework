@@ -77,6 +77,15 @@ class UsersController extends ControllerBase
         )
     );
 
+    protected $menu = array(
+        'View Users' => '/admin/users/list',
+        'Create User' => '/admin/users/edit',
+        'Groups' => '/admin/users/groups',
+        'Create Group' => '/admin/users/editgroup',
+        'Roles' => '/admin/users/roles',
+        'Create Role' => '/admin/users/editrole'
+    );
+
     public function indexAction()
     {
         $this->listAction();
