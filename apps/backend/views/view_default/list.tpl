@@ -30,8 +30,8 @@
                 <table class="table table-hover tablesorter">
                     <thead>
                     <tr>
-                        {% for view in list_view %}
-                            <th class="header">{{ view }}</th>
+                        {% for name, view in list_view %}
+                            <th class="header">{{ view['label'] }}</th>
                         {% endfor %}
                     </tr>
                     </thead>
@@ -40,7 +40,13 @@
                     {% for row in data %}
                         <tr>
                             {% for name, view in list_view %}
-                                <td>{{ row.readAttribute(name) }}</td>
+                                <td>
+                                    {% if view['link'] is defined and view['link'] %}
+                                        <a href="{{ url('/admin') }}/{{ controller }}/detail/{{ row.id }}">{{ row.readAttribute(name) }}</a>
+                                    {% else %}
+                                        {{ row.readAttribute(name) }}
+                                    {% endif %}
+                                </td>
                             {% endfor %}
                         </tr>
                     {% endfor %}

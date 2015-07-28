@@ -25,12 +25,12 @@
                 {% if data is null %}
                     <legend class="lead" style="border: none">No Data</legend>
                 {% else %}
-                    <legend class="lead" style="border: none">{{ data.readAttribute(edit_view['title']) }}</legend>
+                    <legend class="lead" style="border: none">{{ data.readAttribute(detail_view['title']) }}</legend>
                     <table class="table">
                         <tbody>
-                        {% for field in edit_view['fields'] %}
+                        {% for field, field_opt in detail_view['fields'] %}
                             <tr>
-                                <td><b>{{ field }}</b></td>
+                                <td><b>{{ field_opt['label'] }}</b></td>
                                 <td>{{ data.readAttribute(field) }}</td>
                             </tr>
                         {% endfor %}

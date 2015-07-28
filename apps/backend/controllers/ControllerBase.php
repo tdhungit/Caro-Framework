@@ -77,7 +77,7 @@ class ControllerBase extends Controller
             $data = $model::findFirst("id = $id");
         }
 
-        $this->view->edit_view = $this->edit_view;
+        $this->view->detail_view = $this->detail_view;
         $this->view->data = $data;
 
         $controller = strtolower($this->controller_name);
@@ -95,9 +95,34 @@ class ControllerBase extends Controller
     /**
      * Edit
      */
-    public function editAction()
+    public function editAction($id)
     {
+        // save data
+        if ($this->request->isPost()) {
 
+        }
+
+        // edit view data
+        $data = null;
+
+        $model = $this->getModel();
+        if ($id) {
+            $data = $model::findFirst("id = $id");
+        }
+
+        $this->view->edit_view = $this->edit_view;
+        $this->view->data = $data;
+
+        $controller = strtolower($this->controller_name);
+        $action = strtolower($this->action_name);
+
+        $this->view->controller = $controller;
+        $this->view->action = $action;
+
+        $exists = $this->view->exists($controller . '/' . $action);
+        if (!$exists) {
+            $this->view->pick('view_default/edit');
+        }
     }
 
 }
