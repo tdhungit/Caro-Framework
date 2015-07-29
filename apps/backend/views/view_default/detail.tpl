@@ -35,5 +35,36 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if detail_view['subpanels'] is defined %}
+            {% for subpanel_name, subpanel_def in detail_view['subpanels'] %}
+                <div class="box">
+                    <div class="box-header">
+                        <h5>User Groups</h5>
+                    </div>
+                    <div class="box-content box-table">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                {% for name, view in subpanel_def['list'] %}
+                                    <th class="header">{{ view['label'] }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for row in subpanels[subpanel_name] %}
+                                <tr>
+                                    {% for name, view in subpanel_def['list'] %}
+                                        <td>{{ row.readAttribute(name) }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>

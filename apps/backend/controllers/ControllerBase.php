@@ -47,6 +47,44 @@ class ControllerBase extends Controller
         return null;
     }
 
+    /**
+     * @param array $defs
+     * @param Object $model
+     * @param Object $data
+     * @return array
+     */
+    protected function getSubpanels($defs, $model, $data)
+    {
+        $subpanels = array();
+        foreach ($defs as $name => $def) {
+            $subpanels[$name] = $this->getSubpanel($def, $model, $data);
+        }
+        return $subpanels;
+    }
+
+    /**
+     * @param array $def
+     * @param Object $model
+     * @param Object $data
+     * @return array
+     */
+    protected function getSubpanel($def, $model, $data)
+    {
+        $panel = array();
+        if ($def['type'] == 'one-many') {
+            $panel = $model::find('id =' . $data->id);
+        } else if ($def['type'] == 'many-many') {
+            $namespace = 'Modules\Backend\Models\\';
+            $panel = $this->modelsManager->createBuilder()
+                ->from($namespace . $def['model'])
+                ->join($namespace . $def['rel_mid']['join'], $namespace . $def['rel_mid']['on'] . '=' . $namespace . $def['rel_mid']['is'])
+                ->join($namespace . $def['rel']['join'], $namespace . $def['rel']['on'] . '=' . $namespace . $def['rel']['is'])
+                ->where($namespace . $def['field'] . '=' . $data->id)
+                ->getQuery()->execute();
+        }
+        return $panel;
+    }
+
     // BASE ACTION //
     /**
      * List
@@ -88,10 +126,16 @@ class ControllerBase extends Controller
         $model = $this->getModel();
         if ($id) {
             $data = $model::findFirst($id);
+            // check subpanel
+            $supanels = null;
+            if (!empty($model->detail_view['subpanels'])) {
+                $supanels = $this->getSubpanels($model->detail_view['subpanels'], $model, $data);
+            }
         }
 
         $this->view->detail_view = $model->detail_view;
         $this->view->data = $data;
+        $this->view->subpanels = $supanels;
 
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);

@@ -53,6 +53,33 @@ class Users extends ModelBase
                 'type' => 'text',
                 'label' => 'Full name'
             )
+        ),
+        'subpanels' => array(
+            'user_groups' => array(
+                'type' => 'many-many',
+                'model' => 'UserGroups',
+                'field' => 'Users.id',
+                'rel_mid' => array(
+                    'join' => 'UserGroupsUsers',
+                    'on' => 'UserGroups.id',
+                    'is' => 'UserGroupsUsers.group_id'
+                ),
+                'rel' => array(
+                    'join' => 'Users',
+                    'on' => 'Users.id',
+                    'is' => 'UserGroupsUsers.user_id'
+                ),
+                'list' => array(
+                    'name' => array(
+                        'type' => 'text',
+                        'label' => 'Name',
+                    ),
+                    'status' => array(
+                        'type' => 'select',
+                        'label' => 'Status'
+                    ),
+                )
+            )
         )
     );
 

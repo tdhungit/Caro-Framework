@@ -69,14 +69,14 @@ return array(
         ),
         'indexes' => array()
     ),
-    'user_group_roles' => array(
+    'user_groups_users' => array(
         'fields' => array(
-            'group_id' => array(
+            'user_id' => array(
                 'type' => Column::TYPE_INTEGER,
                 'size' => 10,
                 'notNull' => true
             ),
-            'auth_role_id' => array(
+            'group_id' => array(
                 'type' => Column::TYPE_INTEGER,
                 'size' => 10,
                 'notNull' => true
@@ -85,7 +85,7 @@ return array(
         'indexes' => array(
             'idx_unique' => array(
                 'type' => 'Unique',
-                'fields' => array('group_id', 'auth_role_id')
+                'fields' => array('user_id', 'group_id')
             )
         )
     ),
