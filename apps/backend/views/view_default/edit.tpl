@@ -30,7 +30,33 @@
                 <div class="control-group ">
                     <label class="control-label">{{ field_opt['label'] }} {% if field_opt['required'] is defined and field_opt['required'] %}<span class="required">*</span>{% endif %}</label>
                     <div class="controls">
-                        <input id="current-{{ field }}-control" name="{{ field }}" class="span9" type="{{ field_opt['type'] }}" value="{% if data is not null %}{{ data.readAttribute(field) }}{% endif %}" />
+                        {% if field_opt['type'] == 'select' %}
+                            {% if data is not null %}
+                                {{ select(field, carofw['app_list_strings'][field_opt['options']], 'using': ['id', 'name'], 'value': data.readAttribute(field), 'class': 'span9') }}
+                            {% else %}
+                                {{ select(field, carofw['app_list_strings'][field_opt['options']], 'using': ['id', 'name'], 'class': 'span9') }}
+                            {% endif %}
+
+                        {% elseif field_opt['type'] == 'relate' %}
+                            <?php
+                                $model_path = '\\Modules\Backend\Models\\' . $field_opt['model'];
+                                $model = new $model_path();
+                                $options = $model::find()
+                            ?>
+
+                            {% if data is not null %}
+                                {{ select(field, options, 'using': ['id', 'name'], 'value': data.readAttribute(field), 'class': 'span9') }}
+                            {% else %}
+                                {{ select(field, options, 'using': ['id', 'name'], 'class': 'span9') }}
+                            {% endif %}
+
+                        {% elseif field_opt['type'] == 'textarea' %}
+                            <textarea rows="4" class="span9">{% if data is not null %}{{ data.readAttribute(field) }}{% endif %}</textarea>
+
+                        {% else %}
+                            <input id="current-{{ field }}-control" name="{{ field }}" class="span9" type="{{ field_opt['type'] }}" value="{% if data is not null %}{{ data.readAttribute(field) }}{% endif %}" />
+
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

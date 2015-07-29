@@ -16,6 +16,7 @@ class ControllerBase extends Controller
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
+        $this->view->setVar('carofw', $this->carofw);
     }
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)

@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 try {
 
-    //define('APP_PATH', realpath('..') . '/');
+    define('APP_PATH', realpath('..') . '/');
 
     /**
      * load config
@@ -85,6 +85,13 @@ try {
             'notice'    => 'alert alert-block alert-info',
             'warning'   => 'alert alert-block alert-warning'
         ]);
+    });
+
+    /**
+     * Setup const var
+     */
+    $di->set('carofw', function() {
+        return include APP_PATH . 'apps/config/const.php';
     });
 
     /**

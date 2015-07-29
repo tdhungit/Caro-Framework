@@ -80,9 +80,10 @@ class Users extends ModelBase
                 'required' => true
             ),
             'status' => array(
-                'type' => 'text',
+                'type' => 'select',
                 'label' => 'Status',
-                'required' => true
+                'required' => true,
+                'options' => 'users_status_list'
             ),
         )
     );
