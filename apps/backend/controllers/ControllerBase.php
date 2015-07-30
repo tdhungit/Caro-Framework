@@ -323,7 +323,8 @@ class ControllerBase extends Controller
                         $this->flash->error('Save relate error!');
                     }
 
-                    if ($func == 'del' && $save_data->delete() == false) {
+                    $save_data->$subpanel_def['rel_field'] = 0;
+                    if ($func == 'del' && $save_data->update() == false) {
                         $this->flash->error('Remove relate error!');
                     }
 
