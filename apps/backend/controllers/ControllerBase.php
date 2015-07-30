@@ -4,6 +4,7 @@ namespace Modules\Backend\Controllers;
 
 use Phalcon\Dispatcher;
 use Phalcon\Mvc\Controller;
+use Phalcon\Translate\Adapter\NativeArray;
 
 class ControllerBase extends Controller
 {
@@ -18,8 +19,13 @@ class ControllerBase extends Controller
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
+        // config
         $this->view->setVar('carofw', $this->carofw);
+        // title
         $this->view->setVar('main_title', $this->model_name);
+        // language
+        $this->t = $this->getTranslation();
+        $this->view->setVar('t', $this->t);
     }
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)
@@ -116,8 +122,24 @@ class ControllerBase extends Controller
         return $panel;
     }
 
+    /**
+     * @return NativeArray
+     */
     protected function getTranslation()
     {
+        $language = $this->request->getBestLanguage();
+
+        if (file_exists(APP_PATH . "apps/language/" . $language . ".php")) {
+            $lang = require APP_PATH . "apps/language/" . $language . ".php";
+
+        } else {
+            $lang = require APP_PATH . "apps/language/en.php";
+
+        }
+
+        return new NativeArray(array(
+            "content" => $lang
+        ));
 
     }
 
@@ -209,9 +231,9 @@ class ControllerBase extends Controller
                 }
 
                 if ($data->update() == false) {
-                    $this->flash->error("Fail, update {$this->controller_name} was not saved successfully!");
+                    $this->flash->error($this->t->_('Fail, record was not updated successfully!'));
                 } else {
-                    $this->flash->success("Great, update {$this->controller_name} was saved successfully!");
+                    $this->flash->success($this->t->_('Great, record was updated successfully!'));
                     $id = $post_id;
                 }
 
@@ -230,7 +252,7 @@ class ControllerBase extends Controller
                     $this->flash->error($msg);
                 } else {
                     $id = $model->id;
-                    $this->flash->success("Great, a new {$this->controller_name} was saved successfully!");
+                    $this->flash->success($this->t->_('Great, record was saved successfully!'));
                 }
             }
 
@@ -320,12 +342,12 @@ class ControllerBase extends Controller
                     $save_data->$subpanel_def['rel_field'] = $current_id;
 
                     if ($func == 'ins' && $save_data->update() == false) {
-                        $this->flash->error('Save relate error!');
+                        $this->flash->error($this->t->_('Sorry, can not add this record relate'));
                     }
 
                     $save_data->$subpanel_def['rel_field'] = 0;
                     if ($func == 'del' && $save_data->update() == false) {
-                        $this->flash->error('Remove relate error!');
+                        $this->flash->error($this->t->_('Sorry, can not remove this record relate'));
                     }
 
                 } else if ($type == 'many-many') {
@@ -334,7 +356,7 @@ class ControllerBase extends Controller
                     $mid_model->$subpanel_def['mid_field2'] = $rel_id;
 
                     if ($func == 'ins' && $mid_model->save() == false) {
-                        $this->flash->error('Save relate error!');
+                        $this->flash->error($this->t->_('Sorry, can not add this record relate'));
                     }
 
                     if ($func == 'del') {
@@ -343,7 +365,7 @@ class ControllerBase extends Controller
                             $subpanel_def['mid_field2'] . '=' . $rel_id
                         ));
                         if ($mid_data->delete() == false) {
-                            $this->flash->error('Remove relate error!');
+                            $this->flash->error($this->t->_('Sorry, can not remove this record relate'));
                         }
                     }
 

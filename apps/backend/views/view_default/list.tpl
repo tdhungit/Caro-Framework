@@ -2,7 +2,7 @@
     <div class="span4">
         <div class="blockoff-right">
             <ul class="nav nav-list">
-                <li class="nav-header">Action</li>
+                <li class="nav-header">{{ t._('Action') }}</li>
                 {% for l, m in menu %}
                     <li>
                         <a href="{{ url(m) }}">
@@ -19,7 +19,7 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-list icon-large"></i>
-                <h5>{{ main_title }}</h5>
+                <h5>{{ t._(main_title) }}</h5>
             </div>
 
             <div class="box-content box-table">
