@@ -205,6 +205,7 @@ class ControllerBase extends Controller
                     $this->flash->error("Fail, update {$this->controller_name} was not saved successfully!");
                 } else {
                     $this->flash->success("Great, update {$this->controller_name} was saved successfully!");
+                    $id = $post_id;
                 }
 
             } else {
@@ -221,11 +222,12 @@ class ControllerBase extends Controller
                     }
                     $this->flash->error($msg);
                 } else {
+                    $id = $model->id;
                     $this->flash->success("Great, a new {$this->controller_name} was saved successfully!");
                 }
             }
 
-            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_name);
+            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_detail . '/' . $id);
         }
 
         // edit view data
