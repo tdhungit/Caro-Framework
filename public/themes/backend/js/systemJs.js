@@ -1,0 +1,20 @@
+jQuery(function() {
+
+});
+function caro_list_relate(rel_model, current_model, current_id, subpanel_name) {
+    $.get(base_url + '/admin/index/popup/' + rel_model + '/' + current_model + '/' + current_id + '/' + subpanel_name, function(data) {
+        $('#systemModalContent').html(data);
+        $('#systemModal').modal({});
+    });
+}
+function caro_save_relate(rel_model, rel_id, subpanel_name, current_model, current_id) {
+    $.post(base_url + '/admin/index/save_relate', {
+        rel_model: rel_model,
+        rel_id: rel_id,
+        subpanel_name: subpanel_name,
+        current_model: current_model,
+        current_id: current_id
+    }, function() {
+        window.location.reload();
+    });
+}

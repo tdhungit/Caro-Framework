@@ -60,6 +60,25 @@ class AuthRoles extends ModelBase
                 'type' => 'text',
                 'label' => 'Description'
             ),
+        ),
+        'subpanels' => array(
+            'user_groups' => array(
+                'type' => 'one-many',
+                'current_model' => 'AuthRoles',
+                'current_field' => 'id',
+                'rel_model' => 'UserGroups',
+                'rel_field' => 'role_id',
+                'list' => array(
+                    'name' => array(
+                        'type' => 'text',
+                        'label' => 'Name',
+                    ),
+                    'status' => array(
+                        'type' => 'select',
+                        'label' => 'Status'
+                    ),
+                )
+            )
         )
     );
 

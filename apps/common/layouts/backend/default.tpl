@@ -10,8 +10,11 @@
     <meta name="layout" content="main"/>
 
     <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
+    <script>
+        var base_url = '{{ url() }}';
+    </script>
     <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-1.8.2.min.js" type="text/javascript" ></script>
+    <script src="{{ static_url() }}/themes/backend/js/systemJs.js" type="text/javascript" ></script>
     <link href="{{ static_url() }}/themes/backend/css/customize-template.css" type="text/css" media="screen, projection" rel="stylesheet" />
 </head>
 
@@ -48,6 +51,14 @@
         </section>
     </div>
 </div>
+
+<!-- Model -->
+<div class="modal fade" id="systemModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="systemModalContent"></div>
+    </div>
+</div>
+<!-- End Model -->
 
 <footer class="application-footer">
     <div class="container">

@@ -57,18 +57,13 @@ class Users extends ModelBase
         'subpanels' => array(
             'user_groups' => array(
                 'type' => 'many-many',
-                'model' => 'UserGroups',
-                'field' => 'Users.id',
-                'rel_mid' => array(
-                    'join' => 'UserGroupsUsers',
-                    'on' => 'UserGroups.id',
-                    'is' => 'UserGroupsUsers.group_id'
-                ),
-                'rel' => array(
-                    'join' => 'Users',
-                    'on' => 'Users.id',
-                    'is' => 'UserGroupsUsers.user_id'
-                ),
+                'current_model' => 'Users',
+                'current_field' => 'id',
+                'rel_model' => 'UserGroups',
+                'rel_field' => 'id',
+                'mid_model' => 'UserGroupsUsers',
+                'mid_field1' => 'user_id',
+                'mid_field2' => 'group_id',
                 'list' => array(
                     'name' => array(
                         'type' => 'text',

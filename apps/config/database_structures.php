@@ -66,6 +66,10 @@ return array(
             'description' => array(
                 'type' => Column::TYPE_TEXT
             ),
+            'role_id' => array(
+                'type' => Column::TYPE_INTEGER,
+                'size' => 10
+            )
         ),
         'indexes' => array()
     ),
