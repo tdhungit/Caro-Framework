@@ -53,6 +53,7 @@
                                 {% for name, view in subpanel_def['list'] %}
                                     <th class="header">{{ view['label'] }}</th>
                                 {% endfor %}
+                                <th class="header">Action</th>
                             </tr>
                             </thead>
 
@@ -62,6 +63,11 @@
                                     {% for name, view in subpanel_def['list'] %}
                                         <td>{{ row.readAttribute(name) }}</td>
                                     {% endfor %}
+                                    <td class="td-actions">
+                                        <a href="javascript:caro_remove_relate('{{ subpanel_def['rel_model'] }}', '{{ row.id }}', '{{ subpanel_name }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}')" class="btn btn-small btn-danger">
+                                            <i class="btn-icon-only icon-remove"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>

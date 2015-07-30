@@ -13,6 +13,8 @@ class ControllerBase extends Controller
     protected $action_name;
     protected $action_detail = 'detail';
 
+    protected $t;
+
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
@@ -112,6 +114,11 @@ class ControllerBase extends Controller
                 ->getQuery()->execute();
         }
         return $panel;
+    }
+
+    protected function getTranslation()
+    {
+
     }
 
     // BASE ACTION //
@@ -297,6 +304,7 @@ class ControllerBase extends Controller
             $current_model = $this->request->getPost('current_model');
             $current_id = $this->request->getPost('current_id');
             $subpanel_name = $this->request->getPost('subpanel_name');
+            $func = $this->request->getPost('func');
 
             if ($rel_model && $rel_id
                 && $current_model && $current_id
@@ -311,8 +319,12 @@ class ControllerBase extends Controller
                     $save_data = $save_model::findFirst($rel_id);
                     $save_data->$subpanel_def['rel_field'] = $current_id;
 
-                    if ($save_data->update() == false) {
+                    if ($func == 'ins' && $save_data->update() == false) {
                         $this->flash->error('Save relate error!');
+                    }
+
+                    if ($func == 'del' && $save_data->delete() == false) {
+                        $this->flash->error('Remove relate error!');
                     }
 
                 } else if ($type == 'many-many') {
@@ -320,8 +332,18 @@ class ControllerBase extends Controller
                     $mid_model->$subpanel_def['mid_field1'] = $current_id;
                     $mid_model->$subpanel_def['mid_field2'] = $rel_id;
 
-                    if ($mid_model->save() == false) {
+                    if ($func == 'ins' && $mid_model->save() == false) {
                         $this->flash->error('Save relate error!');
+                    }
+
+                    if ($func == 'del') {
+                        $mid_data = $mid_model::findFirst(array(
+                            $subpanel_def['mid_field1'] . '=' . $current_id,
+                            $subpanel_def['mid_field2'] . '=' . $rel_id
+                        ));
+                        if ($mid_data->delete() == false) {
+                            $this->flash->error('Remove relate error!');
+                        }
                     }
 
                 }

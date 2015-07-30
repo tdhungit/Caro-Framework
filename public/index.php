@@ -42,6 +42,7 @@ try {
             'action' => 'index'
         ));
 
+        /* front end */
         $router->add('/index', array(
             'module' => 'frontend',
             'controller' => 'index',
