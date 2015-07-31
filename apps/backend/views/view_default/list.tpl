@@ -48,7 +48,30 @@
                     {% endfor %}
                     </tbody>
                 </table>
+
             </div>
+
         </div>
+
+        <!-- pagination -->
+        <nav class="pagination pagination-centered">
+            <ul>
+                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}">First</a></li>
+                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.before }}">Previous</a></li>
+                <li>
+                    <a href="javascript:;">
+                        <select style="margin: 0; width: auto;" onchange="location.href='{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page=' + $(this).val();">
+                            {% for i in 1..page.total_pages %}
+                                <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </a>
+                </li>
+                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.next }}">Next</a></li>
+                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.last }}">Last</a></li>
+            </ul>
+        </nav>
+
     </div>
+
 </div>

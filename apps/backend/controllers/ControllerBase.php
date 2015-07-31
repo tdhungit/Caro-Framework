@@ -5,6 +5,7 @@ namespace Modules\Backend\Controllers;
 use Phalcon\Dispatcher;
 use Phalcon\Mvc\Controller;
 use Phalcon\Translate\Adapter\NativeArray;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ControllerBase extends Controller
 {
@@ -157,9 +158,25 @@ class ControllerBase extends Controller
             $this->response->redirect('/admin/dashboard');
         }
 
-        $list_data = $model::find();
+        $parameters = array();
+        // search
+        // sort
 
-        $this->view->data = $list_data;
+        $list_data = $model::find($parameters);
+
+        // pagination
+        $currentPage = (int) $_GET["page"];
+        $paginator_limit = 20; // @TODO
+        $paginator = new PaginatorModel(array(
+            "data"  => $list_data,
+            "limit" => $paginator_limit,
+            "page"  => $currentPage
+        ));
+        // get page
+        $page = $paginator->getPaginate();
+
+        $this->view->page = $page;
+        $this->view->data = $page->items;
         $this->view->list_view = $model->list_view;
 
         $controller = strtolower($this->controller_name);
@@ -312,13 +329,31 @@ class ControllerBase extends Controller
 
         $this->view->setTemplateAfter('ajax');
         $model = $this->getModel($rel_model);
-        $data = $model::find();
 
-        $this->view->data = $data;
+        $parameters = array();
+
+        $list_data = $model::find($parameters);
+
+        // pagination
+        $currentPage = (int) $_GET["page"];
+        $paginator_limit = 20; // @TODO
+        $paginator = new PaginatorModel(array(
+            "data"  => $list_data,
+            "limit" => $paginator_limit,
+            "page"  => $currentPage
+        ));
+        // get page
+        $page = $paginator->getPaginate();
+
+        $this->view->page = $page;
+        $this->view->data = $page->items;
         $this->view->list_view = $model->list_view;
 
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);
+
+        $this->view->controller = $controller;
+        $this->view->action = $action;
 
         $this->view->rel_model = $rel_model;
         $this->view->current_model = $current_model;
