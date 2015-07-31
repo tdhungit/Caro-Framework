@@ -11461,3 +11461,10 @@ body > #body-container {
 #body-content {
   padding-top: 110px;
 }
+.list-search {
+  width: 120px;
+  margin: 0 !important;
+}
+.form-list-search {
+  margin: 0;
+}

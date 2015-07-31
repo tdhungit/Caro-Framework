@@ -14,6 +14,8 @@ class ControllerBase extends Controller
     protected $controller_name;
     protected $action_name;
     protected $action_detail = 'detail';
+    protected $action_edit = 'edit';
+    protected $action_delete = 'delete';
 
     protected $t;
 
@@ -122,6 +124,29 @@ class ControllerBase extends Controller
     }
 
     /**
+     * @param $url_query
+     * @param $view_fields
+     * @return array
+     */
+    protected function getFieldsSearch($url_query, $view_fields)
+    {
+        $search = array();
+        foreach ($url_query as $field => $value) {
+            if (!empty($view_fields[$field]['search']) && $view_fields[$field]['search'] == true) {
+                switch ($view_fields[$field]['operator']) {
+                    case 'like':
+                        $search[$field] = '/' . $value . '/';
+                        break;
+                    default:
+                        $search[$field] = $value;
+                }
+            }
+        }
+
+        return $search;
+    }
+
+    /**
      * @return NativeArray
      */
     protected function getTranslation()
@@ -148,6 +173,11 @@ class ControllerBase extends Controller
      */
     public function listAction()
     {
+        //$this->view->disable();
+//        $query_urls = $this->request->getQuery();
+//        unset($query_urls['_url']);
+//        echo '<pre>';print_r($query_urls); die();
+        //echo $this->url->get('admin/users/list', array('hung' => 'jacky'));
         $title = $this->t->_('List ') . $this->t->_($this->model_name);
         $this->tag->setTitle($title);
         $this->view->title = $title;
@@ -158,19 +188,22 @@ class ControllerBase extends Controller
             $this->response->redirect('/admin/dashboard');
         }
 
-        $parameters = array();
+        $query_urls = $this->request->getQuery();
+        unset($query_urls['_url']);
+        $parameters = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
+        //print_r($parameters);
         // search
         // sort
 
         $list_data = $model::find($parameters);
 
         // pagination
-        $currentPage = (int) $_GET["page"];
+        $currentPage = $this->request->getQuery('page');
         $paginator_limit = 20; // @TODO
         $paginator = new PaginatorModel(array(
             "data"  => $list_data,
             "limit" => $paginator_limit,
-            "page"  => $currentPage
+            "page"  => $currentPage > 0 ? $currentPage : 1
         ));
         // get page
         $page = $paginator->getPaginate();
@@ -185,6 +218,8 @@ class ControllerBase extends Controller
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->action_detail = $this->action_detail;
+        $this->view->action_edit = $this->action_edit;
+        $this->view->action_delete = $this->action_delete;
         $this->view->menu = $model->menu;
 
         $exists = $this->view->exists($controller . '/' . $action);

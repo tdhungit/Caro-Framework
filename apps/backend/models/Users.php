@@ -23,19 +23,23 @@ class Users extends ModelBase
     public $status;
 
     public $list_view = array(
-        'username' => array(
-            'type' => 'text',
-            'label' => 'Username',
-            'link' => true
+        'fields' => array(
+            'username' => array(
+                'type' => 'text',
+                'label' => 'Username',
+                'link' => true,
+                'search' => true,
+                'operator' => 'like'
+            ),
+            'email' => array(
+                'type' => 'text',
+                'label' => 'Email'
+            ),
+            'name' => array(
+                'type' => 'text',
+                'label' => 'Full name'
+            )
         ),
-        'email' => array(
-            'type' => 'text',
-            'label' => 'Email'
-        ),
-        'name' => array(
-            'type' => 'text',
-            'label' => 'Full name'
-        )
     );
 
     public $detail_view = array(

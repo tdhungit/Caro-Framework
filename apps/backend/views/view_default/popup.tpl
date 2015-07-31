@@ -7,7 +7,7 @@
         <table class="table table-hover tablesorter">
             <thead>
             <tr>
-                {% for name, view in list_view %}
+                {% for name, view in list_view['fields'] %}
                     <th class="header">{{ view['label'] }}</th>
                 {% endfor %}
             </tr>
@@ -16,7 +16,7 @@
             <tbody>
             {% for row in data %}
                 <tr>
-                    {% for name, view in list_view %}
+                    {% for name, view in list_view['fields'] %}
                         <td>
                             <a href="javascript:caro_save_relate('{{ rel_model }}', '{{ row.id }}', '{{ subpanel_name }}', '{{ current_model }}', '{{ current_id }}')">
                                 {{ row.readAttribute(name) }}

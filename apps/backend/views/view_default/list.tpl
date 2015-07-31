@@ -26,16 +26,31 @@
                 <table class="table table-hover tablesorter">
                     <thead>
                     <tr>
-                        {% for name, view in list_view %}
+                        {% for name, view in list_view['fields'] %}
                             <th class="header">{{ view['label'] }}</th>
                         {% endfor %}
+                        <th class="header">{{ t._('Action') }}</th>
                     </tr>
                     </thead>
 
                     <tbody>
+                    <!-- search -->
+                    <tr>
+                        {% for name, view in list_view['fields'] %}
+                            <td>
+                                {{ form('/admin/' ~ controller ~ '/' ~ action, 'class': 'form-list-search') }}
+                                    {% if view['search'] is defined and view['search'] %}
+                                        <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" class="list-search" />
+                                    {% endif %}
+                                {{ end_form() }}
+                            </td>
+                        {% endfor %}
+                        <td></td>
+                    </tr>
+
                     {% for row in data %}
                         <tr>
-                            {% for name, view in list_view %}
+                            {% for name, view in list_view['fields'] %}
                                 <td>
                                     {% if view['link'] is defined and view['link'] %}
                                         <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_detail ~ '/' ~ row.id) }}">{{ row.readAttribute(name) }}</a>
@@ -44,6 +59,18 @@
                                     {% endif %}
                                 </td>
                             {% endfor %}
+
+                            <td class="td-actions">
+                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning">
+                                    <i class="btn-icon-only icon-edit"></i>
+                                </a>
+
+                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger">
+                                    <i class="btn-icon-only icon-remove"></i>
+                                </a>
+
+                            </td>
+
                         </tr>
                     {% endfor %}
                     </tbody>
