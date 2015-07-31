@@ -19,7 +19,7 @@
         <div class="box">
             <div class="box-header">
                 <i class="icon-list icon-large"></i>
-                <h5>{{ t._(main_title) }}</h5>
+                <h5>{{ title }}</h5>
             </div>
 
             <div class="box-content box-table">

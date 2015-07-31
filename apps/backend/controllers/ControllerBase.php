@@ -18,11 +18,9 @@ class ControllerBase extends Controller
 
     protected function initialize()
     {
-        $this->tag->prependTitle('Caro Framework | ');
+        $this->tag->prependTitle('CaroFW Admin | ');
         // config
         $this->view->setVar('carofw', $this->carofw);
-        // title
-        $this->view->setVar('main_title', $this->model_name);
         // language
         $this->t = $this->getTranslation();
         $this->view->setVar('t', $this->t);
@@ -149,6 +147,10 @@ class ControllerBase extends Controller
      */
     public function listAction()
     {
+        $title = $this->t->_('List ') . $this->t->_($this->model_name);
+        $this->tag->setTitle($title);
+        $this->view->title = $title;
+
         $model = $this->getModel();
 
         if (is_null($model)) {
@@ -194,6 +196,10 @@ class ControllerBase extends Controller
         if ($data == null) {
             $this->response->redirect('/admin/' . $this->controller_name);
         }
+
+        $title = $this->t->_('Detail ') . $this->t->_($this->model_name) . ': ' . $data->{$model->detail_view['title']};
+        $this->tag->setTitle($title);
+        $this->view->title = $title;
 
         $this->view->detail_view = $model->detail_view;
         $this->view->data = $data;
@@ -264,7 +270,15 @@ class ControllerBase extends Controller
 
         if ($id) {
             $data = $model::findFirst($id);
+
+            $title = $this->t->_('Edit ') . $this->t->_($this->model_name) . ': ' . $data->{$model->edit_view['title']};
+
+        } else {
+            $title = $this->t->_('Create ') . $this->t->_($this->model_name);
         }
+
+        $this->tag->setTitle($title);
+        $this->view->title = $title;
 
         $this->view->edit_view = $model->edit_view;
         $this->view->data = $data;
@@ -292,6 +306,10 @@ class ControllerBase extends Controller
      */
     public function popupAction($rel_model, $current_model, $current_id, $subpanel_name)
     {
+        $title = $this->t->_('List ') . $this->t->_($rel_model);
+        //$this->tag->setTitle($title);
+        $this->view->title = $title;
+
         $this->view->setTemplateAfter('ajax');
         $model = $this->getModel($rel_model);
         $data = $model::find();

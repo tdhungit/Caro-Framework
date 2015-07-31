@@ -2,7 +2,7 @@
     <div class="span4">
         <div class="blockoff-right">
             <ul class="nav nav-list">
-                <li class="nav-header">Action</li>
+                <li class="nav-header">{{ t._('Action') }}</li>
                 {% for l, m in menu %}
                     <li>
                         <a href="{{ url(m) }}">
@@ -19,9 +19,9 @@
         {{ form('/admin/' ~ controller ~ '/' ~ action, 'method': 'post', 'class': 'form-horizontal') }}
         <fieldset>
             {% if data is null %}
-                <legend class="lead">Create {{ controller }}</legend>
+                <legend class="lead">{{ title }}</legend>
             {% else %}
-                <legend class="lead">Edit {{ controller }} {{ data.readAttribute(edit_view['title']) }}</legend>
+                <legend class="lead">{{ title }}</legend>
                 <br />
                 <input type="hidden" name="id" value="{{ data.id }}" />
             {% endif %}

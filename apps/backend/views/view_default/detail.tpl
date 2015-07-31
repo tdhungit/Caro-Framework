@@ -2,7 +2,7 @@
     <div class="span4">
         <div class="blockoff-right">
             <ul class="nav nav-list">
-                <li class="nav-header">Action</li>
+                <li class="nav-header">{{ t._('Action') }}</li>
                 {% for l, m in menu %}
                     <li>
                         <a href="{{ url(m) }}">
@@ -19,9 +19,9 @@
         <div class="box">
             <div class="box-content">
                 {% if data is null %}
-                    <legend class="lead" style="border: none">No Data</legend>
+                    <legend class="lead" style="border: none">{{ t._('No Data') }}</legend>
                 {% else %}
-                    <legend class="lead" style="border: none">{{ data.readAttribute(detail_view['title']) }}</legend>
+                    <legend class="lead" style="border: none">{{ title }}</legend>
                     <table class="table">
                         <tbody>
                         {% for field, field_opt in detail_view['fields'] %}
@@ -40,7 +40,7 @@
             {% for subpanel_name, subpanel_def in detail_view['subpanels'] %}
                 <div class="box">
                     <div class="box-header">
-                        <h5>User Groups</h5>
+                        <h5>{{ t._(subpanel_def['rel_model']) }}</h5>
 
                         <a class="btn btn-box-right" href="javascript:caro_list_relate('{{ subpanel_def['rel_model'] }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}', '{{ subpanel_name }}')">
                             <i class="icon-plus"></i>
@@ -53,7 +53,7 @@
                                 {% for name, view in subpanel_def['list'] %}
                                     <th class="header">{{ view['label'] }}</th>
                                 {% endfor %}
-                                <th class="header">Action</th>
+                                <th class="header">{{ t._('Action') }}</th>
                             </tr>
                             </thead>
 

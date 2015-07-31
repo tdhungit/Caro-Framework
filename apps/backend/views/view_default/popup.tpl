@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ rel_model }}</h4>
+    <h4 class="modal-title">{{ title }}</h4>
 </div>
 
 <div class="modal-body">
