@@ -22,14 +22,17 @@ class UserGroups extends ModelBase
     public $description;
 
     public $list_view = array(
-        'name' => array(
-            'type' => 'text',
-            'label' => 'Name',
-            'link' => true
-        ),
-        'status' => array(
-            'type' => 'text',
-            'label' => 'Status'
+        'fields' => array(
+            'name' => array(
+                'type' => 'text',
+                'label' => 'Name',
+                'link' => true,
+                'search' => true
+            ),
+            'status' => array(
+                'type' => 'text',
+                'label' => 'Status'
+            )
         )
     );
 

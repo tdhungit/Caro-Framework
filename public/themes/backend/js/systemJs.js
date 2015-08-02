@@ -30,3 +30,9 @@ function caro_save_relate(rel_model, rel_id, subpanel_name, current_model, curre
 function caro_remove_relate(rel_model, rel_id, subpanel_name, current_model, current_id) {
     caro_action_relate(rel_model, rel_id, subpanel_name, current_model, current_id, 'del');
 }
+function caro_popup_search(form) {
+    var url = form.attr('action') + '?' + form.serialize();
+    $.get(url, function(data) {
+        $('#systemModalContent').html(data);
+    });
+}

@@ -22,14 +22,16 @@ class AuthRoles extends ModelBase
     public $description;
 
     public $list_view = array(
-        'name' => array(
-            'type' => 'text',
-            'label' => 'Name',
-            'link' => true
-        ),
-        'description' => array(
-            'type' => 'text',
-            'label' => 'Description'
+        'fields' => array(
+            'name' => array(
+                'type' => 'text',
+                'label' => 'Name',
+                'link' => true
+            ),
+            'description' => array(
+                'type' => 'text',
+                'label' => 'Description'
+            )
         )
     );
 

@@ -4,6 +4,7 @@
 
 <div class="modal-body">
     <div class="box-content box-table">
+        {{ form(current_uri, 'method' : 'get', 'class': 'form-list-search', 'onsubmit': 'caro_popup_search($(this)); return false;') }}
         <table class="table table-hover tablesorter">
             <thead>
             <tr>
@@ -14,6 +15,18 @@
             </thead>
 
             <tbody>
+
+            <!-- search -->
+            <tr>
+                {% for name, view in list_view['fields'] %}
+                    <td>
+                        {% if view['search'] is defined and view['search'] %}
+                            <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" value="{% if search[name] is defined %}{{ search[name] }}{% endif %}" class="list-search" />
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+
             {% for row in data %}
                 <tr>
                     {% for name, view in list_view['fields'] %}
@@ -27,25 +40,25 @@
             {% endfor %}
             </tbody>
         </table>
+        {{ end_form() }}
     </div>
 
     <!-- pagination -->
     <nav class="pagination pagination-centered">
-        {% set popupurl = url('/admin/' ~ controller ~ '/' ~ action ~ '/' ~ rel_model ~ '/' ~ current_model ~ '/' ~ current_id ~ '/' ~ subpanel_name) %}
         <ul>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ popupurl }}?page={{ page.before }}')">First</a></li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ popupurl }}?page={{ page.before }}')">Previous</a></li>
+            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">First</a></li>
+            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">Previous</a></li>
             <li>
                 <a href="javascript:;">
-                    <select style="margin: 0; width: auto;" onchange="caro_pagination_popup('{{ popupurl }}?page=' + $(this).val())">
+                    <select style="margin: 0; width: auto;" onchange="caro_pagination_popup('{{ current_url }}&page=' + $(this).val())">
                         {% for i in 1..page.total_pages %}
                             <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
                         {% endfor %}
                     </select>
                 </a>
             </li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ popupurl }}?page={{ page.next }}')">Next</a></li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ popupurl }}?page={{ page.last }}')">Last</a></li>
+            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.next }}')">Next</a></li>
+            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.last }}')">Last</a></li>
         </ul>
     </nav>
 

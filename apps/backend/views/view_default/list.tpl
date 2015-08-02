@@ -23,6 +23,7 @@
             </div>
 
             <div class="box-content box-table">
+                {{ form('/admin/' ~ controller ~ '/' ~ action, 'method' : 'get', 'class': 'form-list-search') }}
                 <table class="table table-hover tablesorter">
                     <thead>
                     <tr>
@@ -34,18 +35,17 @@
                     </thead>
 
                     <tbody>
+
                     <!-- search -->
                     <tr>
                         {% for name, view in list_view['fields'] %}
                             <td>
-                                {{ form('/admin/' ~ controller ~ '/' ~ action, 'class': 'form-list-search') }}
-                                    {% if view['search'] is defined and view['search'] %}
-                                        <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" class="list-search" />
-                                    {% endif %}
-                                {{ end_form() }}
+                                {% if view['search'] is defined and view['search'] %}
+                                    <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" value="{% if search[name] is defined %}{{ search[name] }}{% endif %}" class="list-search" />
+                                {% endif %}
                             </td>
                         {% endfor %}
-                        <td></td>
+                        <td><input type="submit" name="submit" class="btn" value="{{ t._('Search') }}"></td>
                     </tr>
 
                     {% for row in data %}
@@ -75,6 +75,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{ end_form() }}
 
             </div>
 
@@ -83,19 +84,19 @@
         <!-- pagination -->
         <nav class="pagination pagination-centered">
             <ul>
-                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}">First</a></li>
-                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.before }}">Previous</a></li>
+                <li><a href="{{ current_url }}">First</a></li>
+                <li><a href="{{ current_url }}&page={{ page.before }}">Previous</a></li>
                 <li>
                     <a href="javascript:;">
-                        <select style="margin: 0; width: auto;" onchange="location.href='{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page=' + $(this).val();">
+                        <select style="margin: 0; width: auto;" onchange="location.href='{{ current_url }}&page=' + $(this).val();">
                             {% for i in 1..page.total_pages %}
                                 <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
                             {% endfor %}
                         </select>
                     </a>
                 </li>
-                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.next }}">Next</a></li>
-                <li><a href="{{ url('/admin/' ~ controller ~ '/' ~ action) }}?page={{ page.last }}">Last</a></li>
+                <li><a href="{{ current_url }}&page={{ page.next }}">Next</a></li>
+                <li><a href="{{ current_url }}&page={{ page.last }}">Last</a></li>
             </ul>
         </nav>
 

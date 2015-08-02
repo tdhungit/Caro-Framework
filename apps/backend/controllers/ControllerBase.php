@@ -130,20 +130,26 @@ class ControllerBase extends Controller
      */
     protected function getFieldsSearch($url_query, $view_fields)
     {
+        $conditions = '';
         $search = array();
         foreach ($url_query as $field => $value) {
             if (!empty($view_fields[$field]['search']) && $view_fields[$field]['search'] == true) {
                 switch ($view_fields[$field]['operator']) {
                     case 'like':
-                        $search[$field] = '/' . $value . '/';
+                        $conditions .= "$field like :$field:";
+                        $search[$field] = "%$value%";
                         break;
                     default:
+                        $conditions .= "$field = :$field:";
                         $search[$field] = $value;
                 }
             }
         }
 
-        return $search;
+        return array(
+            'conditions' => $conditions,
+            'parameters' => $search
+        );
     }
 
     /**
@@ -173,11 +179,6 @@ class ControllerBase extends Controller
      */
     public function listAction()
     {
-        //$this->view->disable();
-//        $query_urls = $this->request->getQuery();
-//        unset($query_urls['_url']);
-//        echo '<pre>';print_r($query_urls); die();
-        //echo $this->url->get('admin/users/list', array('hung' => 'jacky'));
         $title = $this->t->_('List ') . $this->t->_($this->model_name);
         $this->tag->setTitle($title);
         $this->view->title = $title;
@@ -190,12 +191,19 @@ class ControllerBase extends Controller
 
         $query_urls = $this->request->getQuery();
         unset($query_urls['_url']);
-        $parameters = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
-        //print_r($parameters);
+        unset($query_urls['submit']);
+        unset($query_urls['page']);
+
         // search
+        $search_opt = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
+        $conditions = $search_opt['conditions'];
+        $parameters = $search_opt['parameters'];
         // sort
 
-        $list_data = $model::find($parameters);
+        $list_data = $model::find(array(
+            $conditions,
+            'bind' => $parameters
+        ));
 
         // pagination
         $currentPage = $this->request->getQuery('page');
@@ -211,6 +219,7 @@ class ControllerBase extends Controller
         $this->view->page = $page;
         $this->view->data = $page->items;
         $this->view->list_view = $model->list_view;
+        $this->view->search = $query_urls;
 
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);
@@ -221,6 +230,9 @@ class ControllerBase extends Controller
         $this->view->action_edit = $this->action_edit;
         $this->view->action_delete = $this->action_delete;
         $this->view->menu = $model->menu;
+
+        $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
+        $this->view->current_url = $this->url->get("/admin/$controller/$action", $query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -365,9 +377,20 @@ class ControllerBase extends Controller
         $this->view->setTemplateAfter('ajax');
         $model = $this->getModel($rel_model);
 
-        $parameters = array();
+        $query_urls = $this->request->getQuery();
+        unset($query_urls['_url']);
+        unset($query_urls['submit']);
+        unset($query_urls['page']);
 
-        $list_data = $model::find($parameters);
+        // search
+        $search_opt = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
+        $conditions = $search_opt['conditions'];
+        $parameters = $search_opt['parameters'];
+
+        $list_data = $model::find(array(
+            $conditions,
+            'bind' => $parameters
+        ));
 
         // pagination
         $currentPage = (int) $_GET["page"];
@@ -383,6 +406,7 @@ class ControllerBase extends Controller
         $this->view->page = $page;
         $this->view->data = $page->items;
         $this->view->list_view = $model->list_view;
+        $this->view->search = $query_urls;
 
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);
@@ -394,6 +418,10 @@ class ControllerBase extends Controller
         $this->view->current_model = $current_model;
         $this->view->current_id = $current_id;
         $this->view->subpanel_name = $subpanel_name;
+
+        $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
+        $this->view->current_uri = "/admin/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
+        $this->view->current_url = $this->url->get($this->view->current_uri, $query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
