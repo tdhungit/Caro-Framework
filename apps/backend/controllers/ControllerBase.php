@@ -130,7 +130,7 @@ class ControllerBase extends Controller
      */
     protected function getFieldsSearch($url_query, $view_fields)
     {
-        $conditions = '1';
+        $conditions = 'deleted = 0';
         $search = array();
         foreach ($url_query as $field => $value) {
             if (!empty($view_fields[$field]['search']) && $view_fields[$field]['search'] == true) {
