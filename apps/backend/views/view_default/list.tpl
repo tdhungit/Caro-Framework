@@ -41,7 +41,12 @@
                         {% for name, view in list_view['fields'] %}
                             <td>
                                 {% if view['search'] is defined and view['search'] %}
-                                    <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" value="{% if search[name] is defined %}{{ search[name] }}{% endif %}" class="list-search" />
+                                    {% if search[name] is defined %}{% set search_value = search[name] %}{% else %}{% set search_value = '' %}{% endif %}
+                                    {% if view['type'] == 'select' %}
+                                        {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': search_value, 'useEmpty': true, 'emptyText': view['label'], 'emptyValue': '', 'class': 'list-search') }}
+                                    {% else %}
+                                        <input type="{{ view['type'] }}" name="{{ name }}" placeholder="{{ view['label'] }}" value="{{ search_value }}" class="list-search" />
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         {% endfor %}

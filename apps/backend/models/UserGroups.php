@@ -30,8 +30,10 @@ class UserGroups extends ModelBase
                 'search' => true
             ),
             'status' => array(
-                'type' => 'text',
-                'label' => 'Status'
+                'type' => 'select',
+                'label' => 'Status',
+                'options' => 'users_status_list',
+                'search' => true
             )
         )
     );

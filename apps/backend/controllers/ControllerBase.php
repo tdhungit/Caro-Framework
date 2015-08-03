@@ -130,24 +130,29 @@ class ControllerBase extends Controller
      */
     protected function getFieldsSearch($url_query, $view_fields)
     {
-        $conditions = '';
+        $conditions = '1';
         $search = array();
         foreach ($url_query as $field => $value) {
             if (!empty($view_fields[$field]['search']) && $view_fields[$field]['search'] == true) {
-                switch ($view_fields[$field]['operator']) {
+                $operator = !empty($view_fields[$field]['operator']) ? $view_fields[$field]['operator'] : '=';
+                switch ($operator) {
                     case 'like':
-                        $conditions .= "$field like :$field:";
-                        $search[$field] = "%$value%";
+                        if ($value) {
+                            $conditions .= " AND $field like :$field:";
+                            $search[$field] = "%$value%";
+                        }
                         break;
                     default:
-                        $conditions .= "$field = :$field:";
-                        $search[$field] = $value;
+                        if ($value) {
+                            $conditions .= " AND $field = :$field:";
+                            $search[$field] = $value;
+                        }
                 }
             }
         }
 
         return array(
-            'conditions' => $conditions,
+            'conditions' => ($conditions == '1') ? '' : $conditions,
             'parameters' => $search
         );
     }
