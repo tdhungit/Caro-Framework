@@ -21,7 +21,7 @@ class ControllerBase extends Controller
 
     protected function initialize()
     {
-        $this->tag->prependTitle('CaroFW Admin | ');
+        $this->tag->prependTitle('iEureka Admin | ');
         // config
         $this->view->setVar('carofw', $this->carofw);
         // language
@@ -295,45 +295,6 @@ class ControllerBase extends Controller
         // get model
         $model = $this->getModel();
 
-        // save data
-        if ($this->request->isPost()) {
-            $post_id = $this->request->getPost('id');
-            if (!empty($post_id)) {
-                $data = $model::findFirst($post_id);
-                // update data
-                foreach ($model->edit_view['fields'] as $field => $opt) {
-                    $data->$field = $this->request->getPost($field);
-                }
-
-                if ($data->update() == false) {
-                    $this->flash->error($this->t->_('Fail, record was not updated successfully!'));
-                } else {
-                    $this->flash->success($this->t->_('Great, record was updated successfully!'));
-                    $id = $post_id;
-                }
-
-            } else {
-                // set save data
-                foreach ($model->edit_view['fields'] as $field => $opt) {
-                    $model->$field = $this->request->getPost($field);
-                }
-
-                // save
-                if ($model->save() == false) {
-                    $msg = '';
-                    foreach ($model->getMessages() as $message) {
-                        $msg .= $message . '<br>';
-                    }
-                    $this->flash->error($msg);
-                } else {
-                    $id = $model->id;
-                    $this->flash->success($this->t->_('Great, record was saved successfully!'));
-                }
-            }
-
-            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_detail . '/' . $id);
-        }
-
         // edit view data
         $data = null;
 
@@ -491,6 +452,100 @@ class ControllerBase extends Controller
                     }
 
                 }
+            }
+        }
+    }
+
+    /**
+     * Save Record
+     */
+    public function saveAction()
+    {
+        // get model
+        $model = $this->getModel();
+
+        // save data
+        if ($this->request->isPost()) {
+            $post_id = $this->request->getPost('id');
+            if (!empty($post_id)) {
+                $data = $model::findFirst($post_id);
+                // update data
+                foreach ($model->edit_view['fields'] as $field => $opt) {
+                    $data->$field = $this->request->getPost($field);
+                }
+
+                if ($data->update() == false) {
+                    $this->flash->error($this->t->_('Fail, record was not updated successfully!'));
+                } else {
+                    $this->flash->success($this->t->_('Great, record was updated successfully!'));
+                    $id = $post_id;
+                }
+
+            } else {
+                // set save data
+                foreach ($model->edit_view['fields'] as $field => $opt) {
+                    $model->$field = $this->request->getPost($field);
+                }
+
+                // save
+                if ($model->save() == false) {
+                    $msg = '';
+                    foreach ($model->getMessages() as $message) {
+                        $msg .= $message . '<br>';
+                    }
+                    $this->flash->error($msg);
+                } else {
+                    $id = $model->id;
+                    $this->flash->success($this->t->_('Great, record was saved successfully!'));
+                }
+            }
+
+            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_detail . '/' . $id);
+        }
+    }
+
+    /**
+     * Delete Record
+     *
+     * @param $id
+     * @return mixed
+     */
+    protected function deleteRecord($id)
+    {
+        // get model
+        $model = $this->getModel();
+        $data = $model::findFirst($id);
+        $data->deleted = 1;
+        return $data->update();
+    }
+
+    /**
+     * Delete Record
+     *
+     * @param null $id
+     */
+    public function deleteAction($id = null)
+    {
+        if ($id) {
+            $result = $this->deleteRecord($id);
+
+            if ($result == false) {
+                $this->flash->error($this->t->_('Fail, record was not deleted successfully!'));
+            } else {
+                $this->flash->success($this->t->_('Great, record was deleted successfully!'));
+            }
+
+            $this->response->redirect('/admin/' . $this->controller_name . '/list');
+
+        } else {
+            if ($this->request->isPost()) {
+                $ids = $this->request->getPost('ids');
+
+                foreach ($ids as $id) {
+                    $this->deleteRecord($id);
+                }
+
+                    $this->response->redirect('/admin/' . $this->controller_name . '/list');
             }
         }
     }

@@ -16,7 +16,7 @@
     </div>
 
     <div class="span12">
-        {{ form('/admin/' ~ controller ~ '/' ~ action, 'method': 'post', 'class': 'form-horizontal') }}
+        {{ form('/admin/' ~ controller ~ '/save', 'method': 'post', 'class': 'form-horizontal') }}
         <fieldset>
             {% if data is null %}
                 <legend class="lead">{{ title }}</legend>
