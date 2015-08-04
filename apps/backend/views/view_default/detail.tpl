@@ -29,7 +29,7 @@
                                 <td><b>{{ view['label'] }}</b></td>
                                 <td>
                                     {% if view['type'] == 'select' %}
-                                        {% set value = carofw['app_list_strings'][view['options'][data.readAttribute(name)]] %}
+                                        {% set value = carofw['app_list_strings'][view['options']][data.readAttribute(name)] %}
 
                                     {% elseif view['type'] == 'relate' %}
                                         <?php

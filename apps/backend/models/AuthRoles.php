@@ -44,7 +44,7 @@ class AuthRoles extends ModelBase
                 'required' => true
             ),
             'description' => array(
-                'type' => 'text',
+                'type' => 'textarea',
                 'label' => 'Description',
                 'required' => true
             ),

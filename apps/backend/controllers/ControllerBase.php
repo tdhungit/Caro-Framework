@@ -316,9 +316,11 @@ class ControllerBase extends Controller
         $controller = strtolower($this->controller_name);
         $action = strtolower($this->action_name);
 
+        $this->view->model_name = $this->model_name;
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->menu = $model->menu;
+        $this->view->action_detail = $this->action_detail;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -461,11 +463,14 @@ class ControllerBase extends Controller
      */
     public function saveAction()
     {
-        // get model
-        $model = $this->getModel();
-
         // save data
         if ($this->request->isPost()) {
+            $model_name = $this->request->getPost('model_name');
+            $model_name = ($model_name) ? $model_name : null;
+
+            // get model
+            $model = $this->getModel($model_name);
+
             $post_id = $this->request->getPost('id');
             if (!empty($post_id)) {
                 $data = $model::findFirst($post_id);
@@ -500,7 +505,7 @@ class ControllerBase extends Controller
                 }
             }
 
-            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->action_detail . '/' . $id);
+            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->request->getPost('action_detail') . '/' . $id);
         }
     }
 

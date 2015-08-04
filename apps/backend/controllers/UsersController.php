@@ -33,6 +33,7 @@ class UsersController extends ControllerBase
     public function editgroupAction($id = null)
     {
         $this->model_name = 'UserGroups';
+        $this->action_detail = 'detailgroup';
         $this->editAction($id);
     }
 
@@ -46,6 +47,7 @@ class UsersController extends ControllerBase
     public function detailroleAction($id = null)
     {
         $this->model_name = 'AuthRoles';
+        $this->action_detail = 'detailrole';
         $this->detailAction($id);
     }
 

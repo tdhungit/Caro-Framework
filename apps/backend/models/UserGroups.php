@@ -47,12 +47,13 @@ class UserGroups extends ModelBase
                 'required' => true
             ),
             'status' => array(
-                'type' => 'text',
+                'type' => 'select',
                 'label' => 'Status',
+                'options' => 'users_status_list',
                 'required' => true
             ),
             'description' => array(
-                'type' => 'text',
+                'type' => 'textarea',
                 'label' => 'Description',
                 'required' => true
             ),
@@ -67,8 +68,9 @@ class UserGroups extends ModelBase
                 'label' => 'Name'
             ),
             'status' => array(
-                'type' => 'text',
-                'label' => 'Status'
+                'type' => 'select',
+                'label' => 'Status',
+                'options' => 'users_status_list',
             ),
             'description' => array(
                 'type' => 'text',

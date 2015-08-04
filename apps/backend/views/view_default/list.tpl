@@ -58,7 +58,7 @@
                             {% for name, view in list_view['fields'] %}
                                 <td>
                                     {% if view['type'] == 'select' %}
-                                        {% set value = carofw['app_list_strings'][view['options'][row.readAttribute(name)]] %}
+                                        {% set value = carofw['app_list_strings'][view['options']][row.readAttribute(name)] %}
                                     {% elseif view['type'] == 'relate' %}
                                         <?php
                                             $model_path = '\\Modules\Backend\Models\\' . $view['model'];
