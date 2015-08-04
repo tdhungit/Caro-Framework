@@ -26,35 +26,35 @@
                 <input type="hidden" name="id" value="{{ data.id }}" />
             {% endif %}
 
-            {% for field, field_opt in edit_view['fields'] %}
+            {% for name, view in edit_view['fields'] %}
                 <div class="control-group ">
-                    <label class="control-label">{{ field_opt['label'] }} {% if field_opt['required'] is defined and field_opt['required'] %}<span class="required">*</span>{% endif %}</label>
+                    <label class="control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
                     <div class="controls">
-                        {% if field_opt['type'] == 'select' %}
+                        {% if view['type'] == 'select' %}
                             {% if data is not null %}
-                                {{ select(field, carofw['app_list_strings'][field_opt['options']], 'using': ['id', 'name'], 'value': data.readAttribute(field), 'class': 'span9') }}
+                                {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'span9') }}
                             {% else %}
-                                {{ select(field, carofw['app_list_strings'][field_opt['options']], 'using': ['id', 'name'], 'class': 'span9') }}
+                                {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'class': 'span9') }}
                             {% endif %}
 
-                        {% elseif field_opt['type'] == 'relate' %}
+                        {% elseif view['type'] == 'relate' %}
                             <?php
-                                $model_path = '\\Modules\Backend\Models\\' . $field_opt['model'];
+                                $model_path = '\\Modules\Backend\Models\\' . $view['model'];
                                 $model = new $model_path();
                                 $options = $model::find()
                             ?>
 
                             {% if data is not null %}
-                                {{ select(field, options, 'using': ['id', 'name'], 'value': data.readAttribute(field), 'class': 'span9') }}
+                                {{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'span9', 'useEmpty': true) }}
                             {% else %}
-                                {{ select(field, options, 'using': ['id', 'name'], 'class': 'span9') }}
+                                {{ select(name, options, 'using': ['id', 'name'], 'class': 'span9', 'useEmpty': true) }}
                             {% endif %}
 
-                        {% elseif field_opt['type'] == 'textarea' %}
-                            <textarea rows="4" class="span9">{% if data is not null %}{{ data.readAttribute(field) }}{% endif %}</textarea>
+                        {% elseif view['type'] == 'textarea' %}
+                            <textarea rows="4" class="span9">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
 
                         {% else %}
-                            <input id="current-{{ field }}-control" name="{{ field }}" class="span9" type="{{ field_opt['type'] }}" value="{% if data is not null %}{{ data.readAttribute(field) }}{% endif %}" />
+                            <input id="current-{{ name }}-control" name="{{ name }}" class="span9" type="{{ view['type'] }}" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}" />
 
                         {% endif %}
                     </div>

@@ -24,10 +24,36 @@
                     <legend class="lead" style="border: none">{{ title }}</legend>
                     <table class="table">
                         <tbody>
-                        {% for field, field_opt in detail_view['fields'] %}
+                        {% for name, view in detail_view['fields'] %}
                             <tr>
-                                <td><b>{{ field_opt['label'] }}</b></td>
-                                <td>{{ data.readAttribute(field) }}</td>
+                                <td><b>{{ view['label'] }}</b></td>
+                                <td>
+                                    {% if view['type'] == 'select' %}
+                                        {% set value = carofw['app_list_strings'][view['options'][data.readAttribute(name)]] %}
+
+                                    {% elseif view['type'] == 'relate' %}
+                                        <?php
+                                            $model_path = '\\Modules\Backend\Models\\' . $view['model'];
+                                            $model = new $model_path();
+                                            if (!empty($data->$name)) {
+                                                $options = $model::findFirst($data->$name);
+                                            }
+                                        ?>
+
+                                        {% if options is defined %}
+                                            {% set key = model.detail_view['title'] %}
+                                            {% set value = options.readAttribute(key) %}
+                                        {% else %}
+                                            {% set value = '' %}
+                                        {% endif %}
+
+                                    {% else %}
+                                        {% set value = data.readAttribute(name) %}
+
+                                    {% endif %}
+
+                                    {{ value }}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
