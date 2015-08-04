@@ -505,7 +505,10 @@ class ControllerBase extends Controller
                 }
             }
 
-            $this->response->redirect('/admin/' . $this->controller_name . '/' . $this->request->getPost('action_detail') . '/' . $id);
+            $action_detail = $this->request->getPost('action_detail');
+            $action_detail = ($action_detail) ? $action_detail : $this->action_detail;
+
+            $this->response->redirect('/admin/' . $this->controller_name . '/' . $action_detail . '/' . $id);
         }
     }
 
