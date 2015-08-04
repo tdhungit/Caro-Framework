@@ -1,5 +1,24 @@
 jQuery(function() {
-
+    $('a.delete-record').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        BootstrapDialog.show({
+            title: 'Warning',
+            message: 'Are you sure want to delete this record?',
+            buttons: [{
+                label: 'No',
+                action: function(dialog) {
+                    dialog.close();
+                }
+            }, {
+                label: 'Yes',
+                action: function(dialog) {
+                    dialog.close();
+                    location.href = url;
+                }
+            }]
+        });
+    });
 });
 function caro_list_relate(rel_model, current_model, current_id, subpanel_name) {
     $.get(base_url + '/admin/index/popup/' + rel_model + '/' + current_model + '/' + current_id + '/' + subpanel_name, function(data) {

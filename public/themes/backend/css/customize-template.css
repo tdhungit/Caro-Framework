@@ -2170,6 +2170,19 @@ input.search-query {
 .form-horizontal .hide {
   display: none;
 }
+.form-horizontal .border-box{
+    padding: 10px;
+    border: 1px solid #ddd;
+    max-width: 350px;
+    border-radius: 4px;
+}
+.form-horizontal .list-checkbox{
+    max-height: 128px;
+    overflow-y: auto;
+}
+.form-horizontal .hidden-box{
+    display: none;
+}
 .form-search label,
 .form-inline label,
 .form-search .btn-group,
@@ -5960,6 +5973,12 @@ ul.icons li .icon-large:before {
 }
 .icon-book:before {
   content: "\f02d";
+}
+.icon-organization:before {
+    content: "\f02e";
+}
+.icon-course:before {
+    content: "\f02d";
 }
 .icon-bookmark:before {
   content: "\f02e";

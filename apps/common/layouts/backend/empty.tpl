@@ -15,6 +15,8 @@
     </script>
     <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-1.8.2.min.js" type="text/javascript" ></script>
     <script src="{{ static_url() }}/themes/backend/js/systemJs.js" type="text/javascript" ></script>
+
+    <link href="{{ static_url() }}/themes/backend/css/bootstrap-dialog.min.css" type="text/css" media="screen, projection" rel="stylesheet" />
     <link href="{{ static_url() }}/themes/backend/css/customize-template.css" type="text/css" media="screen, projection" rel="stylesheet" />
 </head>
 
@@ -40,6 +42,7 @@
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-typeahead.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-affix.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-datepicker.js" type="text/javascript" ></script>
+<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-dialog.min.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-tablesorter.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-chosen.js" type="text/javascript" ></script>
 <script src="{{ static_url() }}/themes/backend/js/jquery/virtual-tour.js" type="text/javascript" ></script>

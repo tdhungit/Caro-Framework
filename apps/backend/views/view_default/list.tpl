@@ -92,7 +92,7 @@
                                     <i class="btn-icon-only icon-edit"></i>
                                 </a>
 
-                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger">
+                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record">
                                     <i class="btn-icon-only icon-remove"></i>
                                 </a>
 
