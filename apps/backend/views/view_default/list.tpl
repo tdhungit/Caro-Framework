@@ -88,13 +88,20 @@
                             {% endfor %}
 
                             <td class="td-actions">
-                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning">
-                                    <i class="btn-icon-only icon-edit"></i>
-                                </a>
-
-                                <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record">
-                                    <i class="btn-icon-only icon-remove"></i>
-                                </a>
+                                {% if link_action is null %}
+                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning">
+                                        <i class="btn-icon-only icon-edit"></i>
+                                    </a>
+                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record">
+                                        <i class="btn-icon-only icon-remove"></i>
+                                    </a>
+                                {% else %}
+                                    {% for a in link_action %}
+                                        <a href="<?php echo str_replace('<ID>', $row->id, $a['link']) ?>" class="btn btn-small btn-warning">
+                                            <i class="btn-icon-only {% if a['icon'] is defined %}{{ a['icon'] }}{% else %}icon-cog{% endif %}"></i>
+                                        </a>
+                                    {% endfor %}
+                                {% endif %}
 
                             </td>
 

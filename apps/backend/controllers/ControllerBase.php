@@ -9,14 +9,17 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ControllerBase extends Controller
 {
+    // relate model
     protected $model_name;
-
+    // base controller
     protected $controller_name;
     protected $action_name;
     protected $action_detail = 'detail';
     protected $action_edit = 'edit';
     protected $action_delete = 'delete';
-
+    // button action
+    protected $link_action = null;
+    // translation
     protected $t;
 
     protected function initialize()
@@ -178,6 +181,51 @@ class ControllerBase extends Controller
 
     }
 
+    /**
+     * save/update a record
+     *
+     * @param array $data fields value, can use post data from form. This function filter same edit_view and save to db
+     * @return bool|null|object record
+     */
+    protected function saveRecord($data)
+    {
+        $model_name = !empty($data['model_name']) ? $data['model_name'] : null;
+
+        // get model
+        $model = $this->getModel($model_name);
+
+        $id = $data['id'];
+
+        if (!empty($id)) { // update a record
+            // get record
+            $row = $model::findFirst($id);
+
+            // set data update
+            foreach ($model->edit_view['fields'] as $field => $opt) {
+                $row->$field = $data[$field];
+            }
+
+            if ($row->update() == false) {
+                return false;
+            }
+
+            return $row;
+
+        } else { // save new record
+            // set data save
+            foreach ($model->edit_view['fields'] as $field => $opt) {
+                $model->$field = $data[$field];
+            }
+
+            // save
+            if ($model->save() == false) {
+                return false;
+            }
+
+            return $model;
+        }
+    }
+
     // BASE ACTION //
     /**
      * List
@@ -235,6 +283,7 @@ class ControllerBase extends Controller
         $this->view->action_edit = $this->action_edit;
         $this->view->action_delete = $this->action_delete;
         $this->view->menu = $model->menu;
+        $this->view->link_action = $this->link_action;
 
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
         $this->view->current_url = $this->url->get("/admin/$controller/$action", $query_urls);
