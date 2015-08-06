@@ -1,4 +1,13 @@
 <?php
+/**
+ * Created by Jacky.
+ * User: Jacky
+ * E-Mail: jacky@carocrm.com or jacky@youaddon.com
+ * Date: 8/4/2015
+ * Time: 1:27 PM
+ * Project: carofw
+ * File: ControllerBase.php
+ */
 
 namespace Modules\Backend\Controllers;
 
@@ -603,6 +612,17 @@ class ControllerBase extends Controller
                 }
 
                     $this->response->redirect('/admin/' . $this->controller_name . '/list');
+            }
+        }
+    }
+
+    public function uploadAction()
+    {
+        //Check if the user has uploaded files
+        if ($this->request->hasFiles() == true) {
+            //Print the real file names and their sizes
+            foreach ($this->request->getUploadedFiles() as $file){
+                echo $file->getName(), " ", $file->getSize(), "\n";
             }
         }
     }

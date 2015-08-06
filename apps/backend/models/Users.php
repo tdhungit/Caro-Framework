@@ -1,7 +1,8 @@
 <?php
 /**
- * Created by jacky.
- * User: jacky
+ * Created by Jacky.
+ * User: Jacky
+ * E-Mail: jacky@carocrm.com or jacky@youaddon.com
  * Date: 7/23/2015
  * Time: 1:33 PM
  */

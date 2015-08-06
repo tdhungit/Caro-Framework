@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by jacky.
- * User: jacky
- * Date: 7/23/2015
- * Time: 2:05 PM
+ * Created by Jacky.
+ * User: Jacky
+ * E-Mail: jacky@carocrm.com or jacky@youaddon.com
+ * Date: 7/24/2015
+ * Time: 4:58 PM
+ * Project: carofw
+ * File: UsersController.php
  */
 
 namespace Modules\Backend\Controllers;
