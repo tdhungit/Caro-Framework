@@ -235,6 +235,28 @@ class ControllerBase extends Controller
         }
     }
 
+    /**
+     * Make folder upload. Example: <$folder>/2015/08/06
+     *
+     * @param string $folder folder need upload file. example images, photos, ...
+     * @return array return 2 params. sub_folder: uri link to file upload. folder full path go file upload
+     */
+    protected function makeFolderUpload($folder)
+    {
+        $folder = !empty($folder) ? $folder: '';
+        $sub_folder = $folder . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/';
+        $path_uri = 'public/uploads/' . $sub_folder;
+        $path_full = APP_PATH . $path_uri;
+        if (!is_dir($path_full)) {
+            mkdir($path_full, 0777, true);
+        }
+
+        return array(
+            'sub_folder' => $path_uri,
+            'folder' => $path_full
+        );
+    }
+
     // BASE ACTION //
     /**
      * List
@@ -616,14 +638,48 @@ class ControllerBase extends Controller
         }
     }
 
+    /**
+     * Upload file
+     */
     public function uploadAction()
     {
-        //Check if the user has uploaded files
+        $upload_uri = 'public/uploads/';
+        $isUploaded = false;
+        $data_upload = array();
+        // Check if the user has uploaded files
         if ($this->request->hasFiles() == true) {
-            //Print the real file names and their sizes
+            // Set upload folder
+            $base_location = $this->request->getPost('location');
+            $base_path = $this->makeFolderUpload($base_location);
+            $upload_path = $base_path['folder'];
+            // Process upload file
             foreach ($this->request->getUploadedFiles() as $file){
-                echo $file->getName(), " ", $file->getSize(), "\n";
+                // Move the file into the application
+                $path_file = $upload_path . $file->getName();
+                $upload_result = $file->moveTo($path_file);
+                // result upload
+                if ($upload_result) {
+                    $isUploaded = true;
+                    $data_upload[] = array(
+                        'name' => $file->getName(),
+                        'size' => $file->getSize(),
+                        'path' => $this->url->get($base_path['sub_folder']) . $file->getName()
+                    );
+                } else {
+                    $isUploaded = false;
+                }
             }
+        }
+
+        if ($isUploaded == false) {
+            $this->resJson(array(
+                'status' => 0
+            ));
+        } else {
+            $this->resJson(array(
+                'status' => 1,
+                'data' => $data_upload
+            ));
         }
     }
 

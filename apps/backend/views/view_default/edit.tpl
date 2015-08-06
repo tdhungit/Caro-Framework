@@ -29,10 +29,12 @@
                 <input type="hidden" name="id" value="{{ data.id }}" />
             {% endif %}
 
+            {# check type and render with type #}
             {% for name, view in edit_view['fields'] %}
                 <div class="control-group ">
                     <label class="control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
                     <div class="controls">
+                        {# select box #}
                         {% if view['type'] == 'select' %}
                             {% if data is not null %}
                                 {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'span9') }}
@@ -40,6 +42,7 @@
                                 {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'class': 'span9') }}
                             {% endif %}
 
+                        {# related field #}
                         {% elseif view['type'] == 'relate' %}
                             <?php
                                 $model_path = '\\Modules\Backend\Models\\' . $view['model'];
@@ -53,9 +56,18 @@
                                 {{ select(name, options, 'using': ['id', 'name'], 'class': 'span9', 'useEmpty': true) }}
                             {% endif %}
 
+                        {# image field #}
+                        {% elseif view['type'] == 'image' %}
+                            <span class="btn btn-default btn-file">
+                                Browse <input type="file" class="caro-upload-image" location="images">
+                                <input type="hidden" name="{{ name }}" class="caro-value-upload">
+                            </span>
+
+                        {# text area field #}
                         {% elseif view['type'] == 'textarea' %}
                             <textarea rows="4" class="span9">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
 
+                        {# default | not define type #}
                         {% else %}
                             <input id="current-{{ name }}-control" name="{{ name }}" class="span9" type="{{ view['type'] }}" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}" />
 

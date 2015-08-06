@@ -19,6 +19,23 @@ jQuery(function() {
             }]
         });
     });
+    $('input.caro-upload-image').change(function() {
+        $this = $(this);
+        var formData = new FormData();
+        formData.append('file', $(this)[0].files[0]);
+        formData.append('location', $(this).attr('location'));
+        $.ajax({
+            type: "POST",
+            url: base_url + "admin/index/upload",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (json) {
+                $this.siblings('.caro-value-upload').val(json.data[0].path);
+            }
+        });
+    });
 });
 function caro_list_relate(rel_model, current_model, current_id, subpanel_name) {
     $.get(base_url + '/admin/index/popup/' + rel_model + '/' + current_model + '/' + current_id + '/' + subpanel_name, function(data) {
