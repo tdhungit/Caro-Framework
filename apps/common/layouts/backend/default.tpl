@@ -65,8 +65,8 @@
 <footer class="application-footer">
     <div class="container">
         <div class="disclaimer">
-            <p>iEureka. All right reserved.</p>
-            <p>Copyright iEureka 2015</p>
+            <p>Caro Framework. All right reserved.</p>
+            <p>©Jacky 2015</p>
         </div>
     </div>
 </footer>

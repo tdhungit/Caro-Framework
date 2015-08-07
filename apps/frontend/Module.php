@@ -45,7 +45,7 @@ class Module
             $view = new View();
 
             $view->setViewsDir($config->application->viewsDir);
-            $view->setLayoutsDir('../../../common/layouts/'. $config->system_view->theme . '/');
+            $view->setLayoutsDir('../../../common/layouts/' . $config->system_view->theme . '/');
             $view->setTemplateAfter('default');
 
             $view->registerEngines(array(
@@ -71,7 +71,8 @@ class Module
                 "host" => $config->database->host,
                 "username" => $config->database->username,
                 "password" => $config->database->password,
-                "dbname" => $config->database->name
+                "dbname" => $config->database->name,
+                "charset" => "utf8"
             ));
         };
     }
