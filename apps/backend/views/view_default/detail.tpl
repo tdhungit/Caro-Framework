@@ -28,8 +28,9 @@
                             <tr>
                                 <td><b>{{ view['label'] }}</b></td>
                                 <td>
+                                    {# check type and render with type #}
                                     {% if view['type'] == 'select' %}
-                                        {% set value = carofw['app_list_strings'][view['options']][data.readAttribute(name)] %}
+                                        {{ carofw['app_list_strings'][view['options']][data.readAttribute(name)] }}
 
                                     {% elseif view['type'] == 'relate' %}
                                         <?php
@@ -42,17 +43,15 @@
 
                                         {% if options is defined %}
                                             {% set key = model.detail_view['title'] %}
-                                            {% set value = options.readAttribute(key) %}
-                                        {% else %}
-                                            {% set value = '' %}
+                                            {{ options.readAttribute(key) }}
                                         {% endif %}
 
+                                    {% elseif view['type'] == 'image' %}
+                                        <img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">
+
                                     {% else %}
-                                        {% set value = data.readAttribute(name) %}
-
+                                        {{ data.readAttribute(name) }}
                                     {% endif %}
-
-                                    {{ value }}
                                 </td>
                             </tr>
                         {% endfor %}

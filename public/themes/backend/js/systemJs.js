@@ -26,13 +26,14 @@ jQuery(function() {
         formData.append('location', $(this).attr('location'));
         $.ajax({
             type: "POST",
-            url: base_url + "admin/index/upload",
+            url: base_url + "/admin/index/upload",
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
             success: function (json) {
                 $this.siblings('.caro-value-upload').val(json.data[0].path);
+                $this.parent().siblings('.caro-image-content').html('<img src="'+ json.data[0].path +'" class="img-thumbnail" style="height: 200px;">');
             }
         });
     });

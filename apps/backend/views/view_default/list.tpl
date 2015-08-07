@@ -57,8 +57,10 @@
                         <tr>
                             {% for name, view in list_view['fields'] %}
                                 <td>
+                                    {# check type and render with type #}
                                     {% if view['type'] == 'select' %}
                                         {% set value = carofw['app_list_strings'][view['options']][row.readAttribute(name)] %}
+                                        
                                     {% elseif view['type'] == 'relate' %}
                                         <?php
                                             $model_path = '\\Modules\Backend\Models\\' . $view['model'];
@@ -74,6 +76,9 @@
                                         {% else %}
                                             {% set value = '' %}
                                         {% endif %}
+
+                                    {% elseif view['type'] == 'image' %}
+                                        {% set value = '<img src="'~ row.readAttribute(name) ~'" class="img-thumbnail" style="height: 50px;">' %}
 
                                     {% else %}
                                         {% set value = row.readAttribute(name) %}
