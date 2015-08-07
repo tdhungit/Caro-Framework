@@ -33,7 +33,7 @@ class ControllerBase extends Controller
 
     protected function initialize()
     {
-        $this->tag->prependTitle('iEureka Admin | ');
+        $this->tag->prependTitle('Management System');
         // config
         $this->view->setVar('carofw', $this->carofw);
         // language
