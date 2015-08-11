@@ -32,26 +32,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/organizations') }}">
-                            <i class="icon-organization icon-large"></i> Organizations
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/admin/courses') }}">
-                            <i class="icon-course icon-large"></i> Courses
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/admin/categories') }}">
-                            <i class="icon-qrcode icon-large"></i> Categories
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/admin/teachers') }}">
-                            <i class="icon-user icon-large"></i> Teachers
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{ url('/admin/users') }}">
                             <i class="icon-user icon-large"></i> Users
                         </a>
@@ -84,8 +64,8 @@
 <footer class="application-footer">
     <div class="container">
         <div class="disclaimer">
-            <p>iEureka. All right reserved.</p>
-            <p>Copyright iEureka 2015</p>
+            <p>Jacky. A Software development.</p>
+            <p>©Jacky 2015</p>
         </div>
     </div>
 </footer>

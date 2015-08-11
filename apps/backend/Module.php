@@ -25,6 +25,7 @@ class Module
         $loader = new Loader();
 
         $loader->registerNamespaces(array(
+            'Modules\Core' => APP_PATH . 'apps/common/core/',
             'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
             'Modules\Backend\Models' => __DIR__ . '/models/',
             'Modules\Backend\Plugins' => __DIR__ . '/plugins/',

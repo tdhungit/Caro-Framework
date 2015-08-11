@@ -11,40 +11,23 @@
 
 namespace Modules\Backend\Controllers;
 
-use Phalcon\Dispatcher;
-use Phalcon\Mvc\Controller;
-use Phalcon\Translate\Adapter\NativeArray;
+use Modules\Core\MyController;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-class ControllerBase extends Controller
+class ControllerBase extends MyController
 {
-    // relate model
-    protected $model_name;
+
     // base controller
-    protected $controller_name;
-    protected $action_name;
     protected $action_detail = 'detail';
     protected $action_edit = 'edit';
     protected $action_delete = 'delete';
     // button action
     protected $link_action = null;
-    // translation
-    protected $t;
 
     protected function initialize()
     {
-        $this->tag->prependTitle('Management System');
-        // config
-        $this->view->setVar('carofw', $this->carofw);
-        // language
-        $this->t = $this->getTranslation();
-        $this->view->setVar('t', $this->t);
-    }
-
-    public function beforeExecuteRoute(Dispatcher $dispatcher)
-    {
-        $this->controller_name = $dispatcher->getControllerName();
-        $this->action_name = $dispatcher->getActionName();
+        parent::initialize();
+        $this->tag->setTitle('Management System');
     }
 
     /**
@@ -72,18 +55,6 @@ class ControllerBase extends Controller
         }
 
         return null;
-    }
-
-    /**
-     * Return Json
-     *
-     * @param $data
-     */
-    protected function resJson($data)
-    {
-        $this->response->setContentType('application/json', 'UTF-8');
-        $this->view->disable();
-        echo json_encode($data);
     }
 
     /**
@@ -170,27 +141,6 @@ class ControllerBase extends Controller
     }
 
     /**
-     * @return NativeArray
-     */
-    protected function getTranslation()
-    {
-        $language = $this->request->getBestLanguage();
-
-        if (file_exists(APP_PATH . "apps/language/" . $language . ".php")) {
-            $lang = require APP_PATH . "apps/language/" . $language . ".php";
-
-        } else {
-            $lang = require APP_PATH . "apps/language/en.php";
-
-        }
-
-        return new NativeArray(array(
-            "content" => $lang
-        ));
-
-    }
-
-    /**
      * save/update a record
      *
      * @param array $data fields value, can use post data from form. This function filter same edit_view and save to db
@@ -233,28 +183,6 @@ class ControllerBase extends Controller
 
             return $model;
         }
-    }
-
-    /**
-     * Make folder upload. Example: <$folder>/2015/08/06
-     *
-     * @param string $folder folder need upload file. example images, photos, ...
-     * @return array return 2 params. sub_folder: uri link to file upload. folder full path go file upload
-     */
-    protected function makeFolderUpload($folder)
-    {
-        $folder = !empty($folder) ? $folder: '';
-        $sub_folder = $folder . '/' . date('Y') . '/' . date('m') . '/' . date('d') . '/';
-        $path_uri = '/public/uploads/' . $sub_folder;
-        $path_full = APP_PATH . $path_uri;
-        if (!is_dir($path_full)) {
-            mkdir($path_full, 0777, true);
-        }
-
-        return array(
-            'sub_folder' => $path_uri,
-            'folder' => $path_full
-        );
     }
 
     // BASE ACTION //
@@ -643,7 +571,6 @@ class ControllerBase extends Controller
      */
     public function uploadAction()
     {
-        $upload_uri = 'public/uploads/';
         $isUploaded = false;
         $data_upload = array();
         // Check if the user has uploaded files
