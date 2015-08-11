@@ -45,7 +45,7 @@ class Module
             $view = new View();
 
             $view->setViewsDir($config->application->viewsDir);
-            $view->setLayoutsDir('../../../common/layouts/' . $config->system_view->theme . '/');
+            $view->setLayoutsDir('../../../common/layouts/'. $config->system_view->theme . '/');
             $view->setTemplateAfter('default');
 
             $view->registerEngines(array(
@@ -58,7 +58,7 @@ class Module
                 }
             ));
             // global url
-            $view->setVar('theme_url', 'themes/' . $config->system_view->theme . '/');
+            $view->setVar('theme_uri', '/themes/' . $config->system_view->theme);
 
             return $view;
         };

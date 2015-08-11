@@ -6,10 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     {{ get_title() }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="layout" content="main"/>
 
-    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script>
         var base_url = '{{ url() }}';
     </script>

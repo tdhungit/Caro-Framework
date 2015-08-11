@@ -1,2 +1,3 @@
 /.idea
 /apps/cache/volt/*.php
+/public/uploads/images

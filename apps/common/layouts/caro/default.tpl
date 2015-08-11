@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Caro Framework</title>
-
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta name="generator" content="Bootply" />
+    {{ get_title() }}
+    <meta name="generator" content="Jacky" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="An example landing page for Bootstrap 3. Uses FontAwesome and Google Fonts API" />
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ theme_url }}css/style.css" rel="stylesheet">
-
+    <meta name="description" content="A Open Source Framework base on Phalcon PHP" />
+    <link href="{{ static_url(theme_uri) }}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ static_url(theme_uri) }}/css/style.css" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="{{ static_url(theme_uri) }}/js/html5.js"></script>
     <![endif]-->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+    <link href="{{ static_url(theme_uri) }}/font-awesome/css/font-awesome.css" rel="stylesheet">
 </head>
 <body>
 

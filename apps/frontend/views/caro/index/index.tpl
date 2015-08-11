@@ -22,7 +22,11 @@
     <div class="row">
 
         <div class="col-lg-12 text-center v-center" style="font-size:39pt;">
-            <a href="#"><i class="icon-google-plus"></i></a> <a href="#"><i class="icon-facebook"></i></a>  <a href="#"><i class="icon-twitter"></i></a> <a href="#"><i class="icon-github"></i></a> <a href="#"><i class="icon-pinterest"></i></a>
+            <a href="#"><i class="icon-google-plus"></i></a>
+            <a href="#"><i class="icon-facebook"></i></a>
+            <a href="#"><i class="icon-twitter"></i></a>
+            <a href="#"><i class="icon-github"></i></a>
+            <a href="#"><i class="icon-pinterest"></i></a>
         </div>
 
     </div>

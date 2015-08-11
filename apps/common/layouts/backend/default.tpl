@@ -6,10 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     {{ get_title() }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="layout" content="main"/>
 
-    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script>
         var base_url = '{{ url() }}';
     </script>
@@ -30,6 +28,26 @@
                     <li>
                         <a href="{{ url('/admin/dashboard') }}">
                             <i class="icon-dashboard icon-large"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/organizations') }}">
+                            <i class="icon-organization icon-large"></i> Organizations
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/courses') }}">
+                            <i class="icon-course icon-large"></i> Courses
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/categories') }}">
+                            <i class="icon-qrcode icon-large"></i> Categories
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/admin/teachers') }}">
+                            <i class="icon-user icon-large"></i> Teachers
                         </a>
                     </li>
                     <li>
@@ -65,8 +83,8 @@
 <footer class="application-footer">
     <div class="container">
         <div class="disclaimer">
-            <p>Caro Framework. All right reserved.</p>
-            <p>©Jacky 2015</p>
+            <p>iEureka. All right reserved.</p>
+            <p>Copyright iEureka 2015</p>
         </div>
     </div>
 </footer>
@@ -92,7 +110,9 @@
 <script type="text/javascript">
     $(function() {
         $('.sorter-table').tablesorter();
-        $('.datepicker').datepicker();
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy'
+        });
         $(".chosen").chosen();
     });
 </script>
