@@ -12,6 +12,7 @@
 namespace Modules\Backend\Controllers;
 
 use Modules\Core\MyController;
+use Phalcon\Annotations\Exception;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ControllerBase extends MyController

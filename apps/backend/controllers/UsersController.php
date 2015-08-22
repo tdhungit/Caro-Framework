@@ -46,14 +46,17 @@ class UsersController extends ControllerBase
         $this->action_detail = 'detail_role';
         $this->link_action = array(
             array(
+                'label' => $this->t->_('Edit'),
                 'link' => $this->url->get('/admin/users/edit_role/<ID>'),
                 'icon' => 'icon-edit',
             ),
             array(
+                'label' => $this->t->_('Set Permissions'),
                 'link' => $this->url->get('/admin/users/set_permissions/<ID>'),
                 'icon' => 'icon-cog',
             ),
             array(
+                'label' => $this->t->_('Delete'),
                 'link' => $this->url->get('/admin/users/delete_role/<ID>'),
                 'icon' => 'icon-remove',
             ),
@@ -71,6 +74,7 @@ class UsersController extends ControllerBase
     public function edit_roleAction($id = null)
     {
         $this->model_name = 'AuthRoles';
+        $this->action_detail = 'detail_role';
         $this->editAction($id);
     }
 
@@ -128,7 +132,14 @@ class UsersController extends ControllerBase
             }
         }
 
+        // get all roles
+        $role_model = $this->getModel('AuthRoles');
+        $role = $role_model::findFirst($role_id);
+        $other_roles = $role_model::find("deleted = 0 AND id <> $role_id");
+
         $this->view->role_id = $role_id;
+        $this->view->role = $role;
+        $this->view->other_roles = $other_roles;
         $this->view->resources = $current_resources;
     }
 }

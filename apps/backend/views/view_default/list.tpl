@@ -64,15 +64,15 @@
 
                             <td class="td-actions">
                                 {% if link_action is null %}
-                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning">
+                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning" title="{{ t._('Edit') }}">
                                         <i class="btn-icon-only icon-edit"></i>
                                     </a>
-                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record">
+                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record" title="{{ t._('Delete') }}">
                                         <i class="btn-icon-only icon-remove"></i>
                                     </a>
                                 {% else %}
                                     {% for a in link_action %}
-                                        <a href="<?php echo str_replace('<ID>', $row->id, $a['link']) ?>" class="btn btn-small btn-warning">
+                                        <a href="<?php echo str_replace('<ID>', $row->id, $a['link']) ?>" class="btn btn-small btn-warning" title="{{ a['label'] }}">
                                             <i class="btn-icon-only {% if a['icon'] is defined %}{{ a['icon'] }}{% else %}icon-cog{% endif %}"></i>
                                         </a>
                                     {% endfor %}
