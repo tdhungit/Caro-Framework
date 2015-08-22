@@ -13,6 +13,7 @@ namespace Modules\Backend\Controllers;
 
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
+use Phalcon\Text;
 
 class SettingsController extends ControllerBase
 {
@@ -21,6 +22,11 @@ class SettingsController extends ControllerBase
 
     }
 
+    /**
+     * Repair database
+     * read database structure from config/database_structures.php
+     * generate to database
+     */
     public function repairAction()
     {
         $tables = include __DIR__ . "/../../config/database_structures.php";
@@ -127,6 +133,61 @@ class SettingsController extends ControllerBase
 
         $this->flash->success('Repair success!');
         $this->response->redirect('/admin/settings');
+    }
+
+    /**
+     * Rebuild cache resource permission (controller/action)
+     * all controller action will write in cache
+     * in config backend/config/resources.php
+     * structure
+     * return array(
+     *   '<controller> => array(
+     *      <action>
+     *      <action>
+     *  )
+     * )
+     */
+    public function rebuild_resourcesAction()
+    {
+        $this->view->disable();
+        $resources = $this->_getAllResources();
+
+        if (!empty($resources)) {
+            $file = fopen(APP_PATH . "apps/backend/permissions/resources.php", "w");
+            fwrite($file, "<?php\n return " . var_export($resources, true) . ";\n");
+            fclose($file);
+        }
+    }
+
+    /**
+     * scan folder controllers and get all controller in here
+     * @return array array(
+     *  <controller> => (
+     *      <action>
+     *      <action>
+     *  )
+     * )
+     */
+    private function _getAllResources()
+    {
+        $controllers = array();
+        $controller_path = APP_PATH . '/apps/backend/controllers/*Controller.php';
+
+        foreach (glob($controller_path) as $controller) {
+            $name = basename($controller, '.php');
+            $className = 'Modules\Backend\Controllers\\' . $name;
+            $resource = strtolower(str_replace('Controller', '', $name));
+            $controllers[$resource] = [];
+            $methods = (new \ReflectionClass($className))->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+            foreach ($methods as $method) {
+                if (Text::endsWith($method->name, 'Action')) {
+                    $controllers[$resource][] = str_replace('Action', '', $method->name);
+                }
+            }
+        }
+
+        return $controllers;
     }
 
 }

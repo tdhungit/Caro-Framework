@@ -119,9 +119,9 @@ class Users extends ModelBase
         'View Users' => '/admin/users/list',
         'Create User' => '/admin/users/edit',
         'Groups' => '/admin/users/groups',
-        'Create Group' => '/admin/users/editgroup',
+        'Create Group' => '/admin/users/edit_group',
         'Roles' => '/admin/users/roles',
-        'Create Role' => '/admin/users/editrole'
+        'Create Role' => '/admin/users/edit_role'
     );
 
     public function validation()
