@@ -11,6 +11,7 @@
 
 namespace Modules\Backend\Controllers;
 
+use Modules\Backend\Models\UserGroupsUsers;
 use Modules\Backend\Models\Users;
 
 class IndexController extends ControllerBase
@@ -18,9 +19,12 @@ class IndexController extends ControllerBase
 
     private function _setSessionUser($user)
     {
+        $groups = UserGroupsUsers::find("user_id = '{$user->id}'");
+
         $this->session->set('auth', array(
             'id'    => $user->id,
-            'name'  => $user->name
+            'name'  => $user->name,
+            'groups' => $groups
         ));
     }
 

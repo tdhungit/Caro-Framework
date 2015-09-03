@@ -11,11 +11,11 @@
 
 namespace Modules\Frontend\Controllers;
 
-class IndexController extends ControllerBase
-{
 
+class DocumentsController extends ControllerBase
+{
     public function indexAction()
     {
-
+        $this->view->setTemplateAfter('document');
     }
 }

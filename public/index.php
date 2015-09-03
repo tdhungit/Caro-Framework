@@ -51,15 +51,21 @@ try {
         ));
 
         /* front end */
+        // index
         $router->add('/index', array(
             'module' => 'frontend',
             'controller' => 'index',
             'action' => 'index'
         ));
-
         $router->add('/', array(
             'module' => 'frontend',
             'controller' => 'index',
+            'action' => 'index'
+        ));
+        // document
+        $router->add('/documents', array(
+            'module' => 'frontend',
+            'controller' => 'documents',
             'action' => 'index'
         ));
 
