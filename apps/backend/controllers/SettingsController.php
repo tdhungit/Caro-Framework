@@ -11,12 +11,16 @@
 
 namespace Modules\Backend\Controllers;
 
+use Modules\Backend\Models\Settings;
+use Modules\Core\MyMail;
 use Phalcon\Db\Column;
 use Phalcon\Db\Index;
 use Phalcon\Text;
 
 class SettingsController extends ControllerBase
 {
+    protected $model_name = 'Settings';
+
     public function indexAction()
     {
 
@@ -188,6 +192,105 @@ class SettingsController extends ControllerBase
         }
 
         return $controllers;
+    }
+
+    /**
+     * Page Send Mail config
+     */
+    public function mail_configAction()
+    {
+        $data = null;
+        $mail_config = Settings::findFirst("name = 'mail_config'");
+        if ($mail_config && $mail_config->value) {
+            $data = json_decode($mail_config->value);
+        }
+
+        $this->view->data = $data;
+
+        if ($this->request->isPost()) {
+            // get data from form
+            $from_name = $this->request->getPost('from_name');
+            $from_email = $this->request->getPost('from_email');
+            $smtp_server = $this->request->getPost('smtp_server');
+            $smtp_port = $this->request->getPost('smtp_port');
+            $smtp_security = $this->request->getPost('smtp_security');
+            $smtp_username = $this->request->getPost('smtp_username');
+            $smtp_password = $this->request->getPost('smtp_password');
+            $smtp_test = $this->request->getPost('smtp_test');
+
+            // check data
+            if (!$from_name || !$from_email || !$smtp_server) {
+                $this->flash->error($this->t->_('Please input data'));
+                $this->backendRedirect('/settings/mail_config');
+            }
+
+            // default port
+            if (!$smtp_port) {
+                $smtp_port = 25;
+            }
+            // default not security
+            if (!$smtp_security) {
+                $smtp_security = 0;
+            }
+
+            // send test mail
+            if ($smtp_test == '1') {
+                $email = new MyMail();
+                $email->setMailSettings(array(
+                    'fromName' => $from_name,
+                    'fromEmail' => $from_email,
+                    'smtp' => array(
+                        'server' => $smtp_server,
+                        'port' => $smtp_port,
+                        'security' => $smtp_security,
+                        'username' => $smtp_username,
+                        'password' => $smtp_password
+                    )
+                ));
+
+                try {
+                    $email->send($from_email, 'Caro Framework Send Test Mail', 'Caro Framework Send Test Mail');
+                    $this->flash->warning($this->t->_('Please check your email to see mail test.') . ' Email: ' . $from_email);
+                } catch (\Swift_SwiftException $e) {
+                    $this->flash->error($e->getMessage());
+                }
+
+                $this->backendRedirect('/settings/mail_config');
+
+            } else {
+                // create/update settings
+                if ($mail_config) {
+                    $mail_config->name = 'mail_config';
+                    $mail_config->value = json_encode(array(
+                        'from_name' => $from_name,
+                        'from_email' => $from_email,
+                        'smtp_server' => $smtp_server,
+                        'smtp_port' => $smtp_port,
+                        'smtp_security' => $smtp_security,
+                        'smtp_username' => $smtp_username,
+                        'smtp_password' => $smtp_password,
+                    ));
+                    $mail_config->update();
+
+                } else {
+                    $settings = new Settings();
+                    $settings->name = 'mail_config';
+                    $settings->value = json_encode(array(
+                        'from_name' => $from_name,
+                        'from_email' => $from_email,
+                        'smtp_server' => $smtp_server,
+                        'smtp_port' => $smtp_port,
+                        'smtp_security' => $smtp_security,
+                        'smtp_username' => $smtp_username,
+                        'smtp_password' => $smtp_password,
+                    ));
+                    $settings->save();
+                }
+
+                $this->flash->success($this->t->_('Update mail server is success'));
+                $this->backendRedirect('/settings/mail_config');
+            }
+        }
     }
 
 }
