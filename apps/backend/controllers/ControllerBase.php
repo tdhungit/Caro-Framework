@@ -48,8 +48,8 @@ class ControllerBase extends MyController
             $model = new $model_path();
             if (empty($model->menu)) {
                 $model->menu = array(
-                    'View ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/list',
-                    'Create ' . ucfirst($this->controller_name) => '/admin/' . $this->controller_name . '/edit'
+                    'View ' . ucfirst($this->controller_name) => '/'. $this->url->backendUrl .'/' . $this->controller_name . '/list',
+                    'Create ' . ucfirst($this->controller_name) => '/'. $this->url->backendUrl .'/' . $this->controller_name . '/edit'
                 );
             }
             return $model;
@@ -199,7 +199,7 @@ class ControllerBase extends MyController
         $model = $this->getModel();
 
         if (is_null($model)) {
-            $this->response->redirect('/admin/dashboard');
+            $this->backendRedirect('/dashboard');
         }
 
         $query_urls = $this->request->getQuery();
@@ -246,7 +246,7 @@ class ControllerBase extends MyController
         $this->view->link_action = $this->link_action;
 
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
-        $this->view->current_url = $this->url->get("/admin/$controller/$action", $query_urls);
+        $this->view->current_url = $this->url->backendUrl("/$controller/$action", $query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -272,7 +272,7 @@ class ControllerBase extends MyController
         }
 
         if ($data == null) {
-            $this->response->redirect('/admin/' . $this->controller_name);
+            $this->backendRedirect('/' . $this->controller_name);
         }
 
         $title = $this->t->_('Detail ') . $this->t->_($this->model_name) . ': ' . $data->{$model->detail_view['title']};
@@ -397,7 +397,7 @@ class ControllerBase extends MyController
         $this->view->subpanel_name = $subpanel_name;
 
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
-        $this->view->current_uri = "/admin/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
+        $this->view->current_uri = '/' . $this->url->backendUrl . "/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
         $this->view->current_url = $this->url->get($this->view->current_uri, $query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
@@ -517,7 +517,7 @@ class ControllerBase extends MyController
             $action_detail = $this->request->getPost('action_detail');
             $action_detail = ($action_detail) ? $action_detail : $this->action_detail;
 
-            $this->response->redirect('/admin/' . $this->controller_name . '/' . $action_detail . '/' . $id);
+            $this->backendRedirect('/' . $this->controller_name . '/' . $action_detail . '/' . $id);
         }
     }
 
@@ -552,7 +552,7 @@ class ControllerBase extends MyController
                 $this->flash->success($this->t->_('Great, record was deleted successfully!'));
             }
 
-            $this->response->redirect('/admin/' . $this->controller_name . '/list');
+            $this->backendRedirect('/' . $this->controller_name . '/list');
 
         } else {
             if ($this->request->isPost()) {
@@ -562,7 +562,7 @@ class ControllerBase extends MyController
                     $this->deleteRecord($id);
                 }
 
-                    $this->response->redirect('/admin/' . $this->controller_name . '/list');
+                    $this->backendRedirect('/' . $this->controller_name . '/list');
             }
         }
     }

@@ -5,7 +5,7 @@
                 <li class="nav-header">{{ t._('Other Roles') }}</li>
                 {% for r in other_roles %}
                     <li>
-                        <a href="{{ url('/admin/users/set_permissions/' ~ r.id) }}">
+                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/users/set_permissions/' ~ r.id) }}">
                             <i class="icon-chevron-right pull-right"></i>
                             {{ r.name }}
                         </a>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="box-content box-table">
-                {{ form('/admin/users/set_permissions', 'method': 'post') }}
+                {{ form('/'~ carofw['backendUrl'] ~'/users/set_permissions', 'method': 'post') }}
                 <input type="hidden" name="role_id" value="{{ role_id }}">
                 <table class="table">
                     <thead>

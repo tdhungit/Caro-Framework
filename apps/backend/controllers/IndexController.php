@@ -42,10 +42,10 @@ class IndexController extends ControllerBase
             if ($user != false) {
                 $this->_setSessionUser($user);
                 $this->flash->success('Welcome ' . $user->name);
-                return $this->response->redirect('/admin/dashboard');
+                return $this->backendRedirect('/dashboard');
             } else {
                 $this->flash->error('Wrong email/password');
-                return $this->response->redirect('/admin');
+                return $this->backendRedirect();
             }
         }
 

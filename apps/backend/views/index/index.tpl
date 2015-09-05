@@ -5,7 +5,7 @@
             <div class="container-signin">
                 {{ flash.output() }}
                 <legend>Please Login</legend>
-                {{ form('/admin/index', 'method': 'post', 'class': 'form-signin') }}
+                {{ form('/'~ carofw['backendUrl'] ~'/index', 'method': 'post', 'class': 'form-signin') }}
                 <div class="form-inner">
                     <div class="input-prepend">
 

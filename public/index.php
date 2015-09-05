@@ -11,7 +11,6 @@
 error_reporting(E_ALL);
 
 try {
-
     define('APP_PATH', realpath('..') . '/');
 
     /**
@@ -27,24 +26,22 @@ try {
     /**
      * Registering a router
      */
-    $di['router'] = function () {
-
+    $di['router'] = function () use ($config) {
         $router = new \Phalcon\Mvc\Router(false);
 
-        $router->add('/admin', array(
+        // backend
+        $router->add('/' . $config->application->backendUrl, array(
             'module' => 'backend',
             'controller' => 'index',
             'action' => 'index'
         ));
-
-        $router->add('/admin/:controller/:action/:params', array(
+        $router->add('/'. $config->application->backendUrl .'/:controller/:action/:params', array(
             'module' => 'backend',
             'controller' => 1,
             'action' => 2,
             'params' => 3
         ));
-
-        $router->add('/admin/:controller', array(
+        $router->add('/'. $config->application->backendUrl .'/:controller', array(
             'module' => 'backend',
             'controller' => 1,
             'action' => 'index'
@@ -76,8 +73,9 @@ try {
      * The URL component is used to generate all kind of urls in the application
      */
     $di->set('url', function () use ($config) {
-        $url = new \Phalcon\Mvc\Url();
+        $url = new \Modules\Core\MyUrl();
         $url->setBaseUri($config->application->baseUrl);
+        $url->backendUrl = $config->application->backendUrl;
         return $url;
     });
 
@@ -105,8 +103,10 @@ try {
     /**
      * Setup const var
      */
-    $di->set('carofw', function() {
-        return include APP_PATH . 'apps/config/const.php';
+    $di->set('carofw', function() use ($config) {
+        $caroApp = include APP_PATH . 'apps/config/const.php';
+        $caroApp['backendUrl'] = $config->application->backendUrl;
+        return $caroApp;
     });
 
     /**

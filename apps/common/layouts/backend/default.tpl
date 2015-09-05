@@ -10,6 +10,7 @@
 
     <script>
         var base_url = '{{ url() }}';
+        var backend_url = '{{ url('/' ~ carofw['backendUrl']) }}';
     </script>
     <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-1.8.2.min.js" type="text/javascript" ></script>
     <script src="{{ static_url() }}/themes/backend/ckeditor/ckeditor.js"></script>
@@ -27,17 +28,17 @@
             <div class="container">
                 <ul>
                     <li>
-                        <a href="{{ url('/admin/dashboard') }}">
+                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/dashboard') }}">
                             <i class="icon-dashboard icon-large"></i> Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/users') }}">
+                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}">
                             <i class="icon-user icon-large"></i> Users
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('/admin/settings') }}">
+                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings') }}">
                             <i class="icon-cogs icon-large"></i> Settings
                         </a>
                     </li>

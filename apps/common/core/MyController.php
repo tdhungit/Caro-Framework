@@ -96,4 +96,25 @@ class MyController extends Controller
             'folder' => $path_full
         );
     }
+
+    /**
+     * redirect
+     * @param null $uri
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
+    protected function redirect($uri = null)
+    {
+        return $this->response->redirect($uri);
+    }
+
+    /**
+     * redirect to backend module
+     * @param null $uri
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
+    protected function backendRedirect($uri = null)
+    {
+        return $this->response->redirect('/' . $this->url->backendUrl . $uri);
+    }
+
 }

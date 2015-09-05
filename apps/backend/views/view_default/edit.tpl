@@ -16,7 +16,7 @@
     </div>
 
     <div class="span12">
-        {{ form('/admin/' ~ controller ~ '/save', 'method': 'post', 'class': 'form-horizontal') }}
+        {{ form('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/save', 'method': 'post', 'class': 'form-horizontal') }}
         <input type="hidden" name="model_name" value="{{ model_name }}">
         <input type="hidden" name="action_detail" value="{{ action_detail }}">
 

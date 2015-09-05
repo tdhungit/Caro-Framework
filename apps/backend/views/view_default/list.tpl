@@ -23,7 +23,7 @@
             </div>
 
             <div class="box-content box-table">
-                {{ form('/admin/' ~ controller ~ '/' ~ action, 'method' : 'get', 'class': 'form-list-search') }}
+                {{ form('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action, 'method' : 'get', 'class': 'form-list-search') }}
                 <table class="table table-hover tablesorter">
                     <thead>
                     <tr>
@@ -64,10 +64,10 @@
 
                             <td class="td-actions">
                                 {% if link_action is null %}
-                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning" title="{{ t._('Edit') }}">
+                                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-small btn-warning" title="{{ t._('Edit') }}">
                                         <i class="btn-icon-only icon-edit"></i>
                                     </a>
-                                    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record" title="{{ t._('Delete') }}">
+                                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-small btn-danger delete-record" title="{{ t._('Delete') }}">
                                         <i class="btn-icon-only icon-remove"></i>
                                     </a>
                                 {% else %}

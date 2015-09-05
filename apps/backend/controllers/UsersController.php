@@ -47,17 +47,17 @@ class UsersController extends ControllerBase
         $this->link_action = array(
             array(
                 'label' => $this->t->_('Edit'),
-                'link' => $this->url->get('/admin/users/edit_role/<ID>'),
+                'link' => $this->url->backendUrl('/users/edit_role/<ID>'),
                 'icon' => 'icon-edit',
             ),
             array(
                 'label' => $this->t->_('Set Permissions'),
-                'link' => $this->url->get('/admin/users/set_permissions/<ID>'),
+                'link' => $this->url->backendUrl('/users/set_permissions/<ID>'),
                 'icon' => 'icon-cog',
             ),
             array(
                 'label' => $this->t->_('Delete'),
-                'link' => $this->url->get('/admin/users/delete_role/<ID>'),
+                'link' => $this->url->backendUrl('/users/delete_role/<ID>'),
                 'icon' => 'icon-remove',
             ),
         );
@@ -116,7 +116,7 @@ class UsersController extends ControllerBase
                 fwrite($file, "<?php\n return " . var_export($save_resources, true) . ";\n");
                 fclose($file);
 
-                $this->response->redirect('/admin/users/set_permissions/' . $role_id);
+                $this->backendRedirect('/users/set_permissions/' . $role_id);
             }
         }
 

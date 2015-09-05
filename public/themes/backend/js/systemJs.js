@@ -26,7 +26,7 @@ jQuery(function() {
         formData.append('location', $(this).attr('location'));
         $.ajax({
             type: "POST",
-            url: base_url + "/admin/index/upload",
+            url: backend_url + "/index/upload",
             data: formData,
             cache: false,
             contentType: false,
@@ -39,7 +39,7 @@ jQuery(function() {
     });
 });
 function caro_list_relate(rel_model, current_model, current_id, subpanel_name) {
-    $.get(base_url + '/admin/index/popup/' + rel_model + '/' + current_model + '/' + current_id + '/' + subpanel_name, function(data) {
+    $.get(backend_url + '/index/popup/' + rel_model + '/' + current_model + '/' + current_id + '/' + subpanel_name, function(data) {
         $('#systemModalContent').html(data);
         $('#systemModal').modal({});
     });
@@ -50,7 +50,7 @@ function caro_pagination_popup(url) {
     });
 }
 function caro_action_relate(rel_model, rel_id, subpanel_name, current_model, current_id, func) {
-    $.post(base_url + '/admin/index/save_relate', {
+    $.post(backend_url + '/index/save_relate', {
         rel_model: rel_model,
         rel_id: rel_id,
         subpanel_name: subpanel_name,

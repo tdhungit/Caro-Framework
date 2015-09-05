@@ -132,7 +132,7 @@ class SettingsController extends ControllerBase
         }
 
         $this->flash->success('Repair success!');
-        $this->response->redirect('/admin/settings');
+        $this->backendRedirect('/settings');
     }
 
     /**

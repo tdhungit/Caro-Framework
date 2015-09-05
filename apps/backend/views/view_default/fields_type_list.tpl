@@ -28,7 +28,7 @@
 {% endif %}
 
 {% if view['link'] is defined and view['link'] %}
-    <a href="{{ url('/admin/' ~ controller ~ '/' ~ action_detail ~ '/' ~ row.id) }}">{{ value }}</a>
+    <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_detail ~ '/' ~ row.id) }}">{{ value }}</a>
 {% else %}
     {{ value }}
 {% endif %}

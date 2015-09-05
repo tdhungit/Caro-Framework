@@ -12,7 +12,7 @@
 
             <div class="box-content">
                 <div class="btn-group-box">
-                    <a href="{{ url('/admin/settings/repair') }}" class="btn">
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings/repair') }}" class="btn">
                         <i class="icon-dashboard icon-large"></i>
                         <br />
                         Repair
