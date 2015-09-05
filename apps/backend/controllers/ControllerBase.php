@@ -145,9 +145,10 @@ class ControllerBase extends MyController
      * save/update a record
      *
      * @param array $data fields value, can use post data from form. This function filter same edit_view and save to db
+     * @param array return errors message
      * @return bool|null|object record
      */
-    protected function saveRecord($data)
+    protected function saveRecord($data, &$errors_msg = array())
     {
         $model_name = !empty($data['model_name']) ? $data['model_name'] : null;
 
@@ -166,6 +167,7 @@ class ControllerBase extends MyController
             }
 
             if ($row->update() == false) {
+                $errors_msg = $row->getMessages();
                 return false;
             }
 
@@ -179,6 +181,7 @@ class ControllerBase extends MyController
 
             // save
             if ($model->save() == false) {
+                $errors_msg = $model->getMessages();
                 return false;
             }
 
