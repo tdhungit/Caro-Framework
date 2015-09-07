@@ -21,6 +21,8 @@
 {% elseif view['type'] == 'customCode' %}
     {{ row.renderCustomCode(view['customCode']) }}
 
+{% elseif view['type'] == 'hidden' %}
+
 {% else %}
     {{ data.readAttribute(name) }}
 {% endif %}

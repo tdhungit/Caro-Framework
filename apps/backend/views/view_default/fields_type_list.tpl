@@ -23,6 +23,9 @@
 {% elseif view['type'] == 'customCode' %}
     {% set value = row.renderCustomCode(view['customCode']) %}
 
+{% elseif view['type'] == 'hidden' %}
+    {% set value = '' %}
+
 {% else %}
     {% set value = row.readAttribute(name) %}
 {% endif %}
