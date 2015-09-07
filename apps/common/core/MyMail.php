@@ -39,6 +39,36 @@ class MyMail extends Component
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultSettings()
+    {
+        $setting = Settings::findFirst("name = 'mail_config'");
+        $mail_config = json_decode($setting->value, true);
+        return array(
+            'fromName' => $mail_config['from_name'],
+            'fromEmail' => $mail_config['from_email'],
+            'smtp' => array(
+                'server' => $mail_config['smtp_server'],
+                'port' => $mail_config['smtp_port'],
+                'security' => $mail_config['smtp_security'],
+                'username' => $mail_config['smtp_username'],
+                'password' => $mail_config['smtp_password'],
+            )
+        );
+
+    }
+
+    /**
+     * set Mail Settings default
+     */
+    public function setDefaultSettings()
+    {
+        $mailSettings = $this->getDefaultSettings();
+        $this->setMailSettings($mailSettings);
+    }
+
+    /**
      * Send Mail
      *
      * @param $to

@@ -155,7 +155,7 @@ class ControllerBase extends MyController
         // get model
         $model = $this->getModel($model_name);
 
-        $id = $data['id'];
+        $id = !empty($data['id']) ? $data['id'] : null;
 
         if (!empty($id)) { // update a record
             // get record

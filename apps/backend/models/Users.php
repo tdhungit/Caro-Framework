@@ -9,6 +9,9 @@
 
 namespace Modules\Backend\Models;
 
+use Phalcon\Mvc\Model\Validator\Email;
+use Phalcon\Mvc\Model\Validator\PresenceOf;
+use Phalcon\Mvc\Model\Validator\Uniqueness;
 use Phalcon\Validation;
 
 class Users extends ModelBase
@@ -126,15 +129,36 @@ class Users extends ModelBase
 
     public function validation()
     {
-        $validation = new Validation();
+        $this->validate(new PresenceOf(array(
+            'field' => 'username',
+            'message' => 'The username is required'
+        )));
+        $this->validate(new Uniqueness(array(
+            'field' => 'username',
+            'message' => 'The username is already registered'
+        )));
+        $this->validate(new PresenceOf(array(
+            'field' => 'email',
+            'message' => 'The email is required'
+        )));
+        $this->validate(new Email(array(
+            'field' => 'email',
+            'message' => 'The e-mail is not valid'
+        )));
+        $this->validate(new Uniqueness(array(
+            'field' => 'email',
+            'message' => 'The email is already registered'
+        )));
+        $this->validate(new PresenceOf(array(
+            'field' => 'password',
+            'message' => 'The password is required'
+        )));
+        $this->validate(new PresenceOf(array(
+            'field' => 'name',
+            'message' => 'The name is required'
+        )));
 
-        $validation->add('username', new Validation\Validator\PresenceOf(array('message' => _('The username is required'))));
-        $validation->add('username', new Validation\Validator\Uniqueness(array('message' => _('The username is already registered'))));
-        $validation->add('email', new Validation\Validator\PresenceOf(array('message' => _('The email is required'))));
-        $validation->add('email', new Validation\Validator\Email(array('message' => _('The e-mail is not valid'))));
-        $validation->add('email', new Validation\Validator\Uniqueness(array('message' => _('The email is already registered'))));
-        $validation->add('password', new Validation\Validator\PresenceOf(array('message' => _('The password is required'))));
-        $validation->add('name', new Validation\Validator\PresenceOf(array('message' => _('The name is required'))));
+        return $this->validationHasFailed() != true;
     }
 
 }
