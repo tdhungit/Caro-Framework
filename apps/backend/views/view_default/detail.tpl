@@ -45,9 +45,11 @@
                     <div class="box-header">
                         <h5>{{ t._(subpanel_def['rel_model']) }}</h5>
 
-                        <a class="btn btn-box-right" href="javascript:caro_list_relate('{{ subpanel_def['rel_model'] }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}', '{{ subpanel_name }}')">
-                            <i class="icon-plus"></i>
-                        </a>
+                        {% if subpanel_def['buttons'] is defined and subpanel_def['buttons'] %}
+                            <a class="btn btn-box-right" href="javascript:caro_list_relate('{{ subpanel_def['rel_model'] }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}', '{{ subpanel_name }}')">
+                                <i class="icon-plus"></i>
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="box-content box-table">
                         <table class="table table-hover">

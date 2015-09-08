@@ -163,7 +163,9 @@ class ControllerBase extends MyController
 
             // set data update
             foreach ($model->edit_view['fields'] as $field => $opt) {
-                $row->$field = $data[$field];
+                if ($opt['type'] != 'password' && $opt['type'] != 'hidden') {
+                    $row->$field = $data[$field];
+                }
             }
 
             if ($row->update() == false) {
@@ -488,7 +490,9 @@ class ControllerBase extends MyController
                 $data = $model::findFirst($post_id);
                 // update data
                 foreach ($model->edit_view['fields'] as $field => $opt) {
-                    $data->$field = $this->request->getPost($field);
+                    if ($opt['type'] != 'password' && $opt['type'] != 'hidden') {
+                        $data->$field = $this->request->getPost($field);
+                    }
                 }
 
                 if ($data->update() == false) {
