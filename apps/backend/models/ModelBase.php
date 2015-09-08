@@ -75,7 +75,7 @@ class ModelBase extends Model
             $this->slug = $this->slugify($this->name);
         }
 
-        if (!empty($this->password)) {
+        if (empty($this->id) && !empty($this->password)) {
             $this->password = md5($this->password);
         }
 
