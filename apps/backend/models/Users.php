@@ -81,7 +81,8 @@ class Users extends ModelBase
                         'type' => 'select',
                         'label' => 'Status'
                     ),
-                )
+                ),
+                'buttons' => true
             )
         )
     );

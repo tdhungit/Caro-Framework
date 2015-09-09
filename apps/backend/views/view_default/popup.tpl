@@ -5,7 +5,7 @@
 <div class="modal-body">
     <div class="box-content box-table">
         {{ form(current_uri, 'method' : 'get', 'class': 'form-list-search', 'onsubmit': 'caro_popup_search($(this)); return false;') }}
-        <table class="table table-hover tablesorter">
+        <table class="table table-bordered table-hover dataTable">
             <thead>
             <tr>
                 {% for name, view in list_view['fields'] %}
@@ -13,10 +13,6 @@
                 {% endfor %}
                 <th class="header"></th>
             </tr>
-            </thead>
-
-            <tbody>
-
             <!-- search -->
             <tr>
                 {% for name, view in list_view['fields'] %}
@@ -24,16 +20,18 @@
                         {% if view['search'] is defined and view['search'] %}
                             {% if search[name] is defined %}{% set search_value = search[name] %}{% else %}{% set search_value = '' %}{% endif %}
                             {% if view['type'] == 'select' %}
-                                {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': search_value, 'useEmpty': true, 'emptyText': view['label'], 'emptyValue': '', 'class': 'list-search') }}
+                                {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': search_value, 'useEmpty': true, 'emptyText': view['label'], 'emptyValue': '', 'class': 'form-control') }}
                             {% else %}
-                                <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" value="{{ search_value }}" class="list-search" />
+                                <input type="text" name="{{ name }}" placeholder="{{ view['label'] }}" value="{{ search_value }}" class="form-control" />
                             {% endif %}
                         {% endif %}
                     </td>
                 {% endfor %}
-                <td><input type="submit" name="submit" value="{{ t._('Search') }}" class="btn"></td>
+                <td><input type="submit" name="submit" value="{{ t._('Search') }}" class="btn btn-info"></td>
             </tr>
+            </thead>
 
+            <tbody>
             {% for row in data %}
                 <tr>
                     {% for name, view in list_view['fields'] %}
@@ -52,23 +50,27 @@
     </div>
 
     <!-- pagination -->
-    <nav class="pagination pagination-centered">
-        <ul>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">First</a></li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">Previous</a></li>
-            <li>
-                <a href="javascript:;">
-                    <select style="margin: 0; width: auto;" onchange="caro_pagination_popup('{{ current_url }}&page=' + $(this).val())">
-                        {% for i in 1..page.total_pages %}
-                            <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                </a>
-            </li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.next }}')">Next</a></li>
-            <li><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.last }}')">Last</a></li>
-        </ul>
-    </nav>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="dataTables_info">
+                <ul class="pagination" style="margin: 0">
+                    <li class="paginate_button previous"><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">First</a></li>
+                    <li class="paginate_button previous"><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.before }}')">Previous</a></li>
+                    <li class="paginate_button">
+                        <a href="javascript:;" style="padding: 5px 10px;">
+                            <select style="margin: 0; width: auto;" onchange="caro_pagination_popup('{{ current_url }}&page=' + $(this).val())">
+                                {% for i in 1..page.total_pages %}
+                                    <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </a>
+                    </li>
+                    <li class="paginate_button next"><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.next }}')">Next</a></li>
+                    <li class="paginate_button next"><a href="javascript:;" onclick="caro_pagination_popup('{{ current_url }}&page={{ page.last }}')">Last</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </div>
 

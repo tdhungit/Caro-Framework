@@ -1,13 +1,13 @@
 {% for name, view in edit_view['fields'] %}
     {% if view['type'] != 'hidden' %}
-        <div class="control-group ">
-            <label class="control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
-            <div class="controls">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
+            <div class="col-sm-10">
                 {% if view['type'] == 'select' %}
                     {% if data is not null %}
-                        {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'span9') }}
+                        {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control') }}
                     {% else %}
-                        {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'class': 'span9') }}
+                        {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'class': 'form-control') }}
                     {% endif %}
 
                     {% elseif view['type'] == 'relate' %}
@@ -18,9 +18,9 @@
                         ?>
 
                     {% if data is not null %}
-                        {{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'span9', 'useEmpty': true) }}
+                        {{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control', 'useEmpty': true) }}
                     {% else %}
-                        {{ select(name, options, 'using': ['id', 'name'], 'class': 'span9', 'useEmpty': true) }}
+                        {{ select(name, options, 'using': ['id', 'name'], 'class': 'form-control', 'useEmpty': true) }}
                     {% endif %}
 
                     {% elseif view['type'] == 'image' %}
@@ -41,7 +41,7 @@
 
                     {# default | not define type #}
                     {% else %}
-                        <input id="current-{{ name }}-control" name="{{ name }}" class="span9" type="{{ view['type'] }}" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}" />
+                        <input id="current-{{ name }}-control" name="{{ name }}" class="form-control" type="{{ view['type'] }}" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}" />
 
                 {% endif %}
             </div>

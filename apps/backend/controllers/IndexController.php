@@ -51,4 +51,11 @@ class IndexController extends ControllerBase
 
         $this->view->setTemplateAfter('empty');
     }
+
+    public function logoutAction()
+    {
+        $this->session->destroy();
+        $this->response->redirect();
+        $this->backendRedirect();
+    }
 }

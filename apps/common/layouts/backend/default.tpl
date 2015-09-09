@@ -1,56 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {{ get_title() }}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="layout" content="main"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/ionicons.min.css">
+    <!-- jvectormap -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/skins/_all-skins.min.css">
 
     <script>
         var base_url = '{{ url() }}';
         var backend_url = '{{ url('/' ~ carofw['backendUrl']) }}';
     </script>
-    <script src="{{ static_url() }}/themes/backend/js/jquery/jquery-1.8.2.min.js" type="text/javascript" ></script>
+    <script src="{{ static_url() }}/themes/backend/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <script src="{{ static_url() }}/themes/backend/ckeditor/ckeditor.js"></script>
     <script src="{{ static_url() }}/themes/backend/js/systemJs.js" type="text/javascript" ></script>
 
-    <link href="{{ static_url() }}/themes/backend/css/bootstrap-dialog.min.css" type="text/css" media="screen, projection" rel="stylesheet" />
-    <link href="{{ static_url() }}/themes/backend/css/customize-template.css" type="text/css" media="screen, projection" rel="stylesheet" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="{{ static_url() }}/themes/backend/js/html5shiv.min.js"></script>
+    <script src="{{ static_url() }}/themes/backend/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
 
-<div id="body-container">
-    <div id="body-content">
-        <div class="body-nav body-nav-horizontal body-nav-fixed">
-            <div class="container">
-                <ul>
-                    <li>
-                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/dashboard') }}">
-                            <i class="icon-dashboard icon-large"></i> Dashboard
+<div class="wrapper">
+    <header class="main-header">
+
+        <!-- Logo -->
+        <a href="index2.html" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">CFW</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">Caro Framework</span>
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{ static_url() }}/themes/backend/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs">Admin</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}">
-                            <i class="icon-user icon-large"></i> Users
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings') }}">
-                            <i class="icon-cogs icon-large"></i> Settings
-                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/index/logout') }}">Sign out</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
-        </div>
 
-        <section class="page container">
-            {{ flash.output() }}
-
-            {{ get_content() }}
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="{{ static_url() }}/themes/backend/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>Admin</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/dashboard') }}">
+                        <i class="fa fa-dashboard"></i> <span>{{ t._('Dashboard') }}</span>
+                    </a>
+                </li>
+                <li class="treeview">
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}">
+                        <i class="fa fa-users"></i>
+                        <span>{{ t._('Users') }}</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}"><i class="fa fa-reorder"></i> {{ t._('View Users') }}</a></li>
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit') }}"><i class="fa fa-plus"></i> {{ t._('Create User') }}</a></li>
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/groups') }}"><i class="fa fa-reorder"></i> {{ t._('View Groups') }}</a></li>
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_group') }}"><i class="fa fa-plus"></i> {{ t._('Create Group') }}</a></li>
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/roles') }}"><i class="fa fa-reorder"></i> {{ t._('View Roles') }}</a></li>
+                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_role') }}"><i class="fa fa-plus"></i> {{ t._('Create Role') }}</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings') }}">
+                        <i class="fa fa-cog"></i> <span>{{ t._('Settings') }}</span>
+                    </a>
+                </li>
+            </ul>
         </section>
+        <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        {{ flash.output() }}
+        {{ get_content() }}
     </div>
 </div>
 
@@ -62,42 +143,30 @@
 </div>
 <!-- End Model -->
 
-<footer class="application-footer">
-    <div class="container">
-        <div class="disclaimer">
-            <p>Jacky. A Software development.</p>
-            <p>©Jacky 2015</p>
-        </div>
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> 0.1
     </div>
+    <strong>Copyright &copy; 2015 <a href="">Jacky</a>.</strong> All rights reserved.
 </footer>
 
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-transition.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-alert.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-modal.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-dropdown.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-scrollspy.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-tab.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-tooltip.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-popover.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-button.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-collapse.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-carousel.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-typeahead.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-affix.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-datepicker.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/bootstrap/bootstrap-dialog.min.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/jquery/jquery-tablesorter.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/jquery/jquery-chosen.js" type="text/javascript" ></script>
-<script src="{{ static_url() }}/themes/backend/js/jquery/virtual-tour.js" type="text/javascript" ></script>
-<script type="text/javascript">
-    $(function() {
-        $('.sorter-table').tablesorter();
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy'
-        });
-        $(".chosen").chosen();
-    });
-</script>
+<!-- Bootstrap 3.3.5 -->
+<script src="{{ static_url() }}/themes/backend/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="{{ static_url() }}/themes/backend/plugins/fastclick/fastclick.min.js"></script>
+<!-- AdminLTE App -->
+<script src="{{ static_url() }}/themes/backend/js/app.min.js"></script>
+<!-- Sparkline -->
+<script src="{{ static_url() }}/themes/backend/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!-- jvectormap -->
+<script src="{{ static_url() }}/themes/backend/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="{{ static_url() }}/themes/backend/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<!-- SlimScroll 1.3.0 -->
+<script src="{{ static_url() }}/themes/backend/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- ChartJS 1.0.1 -->
+<script src="{{ static_url() }}/themes/backend/plugins/chartjs/Chart.min.js"></script>
+<!-- AdminLTE -->
+<script src="{{ static_url() }}/themes/backend/js/theme.js"></script>
 
 </body>
 </html>
