@@ -13,6 +13,11 @@ use \Phalcon\Db\Column as Column;
 return array(
     'users' => array(
         'fields' => array(
+            'avatar' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 255,
+                "notNull" => true,
+            ),
             'username' => array(
                 "type"    => Column::TYPE_VARCHAR,
                 "size"    => 255,
