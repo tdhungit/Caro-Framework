@@ -19,6 +19,7 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/plugins/iCheck/square/blue.css">
 
     <script>
         var base_url = '{{ url() }}';
@@ -36,27 +37,6 @@
     <![endif]-->
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
-
 {{ get_content() }}
 
-<!-- Bootstrap 3.3.5 -->
-<script src="{{ static_url() }}/themes/backend/bootstrap/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="{{ static_url() }}/themes/backend/plugins/fastclick/fastclick.min.js"></script>
-<!-- AdminLTE App -->
-<script src="{{ static_url() }}/themes/backend/js/app.min.js"></script>
-<!-- Sparkline -->
-<script src="{{ static_url() }}/themes/backend/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
-<script src="{{ static_url() }}/themes/backend/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="{{ static_url() }}/themes/backend/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
-<script src="{{ static_url() }}/themes/backend/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
-<script src="{{ static_url() }}/themes/backend/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE -->
-<script src="{{ static_url() }}/themes/backend/js/theme.js"></script>
-
-</body>
 </html>

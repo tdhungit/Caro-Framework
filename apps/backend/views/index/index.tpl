@@ -1,32 +1,53 @@
-<div class="container">
-    <div class="signin-row row">
-        <div class="span4"></div>
-        <div class="span8">
-            <div class="container-signin">
-                {{ flash.output() }}
-                <legend>Please Login</legend>
-                {{ form('/'~ carofw['backendUrl'] ~'/index', 'method': 'post', 'class': 'form-signin') }}
-                <div class="form-inner">
-                    <div class="input-prepend">
+<body class="hold-transition login-page">
 
-                        <span class="add-on" rel="tooltip" title="Username or E-Mail Address" data-placement="top"><i
-                                    class="icon-envelope"></i></span>
-                        <input type="text" class="span4" id="username" name="username" />
-                    </div>
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-key"></i></span>
-                        <input type="password" class="span4" id="password" name="password" />
-                    </div>
-                    <label class="checkbox" for="remember_me">Remember me
-                        <input type="checkbox" id="remember_me" name="remember_me" />
-                    </label>
-                </div>
-                <footer class="signin-actions">
-                    <input class="btn btn-primary" type="submit" id="submit" value="Login">
-                </footer>
-                {{ end_form() }}
+<div class="login-box">
+    <div class="login-logo">
+        <a href="{{ url() }}"><b>Caro</b>Framework</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">{{ t._('Sign in to start your session') }}</p>
+        {{ flash.output() }}
+        {{ form('/'~ carofw['backendUrl'] ~'/index', 'method': 'post') }}
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" id="username" name="username"/>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
-        </div>
-        <div class="span3"></div>
+
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" id="password" name="password"/>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" name="remember_me"/> Remember me
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <input class="btn btn-primary btn-block btn-flat" type="submit" id="submit" value="{{ t._('Login') }}">
+                </div>
+            </div>
+        {{ end_form() }}
     </div>
 </div>
+
+<!-- jQuery 2.1.4 -->
+<script src="{{ static_url() }}/themes/backend/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="{{ static_url() }}/themes/backend/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="{{ static_url() }}/themes/backend/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
