@@ -28,7 +28,7 @@
                                         {% for method, is_access in access %}
                                             <div style="width: 150px; display: inline-block">
                                                 <input type="checkbox" name="resources[{{ resource }}][{{ method }}]" value="1" {% if is_access == 1 %}checked{% endif %}>
-                                                {{ method }}
+                                                <span {% if is_access == 1 %}style="font-weight: 700; color: #3c8dbc"{% endif %}>{{ method }}</span>
                                             </div>
                                         {% endfor %}
                                         <script>

@@ -119,9 +119,9 @@ class SecurityPlugin extends Plugin
                 'action' => 'show401'
             ));
 
-            if ($auth) {
+            /*if ($auth) {
                 $this->session->destroy();
-            }
+            }*/
 
             return false;
         }
