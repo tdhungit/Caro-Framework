@@ -9,7 +9,7 @@
 namespace Modules\Backend\Models;
 
 
-class Settings extends ModelBase
+class Settings extends ModelCustom
 {
     public $id;
     public $created;

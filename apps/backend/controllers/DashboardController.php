@@ -11,7 +11,7 @@
 
 namespace Modules\Backend\Controllers;
 
-class DashboardController extends ControllerBase
+class DashboardController extends ControllerCustom
 {
     public function indexAction()
     {

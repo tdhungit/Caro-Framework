@@ -11,7 +11,7 @@
 
 namespace Modules\Frontend\Controllers;
 
-class IndexController extends ControllerBase
+class IndexController extends ControllerCustom
 {
 
     public function indexAction()

@@ -17,7 +17,7 @@ use Phalcon\Db\Column;
 use Phalcon\Db\Index;
 use Phalcon\Text;
 
-class SettingsController extends ControllerBase
+class SettingsController extends ControllerCustom
 {
     protected $model_name = 'Settings';
 
