@@ -41,19 +41,19 @@ class SecurityPlugin extends Plugin
             $acl->setDefaultAction(Acl::DENY);
 
             // Register roles
-            $roles = include AuthRoles::$roles_path;
+            $roles = include AuthRoles::rolesPath();
             foreach ($roles as $role) {
                 $acl->addRole($role);
             }
 
-            $resources = include AuthRoles::$resources_path;
+            $resources = include AuthRoles::resourcesPath();
             foreach ($resources as $resource => $actions) {
                 $acl->addResource(new Resource($resource), $actions);
             }
 
             //Grant access to public areas to both users and guests
             foreach ($roles as $role) {
-                $file_allow_resource = AuthRoles::$permissions_save_path . 'role_allow_' . $role . '.php';
+                $file_allow_resource = AuthRoles::permissionSavePath() . 'role_allow_' . $role . '.php';
                 if (is_file($file_allow_resource)) {
                     $allow_resources = include $file_allow_resource;
                     foreach ($allow_resources as $resource => $actions) {

@@ -78,7 +78,7 @@ class UsersController extends ControllerCustom
 
         $write_roles = "<?php\nuse Phalcon\\Acl\\Role;\nreturn array(\n$write_roles);";
 
-        $file = fopen(AuthRoles::$roles_path, "w");
+        $file = fopen(AuthRoles::rolesPath(), "w");
         fwrite($file, "$write_roles");
         fclose($file);
 
@@ -103,7 +103,7 @@ class UsersController extends ControllerCustom
 
     public function set_permissionsAction($role_id = null) {
         // get all resources
-        $resources = include AuthRoles::$resources_path;
+        $resources = include AuthRoles::resourcesPath();
 
         // save permission
         if ($this->request->isPost()) {
@@ -142,11 +142,11 @@ class UsersController extends ControllerCustom
                 //      <action> => 0|1
                 //  )
                 // )
-                $file = fopen(AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php', "w");
+                $file = fopen(AuthRoles::permissionSavePath() . 'role_' . $role_unique_name . '.php', "w");
                 fwrite($file, "<?php\n return " . var_export($save_resources, true) . ";\n");
                 fclose($file);
 
-                $file = fopen(AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php', "w");
+                $file = fopen(AuthRoles::permissionSavePath() . 'role_allow_' . $role_unique_name . '.php', "w");
                 fwrite($file, "<?php\n return " . var_export($allow_resources, true) . ";\n");
                 fclose($file);
 
@@ -162,8 +162,8 @@ class UsersController extends ControllerCustom
         $other_roles = $role_model::find("deleted = 0 AND id <> $role_id");
 
         // set exists permission
-        if (is_file(AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php')) {
-            $allowed_resources = include AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php';
+        if (is_file(AuthRoles::permissionSavePath() . 'role_allow_' . $role_unique_name . '.php')) {
+            $allowed_resources = include AuthRoles::permissionSavePath() . 'role_allow_' . $role_unique_name . '.php';
         }
 
         $current_resources = array();

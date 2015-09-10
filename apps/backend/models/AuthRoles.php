@@ -112,9 +112,20 @@ class AuthRoles extends ModelCustom
 
     public $menu;
 
-    public static $permissions_save_path = APP_PATH . '/apps/backend/permissions/';
-    public static $resources_path = APP_PATH . '/apps/backend/permissions/resources.php';
-    public static $roles_path = APP_PATH . '/apps/backend/permissions/roles.php';
+    public static function permissionSavePath()
+    {
+        return APP_PATH . '/apps/backend/permissions/';
+    }
+
+    public static function resourcesPath()
+    {
+        return APP_PATH . '/apps/backend/permissions/resources.php';
+    }
+
+    public static function rolesPath()
+    {
+        return APP_PATH . '/apps/backend/permissions/roles.php';
+    }
 
     public function initialize()
     {
