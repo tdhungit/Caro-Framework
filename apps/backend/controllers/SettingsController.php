@@ -169,6 +169,9 @@ class SettingsController extends ControllerBase
             fwrite($file, "<?php\n return " . var_export($resources, true) . ";\n");
             fclose($file);
         }
+
+        $this->flash->success($this->t->_('Rebuild Resources success'));
+        $this->backendRedirect('/settings');
     }
 
     /**

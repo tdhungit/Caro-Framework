@@ -28,7 +28,7 @@ class MyController extends Controller
 
     protected function initialize()
     {
-        $this->tag->prependTitle('Caro Framework');
+        $this->tag->prependTitle('Caro Framework | ');
         // config
         $this->view->setVar('carofw', $this->carofw);
         // language

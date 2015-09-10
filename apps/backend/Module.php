@@ -47,9 +47,9 @@ class Module
             // Security
             $eventsManager = new EventsManager;
             // Check if the user is allowed to access certain action using the SecurityPlugin
-            //$eventsManager->attach('dispatch:beforeDispatch', new Plugins\SecurityPlugin);
+            $eventsManager->attach('dispatch:beforeDispatch', new Plugins\SecurityPlugin);
             // Handle exceptions and not-found exceptions using NotFoundPlugin
-            //$eventsManager->attach('dispatch:beforeException', new Plugins\NotFoundPlugin);
+            $eventsManager->attach('dispatch:beforeException', new Plugins\NotFoundPlugin);
 
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace("Modules\Backend\Controllers");

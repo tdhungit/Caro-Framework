@@ -55,7 +55,7 @@
                                                             <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-warning btn-xs" title="{{ t._('Edit') }}">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
-                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id) }}" class="btn btn-danger btn-xs" title="{{ t._('Delete') }}">
+                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id ~ '/' ~ model_name) }}?return={{ controller }}/{{ action }}" class="btn btn-danger btn-xs" title="{{ t._('Delete') }}">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
                                                         {% else %}

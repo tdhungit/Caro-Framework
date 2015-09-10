@@ -11,6 +11,8 @@
 
 namespace Modules\Backend\Controllers;
 
+use Modules\Backend\Models\AuthRoles;
+
 class UsersController extends ControllerBase
 {
     protected $model_name = 'Users';
@@ -24,6 +26,7 @@ class UsersController extends ControllerBase
     {
         $this->model_name = 'UserGroups';
         $this->action_detail = 'detail_group';
+        $this->action_edit = 'edit_group';
         $this->indexAction();
     }
 
@@ -48,26 +51,46 @@ class UsersController extends ControllerBase
             array(
                 'label' => $this->t->_('Edit'),
                 'link' => $this->url->backendUrl('/users/edit_role/<ID>'),
-                'icon' => 'icon-edit',
+                'icon' => 'fa-edit',
             ),
             array(
                 'label' => $this->t->_('Set Permissions'),
                 'link' => $this->url->backendUrl('/users/set_permissions/<ID>'),
-                'icon' => 'icon-cog',
+                'icon' => 'fa-cog',
             ),
             array(
                 'label' => $this->t->_('Delete'),
                 'link' => $this->url->backendUrl('/users/delete_role/<ID>'),
-                'icon' => 'icon-remove',
+                'icon' => 'fa-remove',
             ),
         );
         $this->indexAction();
+    }
+
+    public function register_rolesAction()
+    {
+        $this->view->disable();
+        $roles = AuthRoles::find("deleted = 0 AND status = 'Active'");
+        $write_roles = "";
+        foreach ($roles as $role) {
+            $write_roles .= "'{$role->unique_name}' => new Role('$role->unique_name'),\n";
+        }
+
+        $write_roles = "<?php\nuse Phalcon\\Acl\\Role;\nreturn array(\n$write_roles);";
+
+        $file = fopen(AuthRoles::$roles_path, "w");
+        fwrite($file, "$write_roles");
+        fclose($file);
+
+        $this->flash->success($this->t->_('Register success'));
+        $this->backendRedirect('/settings');
     }
 
     public function detail_roleAction($id = null)
     {
         $this->model_name = 'AuthRoles';
         $this->action_detail = 'detail_role';
+        $this->action_edit = 'edit_role';
         $this->detailAction($id);
     }
 
@@ -79,18 +102,21 @@ class UsersController extends ControllerBase
     }
 
     public function set_permissionsAction($role_id = null) {
-        $permission_save_path = APP_PATH . '/apps/backend/permissions/';
         // get all resources
-        $resources = include $permission_save_path . 'resources.php';
+        $resources = include AuthRoles::$resources_path;
 
         // save permission
         if ($this->request->isPost()) {
             $role_id = $this->request->getPost('role_id');
             if ($role_id) {
+                // get Role
+                $focus_role = AuthRoles::findFirst($role_id);
+                $role_unique_name = $focus_role->unique_name;
                 // set resource setting
                 $set_resources = $this->request->getPost('resources');
                 // generate save resource
                 $save_resources = array();
+                $allow_resources = array();
                 foreach ($resources as $resource => $access) {
                     // resource default no access
                     // modify set access resource
@@ -101,6 +127,10 @@ class UsersController extends ControllerBase
                         }
                         // override
                         $save_resources[$resource][$method] = $is_access;
+                        // allow_resource
+                        if ($is_access == 1) {
+                            $allow_resources[$resource][] = $method;
+                        }
                     }
                 }
                 // save to file permission
@@ -112,17 +142,28 @@ class UsersController extends ControllerBase
                 //      <action> => 0|1
                 //  )
                 // )
-                $file = fopen($permission_save_path . 'role_' . $role_id . '.php', "w");
+                $file = fopen(AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php', "w");
                 fwrite($file, "<?php\n return " . var_export($save_resources, true) . ";\n");
                 fclose($file);
 
+                $file = fopen(AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php', "w");
+                fwrite($file, "<?php\n return " . var_export($allow_resources, true) . ";\n");
+                fclose($file);
+
+                $this->flash->success($this->t->_('Save role success'));
                 $this->backendRedirect('/users/set_permissions/' . $role_id);
             }
         }
 
+        // get all roles
+        $role_model = $this->getModel('AuthRoles');
+        $role = $role_model::findFirst($role_id);
+        $role_unique_name = $role->unique_name;
+        $other_roles = $role_model::find("deleted = 0 AND id <> $role_id");
+
         // set exists permission
-        if (is_file($permission_save_path . 'role_' . $role_id . '.php')) {
-            $current_resources = include $permission_save_path . 'role_' . $role_id . '.php';
+        if (is_file(AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php')) {
+            $current_resources = include AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php';
         } else { // not set permission
             $current_resources = array();
             foreach($resources as $resource => $access) {
@@ -131,11 +172,6 @@ class UsersController extends ControllerBase
                 }
             }
         }
-
-        // get all roles
-        $role_model = $this->getModel('AuthRoles');
-        $role = $role_model::findFirst($role_id);
-        $other_roles = $role_model::find("deleted = 0 AND id <> $role_id");
 
         $this->view->role_id = $role_id;
         $this->view->role = $role;

@@ -21,6 +21,7 @@ class UserGroups extends ModelBase
     public $name;
     public $status;
     public $description;
+    public $role_id;
 
     public $list_view = array(
         'fields' => array(
@@ -35,6 +36,11 @@ class UserGroups extends ModelBase
                 'label' => 'Status',
                 'options' => 'users_status_list',
                 'search' => true
+            ),
+            'role_id' => array(
+                'type' => 'relate',
+                'model' => 'AuthRoles',
+                'label' => 'Role'
             )
         )
     );
@@ -52,6 +58,11 @@ class UserGroups extends ModelBase
                 'label' => 'Status',
                 'options' => 'users_status_list',
                 'required' => true
+            ),
+            'role_id' => array(
+                'type' => 'relate',
+                'model' => 'AuthRoles',
+                'label' => 'Role'
             ),
             'description' => array(
                 'type' => 'textarea',
@@ -72,6 +83,11 @@ class UserGroups extends ModelBase
                 'type' => 'select',
                 'label' => 'Status',
                 'options' => 'users_status_list',
+            ),
+            'role_id' => array(
+                'type' => 'relate',
+                'model' => 'AuthRoles',
+                'label' => 'Role'
             ),
             'description' => array(
                 'type' => 'text',

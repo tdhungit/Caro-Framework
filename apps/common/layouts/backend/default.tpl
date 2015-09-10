@@ -40,7 +40,6 @@
 
 <div class="wrapper">
     <header class="main-header">
-
         <!-- Logo -->
         <a href="{{ url() }}" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -56,21 +55,22 @@
                 <span class="sr-only">Toggle navigation</span>
             </a>
             <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ static_url() }}/themes/backend/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Admin</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/index/logout') }}">Sign out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
+            {% if current_user is defined %}
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{ current_user.avatar }}" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Admin</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/users/detail/') }}{{ current_user.id }}">Profile</a></li>
+                                <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/index/logout') }}">Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
         </nav>
     </header>
     <!-- Left side column. contains the logo and sidebar -->
@@ -80,11 +80,12 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ static_url() }}/themes/backend/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    {% if current_user is defined %}
+                        <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image">
+                    {% endif %}
                 </div>
                 <div class="pull-left info">
-                    <p>Admin</p>
-                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    <p>{% if current_user is defined %}{{ current_user.username }}{% endif %}</p>
                 </div>
             </div>
             <!-- search form -->

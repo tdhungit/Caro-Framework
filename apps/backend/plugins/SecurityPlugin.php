@@ -1,7 +1,16 @@
 <?php
+/**
+ * Created by Jacky.
+ * User: Jacky
+ * E-Mail: jacky@carocrm.com or jacky@youaddon.com
+ * Project: carofw
+ * File: SecurityPlugin.php
+ */
 
 namespace Modules\Backend\Plugins;
 
+use Modules\Backend\Models\AuthRoles;
+use Modules\Backend\Models\CaroLogs;
 use Phalcon\Acl;
 use Phalcon\Acl\Role;
 use Phalcon\Acl\Resource;
@@ -25,59 +34,33 @@ class SecurityPlugin extends Plugin
      */
     public function getAcl()
     {
-
         if (!isset($this->persistent->acl)) {
 
             $acl = new AclList();
 
             $acl->setDefaultAction(Acl::DENY);
 
-            //Register roles
-            $roles = array(
-                'users' => new Role('Users'),
-                'guests' => new Role('Guests')
-            );
+            // Register roles
+            $roles = include AuthRoles::$roles_path;
             foreach ($roles as $role) {
                 $acl->addRole($role);
             }
 
-            //Private area resources
-            $privateResources = array(
-                'companies' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-                'products' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-                'producttypes' => array('index', 'search', 'new', 'edit', 'save', 'create', 'delete'),
-                'invoices' => array('index', 'profile')
-            );
-            foreach ($privateResources as $resource => $actions) {
-                $acl->addResource(new Resource($resource), $actions);
-            }
-
-            //Public area resources
-            $publicResources = array(
-                'index' => array('index'),
-                'about' => array('index'),
-                'register' => array('index'),
-                'errors' => array('show401', 'show404', 'show500'),
-                'session' => array('index', 'register', 'start', 'end'),
-                'contact' => array('index', 'send')
-            );
-            foreach ($publicResources as $resource => $actions) {
+            $resources = include AuthRoles::$resources_path;
+            foreach ($resources as $resource => $actions) {
                 $acl->addResource(new Resource($resource), $actions);
             }
 
             //Grant access to public areas to both users and guests
             foreach ($roles as $role) {
-                foreach ($publicResources as $resource => $actions) {
-                    foreach ($actions as $action) {
-                        $acl->allow($role->getName(), $resource, $action);
+                $file_allow_resource = AuthRoles::$permissions_save_path . 'role_allow_' . $role . '.php';
+                if (is_file($file_allow_resource)) {
+                    $allow_resources = include $file_allow_resource;
+                    foreach ($allow_resources as $resource => $actions) {
+                        foreach ($actions as $action) {
+                            $acl->allow($role->getName(), $resource, $action);
+                        }
                     }
-                }
-            }
-
-            //Grant acess to private area to role Users
-            foreach ($privateResources as $resource => $actions) {
-                foreach ($actions as $action) {
-                    $acl->allow('Users', $resource, $action);
                 }
             }
 
@@ -97,27 +80,51 @@ class SecurityPlugin extends Plugin
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
-
         $auth = $this->session->get('auth');
-        if (!$auth) {
-            $role = 'Guests';
-        } else {
-            $role = 'Users';
-        }
-
         $controller = $dispatcher->getControllerName();
         $action = $dispatcher->getActionName();
 
-        $acl = $this->getAcl();
+        // public resource
+        if ($controller == 'errors') {
+            return true;
+        }
+        if ($controller == 'index' && ($action == 'index' || $action == 'logout')) {
+            return true;
+        }
 
-        $allowed = $acl->isAllowed($role, $controller, $action);
+        // admin
+        if (!empty($auth['username']) && $auth['username'] == 'admin') {
+            return true;
+        }
+
+        // not admin
+        if (!$auth || empty($auth['roles'])) {
+            $roles = array('guests');
+        } else {
+            $roles = $auth['roles'];
+        }
+
+        $acl = $this->getAcl();
+        foreach ($roles as $role) {
+            $allowed = $acl->isAllowed($role, $controller, $action);
+            if ($allowed == Acl::ALLOW) {
+                return true;
+                break;
+            }
+        }
+
         if ($allowed != Acl::ALLOW) {
             $dispatcher->forward(array(
                 'controller' => 'errors',
                 'action' => 'show401'
             ));
-            $this->session->destroy();
+
+            if ($auth) {
+                $this->session->destroy();
+            }
+
             return false;
         }
+
     }
 }

@@ -105,11 +105,25 @@ return array(
                 'size' => 255,
                 'notNull' => true
             ),
+            'unique_name' => array(
+                'type' => Column::TYPE_VARCHAR,
+                'size' => 255,
+                'notNull' => true
+            ),
+            'status' => array(
+                'type' => Column::TYPE_VARCHAR,
+                'size' => 255,
+            ),
             'description' => array(
                 'type' => Column::TYPE_TEXT
             ),
         ),
-        'indexes' => array()
+        'indexes' => array(
+            'idx_unique_name' => array(
+                'type' => 'Unique',
+                'fields' => array('unique_name')
+            )
+        )
     ),
 
     'settings' => array(

@@ -11,7 +11,10 @@
 
 namespace Modules\Backend\Controllers;
 
-class ErrorsController extends ControllerBase
+
+use Modules\Core\MyController;
+
+class ErrorsController extends MyController
 {
     public function initialize()
     {
