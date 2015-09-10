@@ -23,10 +23,10 @@
                             <tbody>
                             {% for resource, access in resources %}
                                 <tr>
-                                    <td><input type="checkbox" class="check-all-{{ resource }}"> {{ resource }}</td>
+                                    <td width="20%"><input type="checkbox" class="check-all-{{ resource }}"> {{ resource }}</td>
                                     <td class="check-all-content-{{ resource }}">
                                         {% for method, is_access in access %}
-                                            <div>
+                                            <div style="width: 150px; display: inline-block">
                                                 <input type="checkbox" name="resources[{{ resource }}][{{ method }}]" value="1" {% if is_access == 1 %}checked{% endif %}>
                                                 {{ method }}
                                             </div>
@@ -41,7 +41,7 @@
                             {% endfor %}
                             <tr>
                                 <td></td>
-                                <td><input type="submit" name="submit" value="{{ t._('Save') }}"></td>
+                                <td><input type="submit" name="submit" value="{{ t._('Save') }}" class="btn btn-primary"></td>
                             </tr>
                             </tbody>
                         </table>
