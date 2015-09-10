@@ -162,12 +162,16 @@ class UsersController extends ControllerBase
         $other_roles = $role_model::find("deleted = 0 AND id <> $role_id");
 
         // set exists permission
-        if (is_file(AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php')) {
-            $current_resources = include AuthRoles::$permissions_save_path . 'role_' . $role_unique_name . '.php';
-        } else { // not set permission
-            $current_resources = array();
-            foreach($resources as $resource => $access) {
-                foreach($access as $method) {
+        if (is_file(AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php')) {
+            $allowed_resources = include AuthRoles::$permissions_save_path . 'role_allow_' . $role_unique_name . '.php';
+        }
+
+        $current_resources = array();
+        foreach($resources as $resource => $access) {
+            foreach($access as $method) {
+                if (in_array($method, $allowed_resources[$resource])) {
+                    $current_resources[$resource][$method] = 1;
+                } else {
                     $current_resources[$resource][$method] = 0;
                 }
             }
