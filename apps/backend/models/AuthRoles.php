@@ -127,6 +127,15 @@ class AuthRoles extends ModelCustom
         return APP_PATH . '/apps/backend/permissions/roles.php';
     }
 
+    public static function publicResources()
+    {
+        return array(
+            'errors' => '*',
+            'index' => array('index', 'logout'),
+            'rest' => '*'
+        );
+    }
+
     public function initialize()
     {
         $user = new Users();

@@ -84,12 +84,18 @@ class SecurityPlugin extends Plugin
         $controller = $dispatcher->getControllerName();
         $action = $dispatcher->getActionName();
 
-        // public resource
-        if ($controller == 'errors') {
-            return true;
-        }
-        if ($controller == 'index' && ($action == 'index' || $action == 'logout')) {
-            return true;
+        // public resources
+        $public_resources = AuthRoles::publicResources();
+        foreach ($public_resources as $public_resource => $public_actions) {
+            if (is_array($public_actions)) {
+                if ($controller == $public_resource && in_array($action, $public_actions)) {
+                    return true;
+                }
+            } else {
+                if ($controller == $public_resource && $public_actions == '*') {
+                    return true;
+                }
+            }
         }
 
         // admin
