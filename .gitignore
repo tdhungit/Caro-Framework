@@ -1,3 +1,5 @@
 /.idea
+/apps/logs/*.log
+/apps/backend/permissions/*.php
 /apps/cache/volt/*.php
 /public/uploads/images

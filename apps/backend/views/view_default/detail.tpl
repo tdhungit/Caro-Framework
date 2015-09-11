@@ -3,6 +3,14 @@
     <h1>
         {{ title }}
     </h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ url('/'~carofw['backendUrl']~'/'~controller~'/'~action_edit~'/'~data.id) }}">{{ t._('Edit') }}</a></li>
+		{% if link_detail %}
+			{% for link in link_detail %}
+				<li><a href="{{ link['url'] }}">{{ t._(link['label']) }}</a></li>
+			{% endfor %}
+		{% endif %}
+	</ol>
 </section>
 
 <section class="content">

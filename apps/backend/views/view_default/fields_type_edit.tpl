@@ -17,11 +17,19 @@
                             $options = $model::find()
                         ?>
 
-                    {% if data is not null %}
-                        {{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control', 'useEmpty': true) }}
-                    {% else %}
-                        {{ select(name, options, 'using': ['id', 'name'], 'class': 'form-control', 'useEmpty': true) }}
-                    {% endif %}
+						{% if data is not null %}
+							{{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control', 'useEmpty': true) }}
+						{% else %}
+							{% if view['default'] is defined %}
+								{% if view['default'] == 'session' %}
+									{{ select(name, options, 'using': ['id', 'name'], 'value': session.get('auth')['id'], 'class': 'form-control', 'useEmpty': true) }}
+								{% else %}
+									{{ select(name, options, 'using': ['id', 'name'], 'value': view['default'], 'class': 'form-control', 'useEmpty': true) }}
+								{% endif %}
+							{% else %}
+								{{ select(name, options, 'using': ['id', 'name'], 'class': 'form-control', 'useEmpty': true) }}
+							{% endif %}
+						{% endif %}
 
                     {% elseif view['type'] == 'image' %}
                         <div class="caro-image-content" style="padding-bottom: 5px;">
@@ -37,7 +45,11 @@
                         <script>CKEDITOR.replace('editview-{{ name }}');</script>
 
                     {% elseif view['type'] == 'customCode' %}
-                        {{ row.renderCustomCode(view['customCode']) }}
+                        {% if data is not null %}
+							{{ data.renderCustomCode(view['customCode']) }}
+						{% else %}
+							{{ model.renderCustomCode(view['customCode']) }}
+						{% endif %}
 
                     {# default | not define type #}
                     {% else %}

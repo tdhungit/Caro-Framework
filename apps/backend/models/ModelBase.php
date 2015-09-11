@@ -11,15 +11,25 @@
 
 namespace Modules\Backend\Models;
 
+
 use Phalcon\Mvc\Model;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ModelBase extends Model
 {
+    // config view
     public $list_view;
     public $detail_view;
     public $edit_view;
     public $menu;
+    // config custom query
+    static public $custom_conditions = null;
+    static public $custom_bind = null;
 
+    /**
+     * @param $text
+     * @return mixed|string
+     */
     static public function slugify($text)
     {
         // replace non letter or digits by -
@@ -36,6 +46,30 @@ class ModelBase extends Model
             return 'n-a';
         }
         return $text;
+    }
+
+    /**
+     * render custom code in setting view model
+     * user can user row value of current model
+     * example:
+     * {{ id }} or {{ name }}
+     *
+     * @param $custom_code
+     * @return mixed
+     */
+    public function renderCustomCode($custom_code)
+    {
+        preg_match_all('/\{\{(.*)\}\}/U', $custom_code, $fields);
+        $find = array();
+        $replace = array();
+        $i = 0;
+        foreach ($fields[1] as $field) {
+            $find[] = $fields[0][$i];
+            $field = trim($field);
+            $replace[] = !empty($this->$field) ? $this->$field : '';
+            $i++;
+        }
+        return str_replace($find, $replace, $custom_code);
     }
 
     /**
@@ -83,27 +117,81 @@ class ModelBase extends Model
     }
 
     /**
-     * render custom code in setting view model
-     * user can user row value of current model
-     * example:
-     * {{ id }} or {{ name }}
-     *
-     * @param $custom_code
-     * @return mixed
+     * @param null $parameters
+     * @return Model\ResultsetInterface
      */
-    public function renderCustomCode($custom_code)
+    public static function find($parameters = null)
     {
-        preg_match_all('/\{\{(.*)\}\}/U', $custom_code, $fields);
-        $find = array();
-        $replace = array();
-        $i = 0;
-        foreach ($fields[1] as $field) {
-            $find[] = $fields[0][$i];
-            $field = trim($field);
-            $replace[] = !empty($this->$field) ? $this->$field : '';
-            $i++;
+        if (static::$custom_conditions) {
+            if (strpos($parameters, '=') === false) {
+                $parameters = "id = $parameters";
+            }
+            if (is_string($parameters)) {
+                $parameters .= static::$custom_conditions;
+            }
         }
-        return str_replace($find, $replace, $custom_code);
+
+        if (static::$custom_bind) {
+            if (is_string($parameters)) {
+                $parameters = array($parameters);
+            }
+            foreach (static::$custom_bind as $bind => $value) {
+                $parameters['bind'][$bind] = $value;
+            }
+        }
+
+        $data = parent::find($parameters);
+        static::$custom_conditions = null;
+        static::$custom_bind = null;
+        return $data;
     }
+
+    /**
+     * @param null $parameters
+     * @return Model
+     */
+    public static function findFirst($parameters = null)
+    {
+        if (static::$custom_conditions) {
+            if (strpos($parameters, '=') === false) {
+                $parameters = "id = $parameters";
+            }
+            if (is_string($parameters)) {
+                $parameters .= static::$custom_conditions;
+            }
+        }
+
+        if (static::$custom_bind) {
+            if (is_string($parameters)) {
+                $parameters = array($parameters);
+            }
+            foreach (static::$custom_bind as $bind => $value) {
+                $parameters['bind'][$bind] = $value;
+            }
+        }
+
+        $data = parent::findFirst($parameters);
+        static::$custom_conditions = null;
+        static::$custom_bind = null;
+        return $data;
+    }
+
+    /**
+     * @param $data
+     * @param $limit
+     * @param $current_page
+     * @return \stdclass
+     */
+    public static function pagination($data, $limit, $current_page)
+    {
+        $paginator = new PaginatorModel(array(
+            "data"  => $data,
+            "limit" => $limit,
+            "page"  => $current_page > 0 ? $current_page : 1
+        ));
+
+        return $paginator->getPaginate();
+    }
+
 
 }

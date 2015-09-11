@@ -11,10 +11,9 @@
 
 namespace Modules\Backend\Controllers;
 
+
 use Modules\Backend\Models\Users;
 use Modules\Core\MyController;
-use Phalcon\Annotations\Exception;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ControllerBase extends MyController
 {
@@ -24,6 +23,8 @@ class ControllerBase extends MyController
     protected $action_detail = 'detail';
     protected $action_edit = 'edit';
     protected $action_delete = 'delete';
+	// action
+    protected $link_detail = null;
     // button action
     protected $link_action = null;
 
@@ -238,13 +239,7 @@ class ControllerBase extends MyController
         // pagination
         $currentPage = $this->request->getQuery('page');
         $paginator_limit = 20; // @TODO
-        $paginator = new PaginatorModel(array(
-            "data"  => $list_data,
-            "limit" => $paginator_limit,
-            "page"  => $currentPage > 0 ? $currentPage : 1
-        ));
-        // get page
-        $page = $paginator->getPaginate();
+        $page = $model->pagination($list_data, $paginator_limit, $currentPage);
 
         $this->view->page = $page;
         $this->view->data = $page->items;
@@ -307,6 +302,8 @@ class ControllerBase extends MyController
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->menu = $model->menu;
+		$this->view->action_edit = $this->action_edit;
+        $this->view->link_detail = $this->link_detail;
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -338,6 +335,7 @@ class ControllerBase extends MyController
         $this->view->title = $title;
 
         $this->view->edit_view = $model->edit_view;
+		$this->view->model = $model;
         $this->view->data = $data;
 
         $controller = strtolower($this->controller_name);
@@ -390,13 +388,7 @@ class ControllerBase extends MyController
         // pagination
         $currentPage = (int) $_GET["page"];
         $paginator_limit = 20; // @TODO
-        $paginator = new PaginatorModel(array(
-            "data"  => $list_data,
-            "limit" => $paginator_limit,
-            "page"  => $currentPage
-        ));
-        // get page
-        $page = $paginator->getPaginate();
+        $page = $model->pagination($list_data, $paginator_limit, $currentPage);
 
         $this->view->page = $page;
         $this->view->data = $page->items;
