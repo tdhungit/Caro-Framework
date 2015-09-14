@@ -503,7 +503,7 @@ class ControllerBase extends MyController
                 if ($data->update() == false) {
                     $msg = '';
                     foreach ($data->getMessages() as $message) {
-                        $msg .= $this->t->_($message) . '<br>';
+                        $msg .= $this->t->_((string) $message) . '<br>';
                     }
                     $this->flash->error($msg);
                 } else {
@@ -521,7 +521,7 @@ class ControllerBase extends MyController
                 if ($model->save() == false) {
                     $msg = '';
                     foreach ($model->getMessages() as $message) {
-                        $msg .= $this->t->_($message) . '<br>';
+                        $msg .= $this->t->_((string) $message) . '<br>';
                     }
                     $this->flash->error($msg);
                 } else {
