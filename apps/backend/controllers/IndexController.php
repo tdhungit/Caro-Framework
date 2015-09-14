@@ -22,13 +22,18 @@ class IndexController extends ControllerCustom
 
     private function _setSessionUser($user)
     {
-        $group_ids = UserGroupsUsers::find("user_id = '{$user->id}'");
         $roles = array();
-        foreach ($group_ids as $group_id) {
-            $group = UserGroups::findFirst($group_id);
-            if ($group) {
-                $role = AuthRoles::findFirst($group->role_id);
-                $roles[$role->unique_name] = $role->unique_name;
+        if ($user->username != 'admin') {
+            try {
+                $group_ids = UserGroupsUsers::find("user_id = '{$user->id}'");
+                foreach ($group_ids as $group_id) {
+                    $group = UserGroups::findFirst($group_id);
+                    if ($group) {
+                        $role = AuthRoles::findFirst($group->role_id);
+                        $roles[$role->unique_name] = $role->unique_name;
+                    }
+                }
+            } catch (\ErrorException $e) {
             }
         }
 

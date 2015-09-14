@@ -46,6 +46,13 @@ try {
             'controller' => 1,
             'action' => 'index'
         ));
+        // rest api
+        $router->add('/api'. '/:params', array(
+            'module' => 'backend',
+            'controller' => 'rest',
+            'action' => 'execute',
+            'params' => 1
+        ));
 
         /* front end */
         // index

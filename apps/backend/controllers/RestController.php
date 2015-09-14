@@ -24,9 +24,11 @@ class RestController extends Controller
      * Structure:
      * <model/function> => <method>
      * Example:
-     * users/list => get
+     * Users/list => get
      */
-    protected $register_api = array();
+    protected $register_api = array(
+        'AuthRoles/find' => 'get'
+    );
 
     /**
      * initialize
