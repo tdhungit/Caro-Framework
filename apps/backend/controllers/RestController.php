@@ -65,9 +65,8 @@ class RestController extends Controller
     /**
      * @param $model
      * @param $function
-     * @param null $param
      */
-    public function executeAction($model, $function, $param = null)
+    public function executeAction($model, $function)
     {
         if (!$model || !$function) {
             return $this->returnError(ERROR_EMPTYDATA);
@@ -85,9 +84,15 @@ class RestController extends Controller
         $method = $this->register_api[$register_key];
         switch(strtolower($method)) {
             case 'get':
-                $params = explode('/', $param);
-                if ( method_exists($focus, $function) ) {
-                    $data = call_user_func_array(array($focus, $function), $params);
+                $params = $this->request->getQuery('params');
+                $params = base64_decode($params);
+                $params = @json_decode($params);
+                if ($params) {
+                    if (method_exists($focus, $function)) {
+                        $data = call_user_func_array(array($focus, $function), $params);
+                    }
+                } else {
+                    return $this->returnError(ERROR_EMPTYDATA);
                 }
                 break;
             case 'post':
@@ -96,7 +101,7 @@ class RestController extends Controller
                     break;
                 }
                 $params = $this->request->getPost('params');
-                $params = implode(',', $params);
+                $params = json_decode($params);
                 if ( method_exists($focus, $function) ) {
                     $data = call_user_func_array(array($focus, $function), $params);
                 }
