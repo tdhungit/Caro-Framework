@@ -501,7 +501,11 @@ class ControllerBase extends MyController
                 }
 
                 if ($data->update() == false) {
-                    $this->flash->error($this->t->_('Fail, record was not updated successfully!'));
+                    $msg = '';
+                    foreach ($data->getMessages() as $message) {
+                        $msg .= $this->t->_($message) . '<br>';
+                    }
+                    $this->flash->error($msg);
                 } else {
                     $this->flash->success($this->t->_('Great, record was updated successfully!'));
                     $id = $post_id;
@@ -517,7 +521,7 @@ class ControllerBase extends MyController
                 if ($model->save() == false) {
                     $msg = '';
                     foreach ($model->getMessages() as $message) {
-                        $msg .= $message . '<br>';
+                        $msg .= $this->t->_($message) . '<br>';
                     }
                     $this->flash->error($msg);
                 } else {
