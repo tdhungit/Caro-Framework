@@ -1,5 +1,7 @@
 {% if view['type'] == 'select' %}
-    {{ carofw['app_list_strings'][view['options']][data.readAttribute(name)] }}
+    {% if data.readAttribute(name) %}
+        {{ carofw['app_list_strings'][view['options']][data.readAttribute(name)] }}
+    {% endif %}
 
 {% elseif view['type'] == 'relate' %}
     <?php
