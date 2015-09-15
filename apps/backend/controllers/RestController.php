@@ -86,13 +86,10 @@ class RestController extends Controller
             case 'get':
                 $params = $this->request->getQuery('params');
                 $params = base64_decode($params);
-                $params = @json_decode($params);
-                if ($params) {
-                    if (method_exists($focus, $function)) {
-                        $data = call_user_func_array(array($focus, $function), $params);
-                    }
-                } else {
-                    return $this->returnError(ERROR_EMPTYDATA);
+                $params = @json_decode($params, true);
+                $params = ($params) ? $params : array();
+                if (method_exists($focus, $function)) {
+                    $data = call_user_func_array(array($focus, $function), $params);
                 }
                 break;
             case 'post':
@@ -101,7 +98,8 @@ class RestController extends Controller
                     break;
                 }
                 $params = $this->request->getPost('params');
-                $params = json_decode($params);
+                $params = @json_decode($params, true);
+                $params = ($params) ? $params : array();
                 if ( method_exists($focus, $function) ) {
                     $data = call_user_func_array(array($focus, $function), $params);
                 }
