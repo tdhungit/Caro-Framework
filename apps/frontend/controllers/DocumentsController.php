@@ -17,5 +17,28 @@ class DocumentsController extends ControllerCustom
     public function indexAction()
     {
         $this->view->setTemplateAfter('document');
+        $page = $this->request->getQuery('step');
+        switch ($page) {
+            case 'start':
+                $this->view->pick('documents/start');
+                break;
+            case 'structure':
+                $this->view->pick('documents/structure');
+                break;
+            case 'backend_crud':
+                $this->view->pick('documents/backend_crud');
+                break;
+            case 'fields_type':
+                $this->view->pick('documents/fields_type');
+                break;
+            case 'subpanels':
+                $this->view->pick('documents/subpanels');
+                break;
+            case 'permissions':
+                $this->view->pick('documents/permissions');
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -28,23 +28,48 @@
         </div>
 
         <div class="col-md-4">
-            <p class="leader">{{ t._('Table Of Contents') }}</p>
+            <h3>{{ t._('Table Of Contents') }}</h3>
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav in" id="side-menu">
                     <li>
-                        <a href="index.html" class="active">
-                            <i class="fa fa-dashboard fa-fw"></i> Dashboard
+                        <a href="{{ url('') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Home Page
                         </a>
                     </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Charts
-                            <span class="fa arrow"></span>
+                    <li>
+                        <a href="{{ url('/documents') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Overview
                         </a>
-                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                            <li><a href="flot.html">Flot Charts</a></li>
-                            <li><a href="morris.html">Morris.js Charts</a></li>
-                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=start') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Getting Start
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=structure') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Caro Framework Structure
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=backend_crud') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Backend Module CRUD
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=fields_type') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Fields Type
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=subpanels') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Sub Panels
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=permissions') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Permissions
+                        </a>
                     </li>
                 </ul>
             </div>

@@ -13,6 +13,9 @@
     <script src="{{ static_url(theme_uri) }}/js/html5.js"></script>
     <![endif]-->
     <link href="{{ static_url(theme_uri) }}/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <script src="{{ static_url(theme_uri) }}/js/jquery.min.js"></script>
+    <script src="{{ static_url(theme_uri) }}/js/ZeroClipboard/ZeroClipboard.js"></script>
 </head>
 <body>
 
