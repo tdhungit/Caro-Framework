@@ -24,5 +24,8 @@
         <li><a href="{{ url('/documents?step=backend_crud') }}">Backend Module CRUD</a></li>
         <li><a href="{{ url('/documents?step=fields_type') }}">Fields Type</a></li>
         <li><a href="{{ url('/documents?step=subpanels') }}">Sub Panels</a></li>
+        <li><a href="{{ url('/documents?step=permissions') }}">Permissions</a></li>
+        <li><a href="{{ url('/documents?step=api') }}">REST API</a></li>
+        <li><a href="{{ url('/documents?step=logs') }}">Logs</a></li>
     </ul>
 </ul>

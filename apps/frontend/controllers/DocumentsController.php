@@ -37,6 +37,12 @@ class DocumentsController extends ControllerCustom
             case 'permissions':
                 $this->view->pick('documents/permissions');
                 break;
+            case 'api':
+                $this->view->pick('documents/api');
+                break;
+            case 'logs':
+                $this->view->pick('documents/logs');
+                break;
             default:
                 break;
         }

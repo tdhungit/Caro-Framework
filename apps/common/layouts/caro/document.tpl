@@ -71,6 +71,16 @@
                             <i class="fa fa-check fa-fw"></i> Permissions
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ url('/documents?step=api') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> REST API
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url('/documents?step=logs') }}" class="active">
+                            <i class="fa fa-check fa-fw"></i> Logs
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
