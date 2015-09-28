@@ -121,6 +121,11 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/builder') }}">
+                        <i class="fa fa-cog"></i> <span>{{ t._('Module Builder') }}</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings') }}">
                         <i class="fa fa-cog"></i> <span>{{ t._('Settings') }}</span>
                     </a>
