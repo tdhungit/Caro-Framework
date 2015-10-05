@@ -2,6 +2,9 @@
     <h1>
         {{ t._('List Models') }}
     </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/'~carofw['backendUrl']~'/builder/create_model') }}"><i class="fa fa-plus"></i> Add new model</a></li>
+    </ol>
 </section>
 
 <section class="content">

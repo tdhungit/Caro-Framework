@@ -15,6 +15,24 @@ class BuilderController extends ControllerCustom
         'int', 'date', 'varchar', 'decimal', 'datetime', 'char', 'text', 'float', 'boolean', 'double', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'bigint', 'json', 'jsonb'
     );
 
+    /**
+     * @param $model_name
+     * @return string
+     */
+    public static function getDefaultDBFromModel($model_name)
+    {
+        $table = '';
+        for ($i = 0; $i < strlen($model_name); $i++) {
+            if ($i != 0 && ctype_upper($model_name[$i]) == true) {
+                $table .= '_' . strtolower($model_name[$i]);
+            } else {
+                $table .= strtolower($model_name[$i]);
+            }
+        }
+
+        return $table;
+    }
+
     public function indexAction()
     {
         $models = array();
@@ -116,5 +134,38 @@ class BuilderController extends ControllerCustom
         }
 
         $this->backendRedirect('/builder/edit_model/' . $model_name);
+    }
+
+    public function create_modelAction()
+    {
+        if ($this->request->isPost()) {
+            $model_name = $this->request->getPost('model_name');
+            if ($model_name) {
+                $model_file = APP_PATH . "apps/backend/models/$model_name.php";
+
+                if (is_file($model_file)) {
+                    $this->flash->error('Exits this model!');
+                } else {
+                    $databases = include APP_PATH . 'apps/config/database_structures.php';
+                    $databases[strtolower($model_name)] = array(
+                        'fields' => array(),
+                        'indexes' => array(),
+                    );
+
+                    // write db
+                    $file = fopen(APP_PATH . "apps/config/database_structures.php", "w");
+                    fwrite($file, "<?php\n\n use \\Phalcon\\Db\\Column as Column; \n\nreturn " . var_export($databases, true) . ";\n");
+                    fclose($file);
+
+                    // write model
+                    $file = fopen($model_file, "w");
+                    $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
+                    fwrite($file, $content);
+                    fclose($file);
+                }
+
+                $this->backendRedirect('/builder');
+            }
+        }
     }
 }
