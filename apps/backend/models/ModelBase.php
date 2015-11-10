@@ -26,6 +26,22 @@ class ModelBase extends Model
     static public $custom_conditions = null;
     static public $custom_bind = null;
 
+    public function initialize()
+    {
+        $class_name = get_class($this);
+        $config_name = $class_name . '.config.php';
+        $file_config = APP_PATH . 'apps/backend/models/' . $config_name;
+        if (is_file($file_config)) {
+            $layout_config_list_view = array();
+            $layout_config_detail_view = array();
+            $layout_config_edit_view = array();
+            include $file_config;
+            $this->list_view = $layout_config_list_view;
+            $this->detail_view = $layout_config_detail_view;
+            $this->edit_view = $layout_config_edit_view;
+        }
+    }
+
     /**
      * @param $text
      * @return mixed|string
