@@ -100,6 +100,7 @@ class UserGroups extends ModelCustom
 
     public function initialize()
     {
+        parent::initialize();
         $user = new Users();
         $this->menu = $user->menu;
     }
