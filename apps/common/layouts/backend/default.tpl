@@ -60,7 +60,11 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="{{ current_user.avatar }}" class="user-image" alt="User Image">
+                                {% if current_user.avatar %}
+                                    <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image" width="17px">
+                                {% else %}
+                                    <img src="{{ static_url() }}/themes/backend/img/avatar.png" class="img-circle" alt="User Image" width="17px">
+                                {% endif %}
                                 <span class="hidden-xs">Admin</span>
                             </a>
                             <ul class="dropdown-menu">
@@ -81,7 +85,11 @@
             <div class="user-panel">
                 <div class="pull-left image">
                     {% if current_user is defined %}
-                        <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image">
+                        {% if current_user.avatar %}
+                            <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image">
+                        {% else %}
+                            <img src="{{ static_url() }}/themes/backend/img/avatar.png" class="img-circle" alt="User Image">
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="pull-left info">
