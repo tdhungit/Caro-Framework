@@ -464,8 +464,7 @@ class ControllerBase extends MyController
 
                     if ($func == 'del') {
                         $mid_data = $mid_model::findFirst(array(
-                            $subpanel_def['mid_field1'] . '=' . $current_id,
-                            $subpanel_def['mid_field2'] . '=' . $rel_id
+                            "conditions" => $subpanel_def['mid_field1'] . '=' . $current_id . " and " . $subpanel_def['mid_field2'] . '=' . $rel_id
                         ));
                         if ($mid_data->delete() == false) {
                             $this->flash->error($this->t->_('Sorry, can not remove this record relate'));
