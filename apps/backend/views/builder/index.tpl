@@ -18,12 +18,16 @@
                                 <table class="table table-bordered table-hover dataTable">
                                     <thead>
                                         <tr role="row">
-                                            <th class="header">Model Name</th>
+                                            <th class="header">{{ t._('Model Name') }}</th>
+                                            <th class="header"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for model in models %}
-                                            <tr><td><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_model/' ~ model) }}">{{ model }}</a></td></tr>
+                                            <tr>
+                                                <td><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_model/' ~ model) }}">{{ model }}</a></td>
+                                                <td><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_layout/' ~ model) }}">{{ t._('Edit Layout') }}</a></td>
+                                            </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>

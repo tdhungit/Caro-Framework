@@ -58,8 +58,8 @@ class BuilderController extends ControllerCustom
 
         $table_name = $model->getSource();
 
-        if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
-            $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+        if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
+            $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
         } else {
             $databases = include APP_PATH . 'apps/config/database_structures.php';
         }
@@ -99,8 +99,8 @@ class BuilderController extends ControllerCustom
 
         $table_name = $model->getSource();
 
-        if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
-            $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+        if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
+            $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
         } else {
             $databases = include APP_PATH . 'apps/config/database_structures.php';
         }
@@ -127,8 +127,8 @@ class BuilderController extends ControllerCustom
             $fields = $this->request->getPost('fields');
             $indexes = $this->request->getPost('indexes');
 
-            if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
-                $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+            if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
+                $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
             } else {
                 $databases = include APP_PATH . 'apps/config/database_structures.php';
             }
@@ -137,9 +137,9 @@ class BuilderController extends ControllerCustom
             if ($fields) {
                 foreach ($fields as $field) {
                     $databases[$table]['fields'][$field['name']] = array(
-                        'type' => $field['type'],
-                        'size' => $field['size'],
-                        'notNull' => $field['notnull']
+                        'type' => (int) $field['type'],
+                        'size' => (int) $field['size'],
+                        'notNull' => (bool) $field['notnull']
                     );
                 }
             }
@@ -154,7 +154,7 @@ class BuilderController extends ControllerCustom
                 }
             }
 
-            $file = fopen(APP_PATH . "apps/config/database_structures.cache.php", "w");
+            $file = fopen(APP_PATH . "apps/config/database_structures.ini.php", "w");
             fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
             fclose($file);
         }
@@ -172,8 +172,8 @@ class BuilderController extends ControllerCustom
                 if (is_file($model_file)) {
                     $this->flash->error('Exits this model!');
                 } else {
-                    if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
-                        $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+                    if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
+                        $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
                     } else {
                         $databases = include APP_PATH . 'apps/config/database_structures.php';
                     }
@@ -184,7 +184,7 @@ class BuilderController extends ControllerCustom
                     );
 
                     // write db
-                    $file = fopen(APP_PATH . "apps/config/database_structures.cache.php", "w");
+                    $file = fopen(APP_PATH . "apps/config/database_structures.ini.php", "w");
                     fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
                     fclose($file);
 
@@ -193,10 +193,100 @@ class BuilderController extends ControllerCustom
                     $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
                     fwrite($file, $content);
                     fclose($file);
+
+                    // write controller
+                    $controller_file = APP_PATH . "apps/backend/controllers/{$model_name}Controller.php";
+                    if (!is_file($controller_file)) {
+                        $file = fopen($controller_file, "w");
+                        $content = "<?php\n\nnamespace Modules\Backend\Controllers;\n\nclass {$model_name}Controller extends ControllerCustom \n{\n\tprotected \$model_name = '$model_name';\n\n\tpublic function indexAction()\n\t{\n\t\t\$this->listAction();\n\t}\n}";
+                        fwrite($file, $content);
+                        fclose($file);
+                    }
                 }
 
                 $this->backendRedirect('/builder');
             }
         }
+    }
+
+    public function edit_layoutAction($model_name = null)
+    {
+        if ($this->request->isPost()) {
+            $model_name = $this->request->getPost('model_name');
+            //$model = $this->getModel($model_name);
+
+            $fields = $this->request->getPost('fields');
+
+            $list_view = array();
+            $edit_view = array();
+            $detail_view = array();
+            foreach ($fields as $field => $options) {
+                if ($options['type']) {
+                    if ($options['search']) {
+                        $options['search'] = 1;
+                        $options['operator'] = 'like';
+                    } else {
+                        $options['search'] = 0;
+                    }
+
+                    if ($field == 'name') {
+                        $options['link'] = 1;
+                    }
+
+                    if (!empty($options['list'])) {
+                        $list_view['fields'][$field] = $options;
+                    }
+
+                    if (!empty($options['edit'])) {
+                        $edit_view['title'] = 'name';
+                        $edit_view['fields'][$field] = $options;
+                    }
+
+                    if (!empty($options['detail'])) {
+                        $detail_view['title'] = 'name';
+                        $detail_view['fields'][$field] = $options;
+                    }
+                }
+            }
+
+            $config_name = $model_name . '.conf.php';
+            $file_config = APP_PATH . 'apps/backend/config/' . $config_name;
+            $file = fopen($file_config, "w");
+            $content = "<?php";
+            $content .= "\n\n\$layout_config_list_view = " . var_export($list_view, true) . ";";
+            $content .= "\n\n\$layout_config_edit_view = " . var_export($edit_view, true) . ";";
+            $content .= "\n\n\$layout_config_detail_view = " . var_export($detail_view, true) . ";";
+            fwrite($file, $content);
+            fclose($file);
+
+            return $this->backendRedirect('/builder/edit_layout/' . $model_name);
+        }
+
+        $model = $this->getModel($model_name);
+        $fields = $model->allFields();
+        
+        $this->view->model_name = $model_name;
+        // all fields
+        $this->view->fields = $fields['fields'];
+        // selected fields
+        $this->view->list_fields = array_merge($model->list_view, $model->edit_view, $model->detail_view);
+        // all type
+        $this->view->types = array(
+            'text' => 'Text',
+            'number' => 'Number',
+            'select' => 'Select',
+            'image' => 'Image',
+            'relate' => 'Relate',
+            'textarea' => 'TextArea',
+            'note' => 'Note'
+        );
+        // all model
+        $this->view->all_models = $model->getAllModels();
+        // all list dropdown
+        $all_lists = array();
+        foreach ($this->carofw['app_list_strings'] as $list_dropdown => $value) {
+            $all_lists[$list_dropdown] = $list_dropdown;
+        }
+        $this->view->all_lists = $all_lists;
     }
 }

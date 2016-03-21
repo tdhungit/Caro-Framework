@@ -33,8 +33,8 @@ class SettingsController extends ControllerCustom
      */
     public function repairAction()
     {
-        if (is_file(__DIR__ . "/../../config/database_structures.cache.php")) {
-            $tables = include  __DIR__ . "/../../config/database_structures.cache.php";
+        if (is_file(__DIR__ . "/../../config/database_structures.ini.php")) {
+            $tables = include  __DIR__ . "/../../config/database_structures.ini.php";
         } else {
             $tables = include __DIR__ . "/../../config/database_structures.php";   
         }

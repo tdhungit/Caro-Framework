@@ -108,6 +108,15 @@ try {
     });
 
     /**
+     * Set Cookies
+     */
+    $di->set('cookies', function() {
+        $cookies = new Phalcon\Http\Response\Cookies();
+        $cookies->useEncryption(false);
+        return $cookies;
+    });
+
+    /**
      * Setup const var
      */
     $di->set('carofw', function() use ($config) {

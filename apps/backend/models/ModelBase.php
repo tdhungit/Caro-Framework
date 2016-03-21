@@ -17,20 +17,21 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ModelBase extends Model
 {
+    public $name_base = "Modules\\Backend\\Models\\";
     // config view
-    public $list_view;
-    public $detail_view;
-    public $edit_view;
-    public $menu;
+    public $list_view = array();
+    public $detail_view = array();
+    public $edit_view = array();
+    public $menu = array();
     // config custom query
     static public $custom_conditions = null;
     static public $custom_bind = null;
 
     public function initialize()
     {
-        $class_name = get_class($this);
-        $config_name = $class_name . '.config.php';
-        $file_config = APP_PATH . 'apps/backend/models/' . $config_name;
+        $class_name = str_replace($this->name_base, '', get_class($this));
+        $config_name = $class_name . '.conf.php';
+        $file_config = APP_PATH . 'apps/backend/config/' . $config_name;
         if (is_file($file_config)) {
             $layout_config_list_view = array();
             $layout_config_detail_view = array();
@@ -209,5 +210,50 @@ class ModelBase extends Model
         return $paginator->getPaginate();
     }
 
+    /**
+     * All Fields on Model 
+     * 
+     * @return mixed
+     */
+    public function allFields()
+    {
+        $table = $this->getSource();
+        $tables = $this->getAllDatabase();
+        
+        return $tables[$table];
+    }
+
+    /**
+     * All Fields on Database
+     * 
+     * @return mixed
+     */
+    public function getAllDatabase()
+    {
+        if (is_file(__DIR__ . "/../../config/database_structures.ini.php")) {
+            $tables = include  __DIR__ . "/../../config/database_structures.ini.php";
+        } else {
+            $tables = include __DIR__ . "/../../config/database_structures.php";
+        }
+        
+        return $tables;
+    }
+
+    /**
+     * All Models
+     * @return array
+     */
+    public function getAllModels()
+    {
+        $model_path = APP_PATH . '/apps/backend/models/*.php';
+
+        foreach (glob($model_path) as $model) {
+            $name = basename($model, '.php');
+            if ($name != 'ModelBase' && $name != 'ModelCustom' && $name != 'CaroLogs') {
+                $models[$name] = $name;
+            }
+        }
+        return $models;
+    }
 
 }
