@@ -130,7 +130,7 @@
                 </li>
                 <li>
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/builder') }}">
-                        <i class="fa fa-cog"></i> <span>{{ t._('Module Builder') }}</span>
+                        <i class="fa fa-archive"></i> <span>{{ t._('Module Builder') }}</span>
                     </a>
                 </li>
                 <li>
