@@ -58,7 +58,20 @@ class BuilderController extends ControllerCustom
 
         $table_name = $model->getSource();
 
-        $databases = include APP_PATH . 'apps/config/database_structures.php';
+        if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
+            $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+        } else {
+            $databases = include APP_PATH . 'apps/config/database_structures.php';
+        }
+
+        if (empty($databases[$table_name]['fields'])) {
+            $databases[$table_name]['fields'] = array();
+        }
+
+        if (empty($databases[$table_name]['indexes'])) {
+            $databases[$table_name]['indexes'] = array();
+        }
+
         $this->view->table = $databases[$table_name];
         $this->view->types = $this->types;
 
@@ -86,7 +99,12 @@ class BuilderController extends ControllerCustom
 
         $table_name = $model->getSource();
 
-        $databases = include APP_PATH . 'apps/config/database_structures.php';
+        if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
+            $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+        } else {
+            $databases = include APP_PATH . 'apps/config/database_structures.php';
+        }
+
         $databases = $databases[$table_name];
         $fields = array();
         foreach ($databases['fields'] as $field => $options) {
@@ -109,27 +127,35 @@ class BuilderController extends ControllerCustom
             $fields = $this->request->getPost('fields');
             $indexes = $this->request->getPost('indexes');
 
-            $databases = include APP_PATH . 'apps/config/database_structures.php';
+            if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
+                $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+            } else {
+                $databases = include APP_PATH . 'apps/config/database_structures.php';
+            }
 
             $databases[$table]['fields'] = array();
-            foreach ($fields as $field) {
-                $databases[$table]['fields'][$field['name']] = array(
-                    'type' => $field['type'],
-                    'size' => $field['size'],
-                    'notNull' => $field['notnull']
-                );
+            if ($fields) {
+                foreach ($fields as $field) {
+                    $databases[$table]['fields'][$field['name']] = array(
+                        'type' => $field['type'],
+                        'size' => $field['size'],
+                        'notNull' => $field['notnull']
+                    );
+                }
             }
 
             $databases[$table]['indexes'] = array();
-            foreach($indexes as $index) {
-                $databases[$table]['indexes'][$index['name']] = array(
-                    'type' => $index['type'],
-                    'fields' => explode(',', $index['fields'])
-                );
+            if ($indexes) {
+                foreach($indexes as $index) {
+                    $databases[$table]['indexes'][$index['name']] = array(
+                        'type' => $index['type'],
+                        'fields' => explode(',', $index['fields'])
+                    );
+                }
             }
 
-            $file = fopen(APP_PATH . "apps/config/database_structures.php", "w");
-            fwrite($file, "<?php\n\n use \\Phalcon\\Db\\Column as Column; \n\nreturn " . var_export($databases, true) . ";\n");
+            $file = fopen(APP_PATH . "apps/config/database_structures.cache.php", "w");
+            fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
             fclose($file);
         }
 
@@ -146,15 +172,20 @@ class BuilderController extends ControllerCustom
                 if (is_file($model_file)) {
                     $this->flash->error('Exits this model!');
                 } else {
-                    $databases = include APP_PATH . 'apps/config/database_structures.php';
+                    if (is_file(APP_PATH . 'apps/config/database_structures.cache.php')) {
+                        $databases = include APP_PATH . 'apps/config/database_structures.cache.php';
+                    } else {
+                        $databases = include APP_PATH . 'apps/config/database_structures.php';
+                    }
+
                     $databases[strtolower($model_name)] = array(
                         'fields' => array(),
                         'indexes' => array(),
                     );
 
                     // write db
-                    $file = fopen(APP_PATH . "apps/config/database_structures.php", "w");
-                    fwrite($file, "<?php\n\n use \\Phalcon\\Db\\Column as Column; \n\nreturn " . var_export($databases, true) . ";\n");
+                    $file = fopen(APP_PATH . "apps/config/database_structures.cache.php", "w");
+                    fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
                     fclose($file);
 
                     // write model

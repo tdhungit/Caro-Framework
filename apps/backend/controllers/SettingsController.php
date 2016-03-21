@@ -33,7 +33,11 @@ class SettingsController extends ControllerCustom
      */
     public function repairAction()
     {
-        $tables = include __DIR__ . "/../../config/database_structures.php";
+        if (is_file(__DIR__ . "/../../config/database_structures.cache.php")) {
+            $tables = include  __DIR__ . "/../../config/database_structures.cache.php";
+        } else {
+            $tables = include __DIR__ . "/../../config/database_structures.php";   
+        }
 
         foreach ($tables as $table_name => $table_data) {
             $exists = $this->db->tableExists($table_name);
