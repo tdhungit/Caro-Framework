@@ -4,12 +4,18 @@
         {{ title }}
     </h1>
 	<ol class="breadcrumb">
+        <li><a href="{{ url('/'~carofw['backendUrl']~'/'~controller) }}">{{ t._('List') }}</a></li>
 		<li><a href="{{ url('/'~carofw['backendUrl']~'/'~controller~'/'~action_edit~'/'~data.id) }}">{{ t._('Edit') }}</a></li>
 		{% if link_detail %}
 			{% for link in link_detail %}
 				<li><a href="{{ link['url'] }}">{{ t._(link['label']) }}</a></li>
 			{% endfor %}
 		{% endif %}
+        {% if extra_view_menus is defined %}
+            {% for m in extra_view_menus %}
+                <li><a href="{{ url('/'~carofw['backendUrl']~m['url']) }}">{{ t._(m['label']) }}</a></li>
+            {% endfor %}
+        {% endif %}
 	</ol>
 </section>
 

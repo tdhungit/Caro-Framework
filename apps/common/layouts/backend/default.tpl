@@ -108,32 +108,61 @@
             <!-- /.search form -->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
-                <li>
-                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/dashboard') }}">
-                        <i class="fa fa-dashboard"></i> <span>{{ t._('Dashboard') }}</span>
+                {% for m in current_menus %}
+                    <li class="{% if m['children'] %}treeview{% endif %}{% if current_controller == m['controller_name'] %} active{% endif %}">
+                        {% set current_menu_link = url('/' ~ carofw['backendUrl'] ~ '/' ~ m['controller_name'] ~ '/' ~ m['action_name']) %}
+                        {% if m['link'] %}
+                            {% set current_menu_link = m['link'] %}
+                        {% endif %}
+                        <a href="{{ current_menu_link }}">
+                            <i class="{{ m['class'] }}"></i> <span>{{ t._(m['name']) }}</span>
+                            {% if m['children'] %}<i class="fa fa-angle-left pull-right"></i>{% endif %}
+                        </a>
+
+                        {% if m['children'] is defined %}
+                            {% for cm in m['children'] %}
+                                <ul class="treeview-menu">
+                                    <li class="{% if current_controller == cm['controller_name'] and current_action == cm['action_name'] %}active{% endif %}">
+                                        {% set current_menu_link = url('/' ~ carofw['backendUrl'] ~ '/' ~ cm['controller_name'] ~ '/' ~ cm['action_name']) %}
+                                        {% if cm['link'] %}
+                                            {% set current_menu_link = cm['link'] %}
+                                        {% endif %}
+                                        <a href="{{ current_menu_link }}">
+                                            <i class="{{ cm['class'] }}"></i> {{ t._(cm['name']) }}
+                                        </a>
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+                <li class="{% if current_controller == 'menus' %}active{% endif %}">
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/menus') }}">
+                        <i class="fa fa-bars"></i> <span>{{ t._('Menus') }}</span>
                     </a>
                 </li>
-                <li class="treeview">
+                <li class="treeview{% if current_controller == 'users' %} active{% endif %}">
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}">
                         <i class="fa fa-users"></i>
                         <span>{{ t._('Users') }}</span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}"><i class="fa fa-reorder"></i> {{ t._('View Users') }}</a></li>
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit') }}"><i class="fa fa-plus"></i> {{ t._('Create User') }}</a></li>
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/groups') }}"><i class="fa fa-reorder"></i> {{ t._('View Groups') }}</a></li>
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_group') }}"><i class="fa fa-plus"></i> {{ t._('Create Group') }}</a></li>
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/roles') }}"><i class="fa fa-reorder"></i> {{ t._('View Roles') }}</a></li>
-                        <li><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_role') }}"><i class="fa fa-plus"></i> {{ t._('Create Role') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'index' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users') }}"><i class="fa fa-user"></i> {{ t._('View Users') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'edit' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit') }}"><i class="fa fa-user-plus"></i> {{ t._('Create User') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'groups' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/groups') }}"><i class="fa fa-users"></i> {{ t._('View Groups') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'edit_group' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_group') }}"><i class="fa fa-plus-square"></i> {{ t._('Create Group') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'roles' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/roles') }}"><i class="fa fa-share-alt-square"></i> {{ t._('View Roles') }}</a></li>
+                        <li class="{% if current_controller == 'users' and current_action == 'edit_role' %}active{% endif %}"><a href="{{ url('/'~ carofw['backendUrl'] ~'/users/edit_role') }}"><i class="fa fa-plus-circle"></i> {{ t._('Create Role') }}</a></li>
                     </ul>
                 </li>
-                <li>
+                <li class="{% if current_controller == 'builder' %}active{% endif %}">
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/builder') }}">
                         <i class="fa fa-archive"></i> <span>{{ t._('Module Builder') }}</span>
                     </a>
                 </li>
-                <li>
+                <li class="{% if current_controller == 'settings' %}active{% endif %}">
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings') }}">
                         <i class="fa fa-cog"></i> <span>{{ t._('Settings') }}</span>
                     </a>

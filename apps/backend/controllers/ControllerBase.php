@@ -12,6 +12,7 @@
 namespace Modules\Backend\Controllers;
 
 
+use Modules\Backend\Models\Menus;
 use Modules\Backend\Models\Users;
 use Modules\Core\MyController;
 
@@ -41,6 +42,44 @@ class ControllerBase extends MyController
             $current_user = Users::findFirst($auth['id']);
             $this->view->setVar('current_user', $current_user);
         }
+        // menus
+        $this->view->setVar('current_menus', $this->getAllMenus());
+    }
+
+    /**
+     * @return \Phalcon\Mvc\Model\ResultsetInterface
+     */
+    public function getAllMenus()
+    {
+        $menus = array();
+
+        $file_menu = APP_PATH . 'apps/backend/permissions/menus.php';
+        if (is_file($file_menu)) {
+            return include $file_menu;
+        } else {
+            $parent_menus = Menus::find(array(
+                'conditions' => "deleted = 0 AND (parent_id IS NULL OR parent_id = '')"
+            ));
+            if ($parent_menus) {
+                $i = 0;
+                foreach ($parent_menus->toArray() as $p_menus) {
+                    $menus[$i] = $p_menus;
+                    $menus[$i]['children'] = Menus::find(array(
+                        'conditions' => "deleted = 0 AND parent_id = :menu_id:",
+                        'bind' => array('menu_id' => $p_menus['id'])
+                    ))->toArray();
+                    $i++;
+                }
+            }
+
+            $file = fopen($file_menu, "w");
+            $content = "<?php";
+            $content .= "\n\nreturn " . var_export($menus, true) . ";";
+            fwrite($file, $content);
+            fclose($file);
+        }
+
+        return $menus;
     }
 
     /**

@@ -34,6 +34,9 @@ class MyController extends Controller
         // language
         $this->t = $this->getTranslation();
         $this->view->setVar('t', $this->t);
+        // controller, action
+        $this->view->setVar('current_controller', $this->controller_name);
+        $this->view->setVar('current_action', $this->action_name);
     }
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)

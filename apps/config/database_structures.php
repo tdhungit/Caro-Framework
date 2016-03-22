@@ -11,6 +11,7 @@
 use \Phalcon\Db\Column as Column;
 
 return array(
+    // Users
     'users' => array(
         'fields' => array(
             'avatar' => array(
@@ -125,7 +126,48 @@ return array(
             )
         )
     ),
-
+    // Menu Admin
+    'menus' => array(
+        'fields' => array(
+            'name' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 200,
+                "notNull" => true
+            ),
+            'controller_name' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 200,
+                "notNull" => false
+            ),
+            'action_name' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 200,
+                "notNull" => false
+            ),
+            'link' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 255,
+                "notNull" => false
+            ),
+            'parent_id' => array(
+                "type"    => Column::TYPE_INTEGER,
+                "size"    => 10,
+                "notNull" => false
+            ),
+            'class' => array(
+                "type"    => Column::TYPE_VARCHAR,
+                "size"    => 200,
+                "notNull" => false
+            ),
+            'weight' => array(
+                "type"    => Column::TYPE_INTEGER,
+                "size"    => 10,
+                "notNull" => false
+            ),
+        ),
+        'indexes' => array()
+    ),
+    // Settings
     'settings' => array(
         'fields' => array(
             'name' => array(

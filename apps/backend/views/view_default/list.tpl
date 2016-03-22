@@ -5,6 +5,11 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/'~carofw['backendUrl']~'/'~controller~'/'~action_edit) }}">{{ t._('Create') }}</a></li>
+        {% if extra_view_menus is defined %}
+            {% for m in extra_view_menus %}
+                <li><a href="{{ url('/'~carofw['backendUrl']~m['url']) }}">{{ t._(m['label']) }}</a></li>
+            {% endfor %}
+        {% endif %}
     </ol>
 </section>
 

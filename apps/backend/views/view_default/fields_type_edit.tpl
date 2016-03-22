@@ -14,7 +14,7 @@
                         <?php
                             $model_path = '\\Modules\Backend\Models\\' . $view['model'];
                             $model = new $model_path();
-                            $options = $model::find()
+                            $options = $model::find(array('conditions' => 'deleted = 0'));
                         ?>
 
 						{% if data is not null %}

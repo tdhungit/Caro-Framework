@@ -3,6 +3,14 @@
     <h1>
         {{ title }}
     </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/'~carofw['backendUrl']~'/'~controller) }}">{{ t._('List') }}</a></li>
+        {% if extra_view_menus is defined %}
+            {% for m in extra_view_menus %}
+                <li><a href="{{ url('/'~carofw['backendUrl']~m['url']) }}">{{ t._(m['label']) }}</a></li>
+            {% endfor %}
+        {% endif %}
+    </ol>
 </section>
 
 <section class="content">
