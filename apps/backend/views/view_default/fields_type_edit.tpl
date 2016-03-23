@@ -37,7 +37,7 @@
                         </div>
                         <span class="btn btn-default btn-file">
                             Browse <input type="file" class="caro-upload-image" location="images">
-                            <input type="hidden" name="{{ name }}" class="caro-value-upload" value="{{ data.readAttribute(name) }}">
+                            <input type="hidden" name="{{ name }}" class="caro-value-upload" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}">
                         </span>
 
                     {% elseif view['type'] == 'textarea' %}
