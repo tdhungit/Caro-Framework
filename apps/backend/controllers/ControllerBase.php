@@ -644,7 +644,10 @@ class ControllerBase extends MyController
             // Process upload file
             foreach ($this->request->getUploadedFiles() as $file){
                 // Move the file into the application
-                $path_file = $upload_path . $file->getName();
+                $file_upload_name = $file->getName();
+                // hash file name
+                //$file_upload_name = md5($file->getName()) . '.' . $file->getExtension();
+                $path_file = $upload_path . $file_upload_name;
                 $upload_result = $file->moveTo($path_file);
                 // result upload
                 if ($upload_result) {
@@ -652,7 +655,7 @@ class ControllerBase extends MyController
                     $data_upload[] = array(
                         'name' => $file->getName(),
                         'size' => $file->getSize(),
-                        'path' => $this->url->get($base_path['sub_folder']) . $file->getName()
+                        'path' => $this->url->get($base_path['sub_folder']) . $file_upload_name
                     );
                 } else {
                     $isUploaded = false;
