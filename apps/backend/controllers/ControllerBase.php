@@ -653,9 +653,10 @@ class ControllerBase extends MyController
                 if ($upload_result) {
                     $isUploaded = true;
                     $data_upload[] = array(
+                        'folder' => $base_path['folder'],
                         'name' => $file->getName(),
                         'size' => $file->getSize(),
-                        'path' => $this->url->get($base_path['sub_folder']) . $file_upload_name
+                        'path' => $this->url->get($base_path['uri']) . $file_upload_name
                     );
                 } else {
                     $isUploaded = false;

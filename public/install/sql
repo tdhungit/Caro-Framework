@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS `users`;
-
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created` datetime NOT NULL,
@@ -13,4 +12,20 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`),
   UNIQUE KEY `idx_email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `menus`;
+CREATE TABLE `menus` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created` datetime NOT NULL,
+  `user_created_id` int(10) NOT NULL,
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  `name` varchar(200) NOT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `parent_id` int(10) DEFAULT NULL,
+  `class` varchar(200) DEFAULT NULL,
+  `weight` int(10) DEFAULT NULL,
+  `controller_name` varchar(200) DEFAULT NULL,
+  `action_name` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
