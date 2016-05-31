@@ -9,6 +9,7 @@
     <?php
         $model_path = '\\Modules\Backend\Models\\' . $view['model'];
         $model = new $model_path();
+        $model->initialize();
         if (!empty($row->$name)) {
             $options = $model::findFirst($row->$name);
         }
