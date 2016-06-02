@@ -168,6 +168,7 @@ class BuilderController extends ControllerCustom
             $model_name = $this->request->getPost('model_name');
             if ($model_name) {
                 $model_file = APP_PATH . "apps/backend/models/$model_name.php";
+                $model_file_front = APP_PATH . "apps/frontend/models/$model_name.php";
 
                 if (is_file($model_file)) {
                     $this->flash->error('Exits this model!');
@@ -193,6 +194,13 @@ class BuilderController extends ControllerCustom
                     $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
                     fwrite($file, $content);
                     fclose($file);
+                    // frontend
+                    if (!is_file($model_file_front)) {
+                        $file = fopen($model_file_front, "w");
+                        $content = "<?php\n\nnamespace Modules\Frontend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
+                        fwrite($file, $content);
+                        fclose($file);
+                    }
 
                     // write controller
                     $controller_file = APP_PATH . "apps/backend/controllers/{$model_name}Controller.php";
