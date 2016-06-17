@@ -119,7 +119,7 @@
                             {% if m['children'] %}<i class="fa fa-angle-left pull-right"></i>{% endif %}
                         </a>
 
-                        {% if m['children'] is defined %}
+                        {% if m['children'] is not empty %}
                             <ul class="treeview-menu">
                                 {% for cm in m['children'] %}
                                     <li class="{% if current_controller == cm['controller_name'] and current_action == cm['action_name'] %}active{% endif %}">
