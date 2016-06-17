@@ -97,7 +97,7 @@
                                             <li class="paginate_button previous"><a href="{{ current_url }}">First</a></li>
                                             <li class="paginate_button previous"><a href="{{ current_url }}&page={{ page.before }}">Previous</a></li>
                                             <li class="paginate_button">
-                                                <a href="javascript:;" style="padding: 5px 10px;">
+                                                <a href="javascript:;" style="">
                                                     <select style="margin: 0; width: auto;" onchange="location.href='{{ current_url }}&page=' + $(this).val();">
                                                         {% for i in 1..page.total_pages %}
                                                             <option{% if page.current == i %} selected{% endif %}>{{ i }}</option>
