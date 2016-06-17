@@ -120,8 +120,8 @@
                         </a>
 
                         {% if m['children'] is defined %}
-                            {% for cm in m['children'] %}
-                                <ul class="treeview-menu">
+                            <ul class="treeview-menu">
+                                {% for cm in m['children'] %}
                                     <li class="{% if current_controller == cm['controller_name'] and current_action == cm['action_name'] %}active{% endif %}">
                                         {% set current_menu_link = url('/' ~ carofw['backendUrl'] ~ '/' ~ cm['controller_name'] ~ '/' ~ cm['action_name']) %}
                                         {% if cm['link'] %}
@@ -131,8 +131,8 @@
                                             <i class="{{ cm['class'] }}"></i> {{ t._(cm['name']) }}
                                         </a>
                                     </li>
-                                </ul>
-                            {% endfor %}
+                                {% endfor %}
+                            </ul>
                         {% endif %}
                     </li>
                 {% endfor %}
