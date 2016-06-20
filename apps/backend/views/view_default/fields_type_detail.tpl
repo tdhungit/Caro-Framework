@@ -21,7 +21,7 @@
     <img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">
 
 {% elseif view['type'] == 'customCode' %}
-    {{ row.renderCustomCode(view['customCode']) }}
+    {{ data.renderCustomCode(view['customCode']) }}
 
 {% elseif view['type'] == 'hidden' %}
 
