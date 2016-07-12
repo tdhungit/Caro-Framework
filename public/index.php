@@ -35,19 +35,19 @@ try {
             'controller' => 'index',
             'action' => 'index'
         ));
-        $router->add('/'. $config->application->backendUrl .'/:controller/:action/:params', array(
+        $router->add('/' . $config->application->backendUrl . '/:controller/:action/:params', array(
             'module' => 'backend',
             'controller' => 1,
             'action' => 2,
             'params' => 3
         ));
-        $router->add('/'. $config->application->backendUrl .'/:controller', array(
+        $router->add('/' . $config->application->backendUrl . '/:controller', array(
             'module' => 'backend',
             'controller' => 1,
             'action' => 'index'
         ));
         // rest api
-        $router->add('/api'. '/:params', array(
+        $router->add('/api' . '/:params', array(
             'module' => 'backend',
             'controller' => 'rest',
             'action' => 'execute',
@@ -100,17 +100,17 @@ try {
      */
     $di->set('flash', function () {
         return new Phalcon\Flash\Session([
-            'error'     => 'alert alert-block alert-danger',
-            'success'   => 'alert alert-block alert-success',
-            'notice'    => 'alert alert-block alert-info',
-            'warning'   => 'alert alert-block alert-warning'
+            'error' => 'alert alert-block alert-danger',
+            'success' => 'alert alert-block alert-success',
+            'notice' => 'alert alert-block alert-info',
+            'warning' => 'alert alert-block alert-warning'
         ]);
     });
 
     /**
      * Set Cookies
      */
-    $di->set('cookies', function() {
+    $di->set('cookies', function () {
         $cookies = new Phalcon\Http\Response\Cookies();
         $cookies->useEncryption(false);
         return $cookies;
@@ -119,7 +119,7 @@ try {
     /**
      * Setup const var
      */
-    $di->set('carofw', function() use ($config) {
+    $di->set('carofw', function () use ($config) {
         $caroApp = include APP_PATH . 'apps/config/const.php';
         $caroApp['backendUrl'] = $config->application->backendUrl;
         return $caroApp;

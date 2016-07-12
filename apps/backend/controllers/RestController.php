@@ -100,7 +100,7 @@ class RestController extends Controller
                 $params = $this->request->getPost('params');
                 $params = @json_decode($params, true);
                 $params = ($params) ? $params : array();
-                if ( method_exists($focus, $function) ) {
+                if (method_exists($focus, $function)) {
                     $data = call_user_func_array(array($focus, $function), $params);
                 }
                 break;
