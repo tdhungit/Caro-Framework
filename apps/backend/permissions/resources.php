@@ -1,5 +1,23 @@
 <?php
  return array (
+  'builder' => 
+  array (
+    0 => 'index',
+    1 => 'edit_model',
+    2 => 'ajax_add_field',
+    3 => 'ajax_add_index',
+    4 => 'update_fields',
+    5 => 'create_model',
+    6 => 'edit_layout',
+    7 => 'list',
+    8 => 'detail',
+    9 => 'edit',
+    10 => 'popup',
+    11 => 'save_relate',
+    12 => 'save',
+    13 => 'delete',
+    14 => 'upload',
+  ),
   'dashboard' => 
   array (
     0 => 'index',
@@ -30,6 +48,23 @@
     7 => 'save',
     8 => 'delete',
     9 => 'upload',
+  ),
+  'menus' => 
+  array (
+    0 => 'index',
+    1 => 'list',
+    2 => 'refresh',
+    3 => 'detail',
+    4 => 'edit',
+    5 => 'popup',
+    6 => 'save_relate',
+    7 => 'save',
+    8 => 'delete',
+    9 => 'upload',
+  ),
+  'rest' => 
+  array (
+    0 => 'execute',
   ),
   'settings' => 
   array (

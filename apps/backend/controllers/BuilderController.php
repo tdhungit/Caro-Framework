@@ -185,9 +185,9 @@ class BuilderController extends ControllerCustom
                     );
 
                     // write db
-                    $file = fopen(APP_PATH . "apps/config/database_structures.ini.php", "w");
-                    fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
-                    fclose($file);
+//                    $file = fopen(APP_PATH . "apps/config/database_structures.ini.php", "w");
+//                    fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
+//                    fclose($file);
 
                     // write model
                     $file = fopen($model_file, "w");

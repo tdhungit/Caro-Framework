@@ -18,6 +18,7 @@ use Modules\Core\MyController;
 
 class ControllerBase extends MyController
 {
+    protected $is_ajax = false;
 
     // base controller
     protected $action_list = 'list';

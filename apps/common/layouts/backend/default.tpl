@@ -109,7 +109,13 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 {% for m in current_menus %}
-                    <li class="{% if m['children'] %}treeview{% endif %}{% if current_controller == m['controller_name'] %} active{% endif %}">
+                    <li class="
+                        {% if m['children'] %}treeview
+                            {% if current_controller == m['controller_name'] %} active{% endif %}
+                        {% elseif current_controller == m['controller_name'] and current_action == m['action_name'] %}
+                             active
+                        {% endif %}">
+
                         {% set current_menu_link = url('/' ~ carofw['backendUrl'] ~ '/' ~ m['controller_name'] ~ '/' ~ m['action_name']) %}
                         {% if m['link'] %}
                             {% set current_menu_link = m['link'] %}

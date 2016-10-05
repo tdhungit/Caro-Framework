@@ -120,6 +120,10 @@ class SecurityPlugin extends Plugin
         }
 
         if ($allowed != Acl::ALLOW) {
+            if ($dispatcher->getControllerClass()->is_ajax == true) {
+                return false;
+            }
+
             $dispatcher->forward(array(
                 'controller' => 'errors',
                 'action' => 'show401'
