@@ -3,3 +3,4 @@
 /apps/backend/permissions/*.php
 /apps/cache/volt/*.php
 /public/uploads/images
+/public/uploads/csv

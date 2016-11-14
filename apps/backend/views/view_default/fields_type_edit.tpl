@@ -40,6 +40,24 @@
                             <input type="hidden" name="{{ name }}" class="caro-value-upload" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}">
                         </span>
 
+                    {% elseif view['type'] == 'multiimage' %}
+                        <?php
+                            if (!empty($data)) {
+                                $multiimages = explode(',', $data->$name);
+                            }
+                        ?>
+                        <div class="caro-multiimage-content" style="padding-bottom: 5px;">
+                            {% if data is not null %}
+                                {% for img in multiimages %}
+                                    <img src="{{ img }}" class="img-thumbnail" style="height: 200px;">
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <span class="btn btn-default btn-file">
+                            Browse <input type="file" class="caro-upload-multiimage" location="images" multiple>
+                            <textarea name="{{ name }}" class="caro-value-upload" style="display: none">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
+                        </span>
+
                     {% elseif view['type'] == 'textarea' %}
                         <textarea name="{{ name }}" rows="4" class="span9" id="editview-{{ name }}">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
                         <script>CKEDITOR.replace('editview-{{ name }}');</script>

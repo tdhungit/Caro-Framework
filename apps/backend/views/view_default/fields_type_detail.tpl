@@ -20,6 +20,16 @@
 {% elseif view['type'] == 'image' %}
     <img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">
 
+{% elseif view['type'] == 'multiimage' %}
+    <?php
+        if (!empty($data)) {
+            $multiimages = explode(',', $data->$name);
+        }
+    ?>
+    {% for img in multiimages %}
+        <img src="{{ img }}" class="img-thumbnail" style="height: 200px;">
+    {% endfor %}
+
 {% elseif view['type'] == 'customCode' %}
     {{ data.renderCustomCode(view['customCode']) }}
 

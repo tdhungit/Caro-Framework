@@ -23,6 +23,10 @@
                         <i class="fa fa-users"></i> {{ t._('Register Roles') }}
                     </a>
 
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/builder/import_csv') }}" class="btn btn-app">
+                        <i class="fa fa-exchange"></i> {{ t._('Import CSV') }}
+                    </a>
+
 
                 </div><!-- /.box-body -->
             </div><!-- /.box -->

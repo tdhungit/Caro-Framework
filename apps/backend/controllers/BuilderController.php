@@ -9,6 +9,8 @@
 namespace Modules\Backend\Controllers;
 
 
+use Modules\Backend\Helpers\CsvHelper;
+
 class BuilderController extends ControllerCustom
 {
     public $types = array(
@@ -296,5 +298,93 @@ class BuilderController extends ControllerCustom
             $all_lists[$list_dropdown] = $list_dropdown;
         }
         $this->view->all_lists = $all_lists;
+    }
+
+    /**
+     * import csv
+     */
+    public function import_csvAction($model_name = null)
+    {
+        if ($this->request->isPost()) {
+            $this->view->disable();
+            $posts = $this->request->getPost();
+
+            $csvObj = new CsvHelper($posts['full_path_csv_file'], true, ",");
+            $data = $csvObj->get(0, $posts['change_fields']);
+
+            if ($posts['model']) {
+                $message = '';
+                $model = $this->getModel($posts['model']);
+                foreach ($data as $d) {
+                    $model->id = null;
+                    foreach ($d as $field => $value) {
+                        $model->$field = $value;
+                    }
+
+                    if ($model->save()) {
+                        $message[] = 'Success: ' . implode(', ', $d);
+                    } else {
+                        $msg = '';
+                        foreach ($model->getMessages() as $m) {
+                            $msg .= $this->t->_((string) $m) . ' | ';
+                        }
+                        $message[] = 'Error: ' . $msg . 'Detail: ' . implode(', ', $d);
+                    }
+                }
+
+                $this->flash->notice(implode('<br>', $message));
+            }
+
+            $this->backendRedirect('/builder/import_csv');
+        }
+        
+        if ($model_name) {
+            $this->view->title = $this->t->_('Import CSV: ') . $model_name;
+        } else {
+            $this->view->title = $this->t->_('Choose module import');
+        }
+
+        $models = array();
+        $model_path = APP_PATH . '/apps/backend/models/*.php';
+
+        foreach (glob($model_path) as $model) {
+            $name = basename($model, '.php');
+            if ($name != 'ModelBase' && $name != 'ModelCustom' && $name != 'CaroLogs') {
+                $models[$name] = $name;
+            }
+        }
+
+        $this->view->models = $models;
+    }
+
+    /**
+     * load import UI
+     */
+    public function load_csv_importAction()
+    {
+        $this->view->setTemplateAfter('empty');
+
+        $file_path = $this->request->getPost('csv_file');
+
+        // get header csv file
+        $csvObj = new CsvHelper($file_path, true, ",");
+        $this->view->header = $csvObj->getHeader();
+        
+        // get all fields
+        $model = $this->getModel($this->request->getPost('model'));
+        $table = $model->getSource();
+
+        if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
+            $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
+        } else {
+            $databases = include APP_PATH . 'apps/config/database_structures.php';
+        }
+
+        $fields = ['id' => 'id'];
+        foreach ($databases[$table]['fields'] as $field => $options) {
+            $fields[$field] = $field;
+        }
+
+        $this->view->fields = $fields;
     }
 }

@@ -19,6 +19,7 @@ jQuery(function() {
             }]
         });
     });
+    
     $('input.caro-upload-image').change(function() {
         $this = $(this);
         var formData = new FormData();
@@ -34,6 +35,36 @@ jQuery(function() {
             success: function (json) {
                 $this.siblings('.caro-value-upload').val(json.data[0].path);
                 $this.parent().siblings('.caro-image-content').html('<img src="'+ json.data[0].path +'" class="img-thumbnail" style="height: 200px;">');
+            }
+        });
+    });
+
+    $('input.caro-upload-multiimage').change(function() {
+        $this = $(this);
+        var formData = new FormData();
+        var files = $(this)[0].files;
+        for (var i in files) {
+            formData.append('file[]', files[i]);
+        }
+        formData.append('location', $(this).attr('location'));
+        $.ajax({
+            type: "POST",
+            url: backend_url + "/index/upload",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (json) {
+                $this.parent().siblings('.caro-multiimage-content').html('');
+                var res = json.data;
+                var value = '';
+                for (var i in res) {
+                    var r = res[i];
+                    value += r.path + ',';
+                    $this.parent().siblings('.caro-multiimage-content').append('<img src="'+ r.path +'" class="img-thumbnail" style="height: 200px;">');
+                }
+                value = value.substr(0, value.length - 1);
+                $this.siblings('.caro-value-upload').html(value);
             }
         });
     });

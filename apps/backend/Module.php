@@ -28,6 +28,7 @@ class Module
             'Modules\Core' => APP_PATH . 'apps/common/core/',
             'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
             'Modules\Backend\Models' => __DIR__ . '/models/',
+            'Modules\Backend\Helpers' => __DIR__ . '/helpers',
             'Modules\Backend\Plugins' => __DIR__ . '/plugins/',
             'Modules\Backend\Libraries' => __DIR__ . '/libraries',
         ));
