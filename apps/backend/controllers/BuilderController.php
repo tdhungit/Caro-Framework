@@ -315,14 +315,14 @@ class BuilderController extends ControllerCustom
 
             if ($posts['model']) {
                 $message = '';
-                $model = $this->getModel($posts['model']);
                 foreach ($data as $d) {
+                    $model = $this->getModel($posts['model']);
                     $model->id = null;
                     foreach ($d as $field => $value) {
                         $model->$field = $value;
                     }
 
-                    if ($model->save()) {
+                    if ($model->create()) {
                         $message[] = 'Success: ' . implode(', ', $d);
                     } else {
                         $msg = '';

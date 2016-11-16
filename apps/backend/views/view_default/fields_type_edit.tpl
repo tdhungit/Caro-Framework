@@ -63,7 +63,7 @@
                         <script>CKEDITOR.replace('editview-{{ name }}');</script>
 
                     {% elseif view['type'] == 'note' %}
-                        <textarea name="{{ name }}" rows="4" class="span9">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
+                        <textarea name="{{ name }}" rows="4" class="form-control span9">{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}</textarea>
 
                     {% elseif view['type'] == 'customCode' %}
                         {% if data is not null %}
