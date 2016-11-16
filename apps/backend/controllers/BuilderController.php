@@ -286,6 +286,7 @@ class BuilderController extends ControllerCustom
             'number' => 'Number',
             'select' => 'Select',
             'image' => 'Image',
+            'multiimage' => 'Multi Image',
             'relate' => 'Relate',
             'textarea' => 'TextArea',
             'note' => 'Note'
