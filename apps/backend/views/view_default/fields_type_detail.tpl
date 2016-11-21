@@ -9,13 +9,19 @@
         $model = new $model_path();
         if (!empty($data->$name)) {
             $options = $model::findFirst($data->$name);
+            $dv = $model->detail_view;
+            $key = $dv['title'];
         }
     ?>
 
     {% if options is defined %}
-        {% set key = model.detail_view['title'] %}
         {{ options.readAttribute(key) }}
     {% endif %}
+
+    <?php
+        unset($model);
+        unset($options);
+    ?>
 
 {% elseif view['type'] == 'image' %}
     <img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">
