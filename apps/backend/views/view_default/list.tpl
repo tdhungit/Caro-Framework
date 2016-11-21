@@ -67,15 +67,15 @@
 
                                                     <td class="td-actions">
                                                         {% if link_action is null %}
-                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-warning btn-xs" title="{{ t._('Edit') }}">
+                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_edit ~ '/' ~  row.id) }}" class="btn btn-warning btn-xs" alert="{{ t._('You will edit this item.') }}" title="{{ t._('Edit') }}">
                                                                 <i class="fa fa-edit"></i>
                                                             </a>
-                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id ~ '/' ~ model_name) }}?return={{ controller }}/{{ action }}" class="btn btn-danger btn-xs" title="{{ t._('Delete') }}">
+                                                            <a href="{{ url('/'~ carofw['backendUrl'] ~'/' ~ controller ~ '/' ~ action_delete ~ '/' ~  row.id ~ '/' ~ model_name) }}?return={{ controller }}/{{ action }}" class="btn btn-danger btn-xs" alert="{{ t._('You will delete this item.') }}" title="{{ t._('Delete') }}">
                                                                 <i class="fa fa-remove"></i>
                                                             </a>
                                                         {% else %}
                                                             {% for a in link_action %}
-                                                                <a href="<?php echo str_replace('<ID>', $row->id, $a['link']) ?>" class="btn btn-warning btn-xs" title="{{ a['label'] }}">
+                                                                <a href="<?php echo str_replace('<ID>', $row->id, $a['link']) ?>" class="btn btn-warning btn-xs" alert="{{ a['alert'] }}" title="{{ a['label'] }}">
                                                                     <i class="fa {% if a['icon'] is defined %}{{ a['icon'] }}{% else %}fa-cog{% endif %}"></i>
                                                                 </a>
                                                             {% endfor %}
@@ -118,3 +118,23 @@
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    $('a[alert]').click(function (e) {
+        var url = $(this).attr('href');
+        var alert = $(this).attr('alert');
+        e.preventDefault();
+        swal({
+            title: "{{ t._('Are you sure?') }}",
+            text: alert,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+        },
+        function() {
+            location.href = url;
+        });
+    });
+</script>

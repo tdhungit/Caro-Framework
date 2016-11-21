@@ -19,6 +19,8 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/skins/_all-skins.min.css">
+    <!-- Alert -->
+    <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/sweetalert.css">
 
     <script>
         var base_url = '{{ url() }}';
@@ -216,6 +218,8 @@
 <script src="{{ static_url() }}/themes/backend/plugins/chartjs/Chart.min.js"></script>
 <!-- AdminLTE -->
 <script src="{{ static_url() }}/themes/backend/js/theme.js"></script>
+<!-- Alert -->
+<script src="{{ static_url() }}/themes/backend/js/sweetalert.min.js"></script>
 
 </body>
 </html>
