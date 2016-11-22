@@ -6,10 +6,11 @@
 {% elseif view['type'] == 'relate' %}
     <?php
         $model_path = '\\Modules\Backend\Models\\' . $view['model'];
-        $model = new $model_path();
+        ${$view['model']} = new $model_path();
+        ${$view['model']}->initialize();
         if (!empty($data->$name)) {
-            $options = $model::findFirst($data->$name);
-            $dv = $model->detail_view;
+            $options = ${$view['model']}::findFirst($data->$name);
+            $dv = ${$view['model']}->detail_view;
             $key = $dv['title'];
         }
     ?>
@@ -17,11 +18,6 @@
     {% if options is defined %}
         {{ options.readAttribute(key) }}
     {% endif %}
-
-    <?php
-        unset($model);
-        unset($options);
-    ?>
 
 {% elseif view['type'] == 'image' %}
     <img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">

@@ -63,6 +63,7 @@ class ControllerBase extends MyController
         if ($model_focus) {
             $model_path = '\\Modules\Backend\Models\\' . $model_focus;
             $model = new $model_path();
+            $model->initialize();
             if (empty($model->menu)) {
                 $model->menu = array(
                     'View ' . ucfirst($this->controller_name) => '/portal/' . $this->controller_name . '/list',
