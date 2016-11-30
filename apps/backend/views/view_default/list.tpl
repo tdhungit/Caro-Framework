@@ -42,9 +42,11 @@
                                                                 <?php
                                                                     $model_path = '\\Modules\Backend\Models\\' . $view['model'];
                                                                     $model = new $model_path();
+                                                                    $model->initialize();
+                                                                    $field_title = $model->detail_view['title'];
                                                                     $options = $model::find(array('conditions' => 'deleted = 0'));
                                                                 ?>
-                                                                {{ select(name, options, 'using': ['id', 'name'], 'value': search_value, 'class': 'form-control', 'useEmpty': true) }}
+                                                                {{ select(name, options, 'using': ['id', field_title], 'value': search_value, 'class': 'form-control', 'useEmpty': true) }}
                                                             {% else %}
                                                                 <input type="{{ view['type'] }}" name="{{ name }}" placeholder="{{ view['label'] }}" value="{{ search_value }}" class="form-control" />
                                                             {% endif %}

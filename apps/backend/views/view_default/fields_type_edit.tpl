@@ -14,20 +14,22 @@
                         <?php
                             $model_path = '\\Modules\Backend\Models\\' . $view['model'];
                             $model = new $model_path();
+                            $model->initialize();
+                            $field_title = $model->detail_view['title'];
                             $options = $model::find(array('conditions' => 'deleted = 0'));
                         ?>
 
 						{% if data is not null %}
-							{{ select(name, options, 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control', 'useEmpty': true) }}
+							{{ select(name, options, 'using': ['id', field_title], 'value': data.readAttribute(name), 'class': 'form-control', 'useEmpty': true) }}
 						{% else %}
 							{% if view['default'] is defined %}
 								{% if view['default'] == 'session' %}
-									{{ select(name, options, 'using': ['id', 'name'], 'value': session.get('auth')['id'], 'class': 'form-control', 'useEmpty': true) }}
+									{{ select(name, options, 'using': ['id', field_title], 'value': session.get('auth')['id'], 'class': 'form-control', 'useEmpty': true) }}
 								{% else %}
-									{{ select(name, options, 'using': ['id', 'name'], 'value': view['default'], 'class': 'form-control', 'useEmpty': true) }}
+									{{ select(name, options, 'using': ['id', field_title], 'value': view['default'], 'class': 'form-control', 'useEmpty': true) }}
 								{% endif %}
 							{% else %}
-								{{ select(name, options, 'using': ['id', 'name'], 'class': 'form-control', 'useEmpty': true) }}
+								{{ select(name, options, 'using': ['id', field_title], 'class': 'form-control', 'useEmpty': true) }}
 							{% endif %}
 						{% endif %}
 
