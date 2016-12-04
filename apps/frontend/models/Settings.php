@@ -1,25 +1,18 @@
 <?php
 /**
- * Created by Jacky.
- * User: Jacky
+ * Created by Caro Team (info@carocrm.com).
+ * User: Jacky (jacky@carocrm.com).
+ * Year: 2016
  * File: Settings.php
- * Project: Caro-Framework
  */
 
-namespace Modules\Backend\Models;
+namespace Modules\Frontend\Models;
 
 
 use Modules\Core\MyMail;
 
 class Settings extends ModelCustom
 {
-    public $id;
-    public $created;
-    public $user_created_id;
-    public $deleted;
-    public $name;
-    public $value;
-
     public function setMailSettings($mailSettings)
     {
         $mymail = new MyMail();

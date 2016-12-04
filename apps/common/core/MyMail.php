@@ -39,11 +39,17 @@ class MyMail extends Component
     }
 
     /**
+     * @param $settingModel
      * @return array
      */
-    public function getDefaultSettings()
+    public function getDefaultSettings($settingModel)
     {
-        $setting = Settings::findFirst("name = 'mail_config'");
+        $setting = $settingModel::findFirst("name = 'mail_config'");
+
+        if (!$setting) {
+            return false;
+        }
+
         $mail_config = json_decode($setting->value, true);
         return array(
             'fromName' => $mail_config['from_name'],
@@ -60,11 +66,11 @@ class MyMail extends Component
     }
 
     /**
-     * set Mail Settings default
+     * @param $settingModel
      */
-    public function setDefaultSettings()
+    public function setDefaultSettings($settingModel)
     {
-        $mailSettings = $this->getDefaultSettings();
+        $mailSettings = $this->getDefaultSettings($settingModel);
         $this->setMailSettings($mailSettings);
     }
 
