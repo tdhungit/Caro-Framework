@@ -25,7 +25,7 @@ class ControllerBase extends MyController
     protected $action_detail = 'detail';
     protected $action_edit = 'edit';
     protected $action_delete = 'delete';
-	// action
+    // action
     protected $link_detail = null;
     // button action
     protected $link_action = null;
@@ -136,7 +136,7 @@ class ControllerBase extends MyController
         $panel = array();
         if ($def['type'] == 'one-many') {
             $rel_model = $this->getModel($def['rel_model']);
-            $panel = $rel_model::find($def['rel_field'] .'=' . $data->id);
+            $panel = $rel_model::find($def['rel_field'] . '=' . $data->id);
 
         } else if ($def['type'] == 'many-many') {
             $namespace = 'Modules\Backend\Models\\';
@@ -352,7 +352,7 @@ class ControllerBase extends MyController
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->menu = $model->menu;
-		$this->view->action_edit = $this->action_edit;
+        $this->view->action_edit = $this->action_edit;
         $this->view->link_detail = $this->link_detail;
 
         $exists = $this->view->exists($controller . '/' . $action);
@@ -385,7 +385,7 @@ class ControllerBase extends MyController
         $this->view->title = $title;
 
         $this->view->edit_view = $model->edit_view;
-		$this->view->model = $model;
+        $this->view->model = $model;
         $this->view->data = $data;
 
         $controller = strtolower($this->controller_name);
@@ -436,7 +436,7 @@ class ControllerBase extends MyController
         ));
 
         // pagination
-        $currentPage = (int) $_GET["page"];
+        $currentPage = (int)$_GET["page"];
         $paginator_limit = 20; // @TODO
         $page = $model->pagination($list_data, $paginator_limit, $currentPage);
 
@@ -552,7 +552,7 @@ class ControllerBase extends MyController
                 if ($data->update() == false) {
                     $msg = '';
                     foreach ($data->getMessages() as $message) {
-                        $msg .= $this->t->_((string) $message) . '<br>';
+                        $msg .= $this->t->_((string)$message) . '<br>';
                     }
                     $this->flash->error($msg);
                 } else {
@@ -570,7 +570,7 @@ class ControllerBase extends MyController
                 if ($model->save() == false) {
                     $msg = '';
                     foreach ($model->getMessages() as $message) {
-                        $msg .= $this->t->_((string) $message) . '<br>';
+                        $msg .= $this->t->_((string)$message) . '<br>';
                     }
                     $this->flash->error($msg);
                 } else {
@@ -653,7 +653,7 @@ class ControllerBase extends MyController
             $base_path = $this->makeFolderUpload($base_location);
             $upload_path = $base_path['folder'];
             // Process upload file
-            foreach ($this->request->getUploadedFiles() as $file){
+            foreach ($this->request->getUploadedFiles() as $file) {
                 // Move the file into the application
                 $file_upload_name = $file->getName();
                 // hash file name
