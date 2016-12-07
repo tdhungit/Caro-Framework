@@ -30,6 +30,8 @@ class ControllerBase extends MyController
     // button action
     protected $link_action = null;
 
+    protected $where = null;
+
     /**
      * initialize
      */
@@ -273,6 +275,11 @@ class ControllerBase extends MyController
         $conditions = $search_opt['conditions'];
         $parameters = $search_opt['parameters'];
         // sort
+
+        // custom where
+        if ($this->where) {
+            $conditions .= ' ' . $this->where;
+        }
 
         $list_data = $model::find(array(
             $conditions,

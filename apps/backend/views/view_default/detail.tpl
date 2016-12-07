@@ -63,7 +63,9 @@
                                     {% for name, view in subpanel_def['list'] %}
                                         <th class="header">{{ view['label'] }}</th>
                                     {% endfor %}
-                                    <th class="header">{{ t._('Action') }}</th>
+                                    {% if subpanel_def['disable_delete'] is not defined or subpanel_def['disable_delete'] == false %}
+                                        <th class="header">{{ t._('Action') }}</th>
+                                    {% endif %}
                                 </tr>
                                 </thead>
 
@@ -73,11 +75,13 @@
                                         {% for name, view in subpanel_def['list'] %}
                                             <td>{{ row.readAttribute(name) }}</td>
                                         {% endfor %}
-                                        <td class="td-actions">
-                                            <a href="javascript:caro_remove_relate('{{ subpanel_def['rel_model'] }}', '{{ row.id }}', '{{ subpanel_name }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}')" class="btn btn-danger btn-xs">
-                                                <i class="fa fa-remove"></i>
-                                            </a>
-                                        </td>
+                                        {% if subpanel_def['disable_delete'] is not defined or subpanel_def['disable_delete'] == false %}
+                                            <td class="td-actions">
+                                                <a href="javascript:caro_remove_relate('{{ subpanel_def['rel_model'] }}', '{{ row.id }}', '{{ subpanel_name }}', '{{ subpanel_def['current_model'] }}', '{{ data.id }}')" class="btn btn-danger btn-xs">
+                                                    <i class="fa fa-remove"></i>
+                                                </a>
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                                 </tbody>
