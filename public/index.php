@@ -27,53 +27,8 @@ try {
      * Registering a router
      */
     $di['router'] = function () use ($config) {
-        $router = new \Phalcon\Mvc\Router(false);
-
-        // backend
-        $router->add('/' . $config->application->backendUrl, array(
-            'module' => 'backend',
-            'controller' => 'index',
-            'action' => 'index'
-        ));
-        $router->add('/' . $config->application->backendUrl . '/:controller/:action/:params', array(
-            'module' => 'backend',
-            'controller' => 1,
-            'action' => 2,
-            'params' => 3
-        ));
-        $router->add('/' . $config->application->backendUrl . '/:controller', array(
-            'module' => 'backend',
-            'controller' => 1,
-            'action' => 'index'
-        ));
-        // rest api
-        $router->add('/api' . '/:params', array(
-            'module' => 'backend',
-            'controller' => 'rest',
-            'action' => 'execute',
-            'params' => 1
-        ));
-
-        /* front end */
-        // index
-        $router->add('/index', array(
-            'module' => 'frontend',
-            'controller' => 'index',
-            'action' => 'index'
-        ));
-        $router->add('/', array(
-            'module' => 'frontend',
-            'controller' => 'index',
-            'action' => 'index'
-        ));
-        // document
-        $router->add('/documents', array(
-            'module' => 'frontend',
-            'controller' => 'documents',
-            'action' => 'index'
-        ));
-
-        return $router;
+        include APP_PATH . '/apps/config/router.php';
+        return getCaroRouter($config);
     };
 
     /**
