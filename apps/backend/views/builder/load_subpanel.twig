@@ -1,0 +1,37 @@
+<table class="table table-bordered dataTable">
+    <tr>
+        <td width="20%">{{ t._('Current model') }}</td>
+        <td>
+            {{ model_name }}
+            <input type="hidden" name="subpanels[{{ i }}][current_model]" value="{{ model_name }}">
+        </td>
+    </tr>
+    <tr>
+        <td>{{ t._('Primary field') }}</td>
+        <td>
+            <select name="subpanels[{{ i }}][current_field]" class="form-control input-sm">
+                {{ options_current_fields }}
+            </select>
+        </td>
+    </tr>
+
+    {% if type == 'many-many' %}
+        <tr>
+            <td>{{ t._('Mid model') }}</td>
+            <td>{{ select('subpanels[' ~ i ~ '][mid_model]', models, 'class': 'form-control input-sm', 'useEmpty': true, 'onchange': 'loadRelModelConfig(this, "mid", "' ~ i ~ '")') }}</td>
+        </tr>
+
+        <tbody id="subpanelMidConfig{{ i }}">
+
+        </tbody>
+    {% endif %}
+
+    <tr>
+        <td>{{ t._('Related model') }}</td>
+        <td>{{ select('subpanels[' ~ i ~ '][rel_model]', models, 'class': 'form-control input-sm', 'useEmpty': true, 'onchange': 'loadRelModelConfig(this, "rel", "' ~ i ~ '")') }}</td>
+    </tr>
+
+    <tfoot id="subpanelConfig{{ i }}">
+
+    </tfoot>
+</table>

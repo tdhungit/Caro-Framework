@@ -1,0 +1,31 @@
+{% if type == 'rel' %}
+    <tr>
+        <td>{{ t._('Related field') }}</td>
+        <td><select name="subpanels[{{ i }}][rel_field]" class="form-control input-sm">{{ options_fields }}</select></td>
+    </tr>
+    <tr>
+        <td>{{ t._('Show fields') }}</td>
+        <td>
+            <table class="table table-bordered dataTable">
+                {% for field, options in fields %}
+                    <tr>
+                        <td>{{ field }}</td>
+                        <td>{{ select('subpanels[' ~ i ~ '][list][' ~ field ~ '][type]', field_types, 'class': 'form-control input-sm', 'useEmpty': true) }}</td>
+                        <td>
+                            <input type="text" name="subpanels[{{ i }}][list][{{ field }}][label]" placeholder="{{ t._('Label') }}" class="form-control input-sm">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td>{{ t._('Mid field 01') }}</td>
+        <td><select name="subpanels[{{ i }}][mid_field1]" class="form-control input-sm">{{ options_fields }}</select></td>
+    </tr>
+    <tr>
+        <td>{{ t._('Mid field 02') }}</td>
+        <td><select name="subpanels[{{ i }}][mid_field2]" class="form-control input-sm">{{ options_fields }}</select></td>
+    </tr>
+{% endif %}

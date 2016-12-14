@@ -5,6 +5,7 @@
 </section>
 
 <section class="content">
+    {{ form('/'~carofw['backendUrl']~'/builder/edit_layout/', 'class': 'form-horizontal') }}
     <div class="row">
         <div class="col-md-12">
             <div class="box box-solid">
@@ -12,11 +13,15 @@
                     <h3 class="box-title">{{ t._('Choose Fields') }}</h3>
                 </div>
                 <div class="box-body">
-                    {{ form('/'~carofw['backendUrl']~'/builder/edit_layout/', 'class': 'form-horizontal') }}
                     <div class="dataTables_wrapper form-inline dt-bootstrap">
                         <div class="row">
                             <div class="col-sm-12">
                                 <input type="hidden" name="model_name" value="{{ model_name }}">
+
+                                <label>{{ t._('Title field') }}:</label>
+                                {{ select('title_field', layout_fields, 'class': 'form-control input-sm', 'value': title_field) }}
+
+                                <h4 style="color: #0000cc">ListView</h4>
                                 <table class="table table-bordered table-hover dataTable">
                                     <tr>
                                         <th class="header">{{ t._('Field') }}</th>
@@ -25,65 +30,148 @@
                                         <th class="header">{{ t._('Options') }}</th>
                                         <th class="header">{{ t._('Relate') }}</th>
                                         <th class="header">{{ t._('Search') }}</th>
-                                        <th class="header">{{ t._('Layout') }}</th>
+                                        <th class="header">{{ t._('Link') }}</th>
                                     </tr>
                                     {% for field, options in fields %}
                                         <tr>
                                             <td>{{ field }}</td>
                                             <td>
                                                 {% set value = '' %}
-                                                {% if  list_fields['fields'][field]['type'] is defined %}
+                                                {% if list_fields['fields'][field]['type'] is defined %}
                                                     {% set value = list_fields['fields'][field]['type']  %}
                                                 {% endif %}
-                                                {{ select('fields['~ field ~'][type]', types, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                                {{ select('list_fields['~ field ~'][type]', types, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
                                             </td>
                                             <td>
                                                 {% set value = '' %}
-                                                {% if  list_fields['fields'][field]['label'] is defined %}
+                                                {% if list_fields['fields'][field]['label'] is defined %}
                                                     {% set value = list_fields['fields'][field]['label']  %}
                                                 {% endif %}
-                                                <input type="text" name="fields[{{ field }}][label]" class="form-control input-sm" value="{{ value }}">
+                                                <input type="text" name="list_fields[{{ field }}][label]" class="form-control input-sm" value="{{ value }}">
                                             </td>
                                             <td>
                                                 {% set value = '' %}
-                                                {% if  list_fields['fields'][field]['options'] is defined %}
+                                                {% if list_fields['fields'][field]['options'] is defined %}
                                                     {% set value = list_fields['fields'][field]['options']  %}
                                                 {% endif %}
-                                                {{ select('fields['~ field ~'][options]', all_lists, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                                {{ select('list_fields['~ field ~'][options]', all_lists, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
                                             </td>
                                             <td>
                                                 {% set value = '' %}
-                                                {% if  list_fields['fields'][field]['model'] is defined %}
+                                                {% if list_fields['fields'][field]['model'] is defined %}
                                                     {% set value = list_fields['fields'][field]['model']  %}
                                                 {% endif %}
-                                                {{ select('fields['~ field ~'][model]', all_models, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                                {{ select('list_fields['~ field ~'][model]', all_models, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
                                             </td>
                                             <td>
                                                 {% set value = '' %}
-                                                {% if  list_fields['fields'][field]['search'] is defined %}
+                                                {% if list_fields['fields'][field]['search'] is defined %}
                                                     {% set value = list_fields['fields'][field]['search']  %}
                                                 {% endif %}
-                                                <select name="fields[{{ field }}][search]" class="form-control input-sm">
+                                                <select name="list_fields[{{ field }}][search]" class="form-control input-sm">
                                                     <option value="0">False</option>
                                                     <option value="1" {% if value %}selected{% endif %}>True</option>
                                                 </select>
                                             </td>
                                             <td>
-                                                {% set c_list_view = 'checked' %}
-                                                {% set c_edit_view = 'checked' %}
-                                                {% set c_detail_view = 'checked' %}
-                                                {% if list_fields['fields'][field]['list'] is not defined and list_fields['fields'][field]['type'] is defined %}
-                                                    {% set c_list_view = '' %}
+                                                {% set value = '' %}
+                                                {% if list_fields['fields'][field]['link'] is defined %}
+                                                    {% set value = list_fields['fields'][field]['link']  %}
                                                 {% endif %}
-                                                {% if list_fields['fields'][field]['edit'] is not defined and list_fields['fields'][field]['type'] is defined %}
-                                                    {% set c_edit_view = '' %}
+                                                <select name="list_fields[{{ field }}][link]" class="form-control input-sm">
+                                                    <option value="0">False</option>
+                                                    <option value="1" {% if value %}selected{% endif %}>True</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+
+                                <h4 style="color: #0000cc">DetailView</h4>
+                                <table class="table table-bordered table-hover dataTable">
+                                    <tr>
+                                        <th class="header">{{ t._('Field') }}</th>
+                                        <th class="header">{{ t._('Type') }}</th>
+                                        <th class="header">{{ t._('Label') }}</th>
+                                        <th class="header">{{ t._('Options') }}</th>
+                                        <th class="header">{{ t._('Relate') }}</th>
+                                    </tr>
+
+                                    {% for field, options in fields %}
+                                    <tr>
+                                        <td>{{ field }}</td>
+                                        <td>
+                                            {% set value = '' %}
+                                            {% if detail_fields['fields'][field]['type'] is defined %}
+                                                {% set value = detail_fields['fields'][field]['type']  %}
+                                            {% endif %}
+                                            {{ select('detail_fields['~ field ~'][type]', types, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                        </td>
+                                        <td>
+                                            {% set value = '' %}
+                                            {% if detail_fields['fields'][field]['label'] is defined %}
+                                                {% set value = detail_fields['fields'][field]['label']  %}
+                                            {% endif %}
+                                            <input type="text" name="detail_fields[{{ field }}][label]" class="form-control input-sm" value="{{ value }}">
+                                        </td>
+                                        <td>
+                                            {% set value = '' %}
+                                            {% if detail_fields['fields'][field]['options'] is defined %}
+                                                {% set value = detail_fields['fields'][field]['options']  %}
+                                            {% endif %}
+                                            {{ select('detail_fields['~ field ~'][options]', all_lists, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                        </td>
+                                        <td>
+                                            {% set value = '' %}
+                                            {% if detail_fields['fields'][field]['model'] is defined %}
+                                                {% set value = detail_fields['fields'][field]['model']  %}
+                                            {% endif %}
+                                            {{ select('detail_fields['~ field ~'][model]', all_models, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+
+                                <h4 style="color: #0000cc">EditView</h4>
+                                <table class="table table-bordered table-hover dataTable">
+                                    <tr>
+                                        <th class="header">{{ t._('Field') }}</th>
+                                        <th class="header">{{ t._('Type') }}</th>
+                                        <th class="header">{{ t._('Label') }}</th>
+                                        <th class="header">{{ t._('Options') }}</th>
+                                        <th class="header">{{ t._('Relate') }}</th>
+                                    </tr>
+
+                                    {% for field, options in fields %}
+                                        <tr>
+                                            <td>{{ field }}</td>
+                                            <td>
+                                                {% set value = '' %}
+                                                {% if edit_fields['fields'][field]['type'] is defined %}
+                                                    {% set value = edit_fields['fields'][field]['type']  %}
                                                 {% endif %}
-                                                {% if list_fields['fields'][field]['detail'] is not defined and list_fields['fields'][field]['type'] is defined %}
-                                                    {% set c_detail_view = '' %}
+                                                {{ select('edit_fields['~ field ~'][type]', types, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                            </td>
+                                            <td>
+                                                {% set value = '' %}
+                                                {% if edit_fields['fields'][field]['label'] is defined %}
+                                                    {% set value = edit_fields['fields'][field]['label']  %}
                                                 {% endif %}
-                                                <input type="checkbox" name="fields[{{ field }}][list]" {{ c_list_view }}> L |
-                                                <input type="checkbox" name="fields[{{ field }}][edit]" {{ c_edit_view }}> E |
-                                                <input type="checkbox" name="fields[{{ field }}][detail]" {{ c_detail_view }}> D
+                                                <input type="text" name="edit_fields[{{ field }}][label]" class="form-control input-sm" value="{{ value }}">
+                                            </td>
+                                            <td>
+                                                {% set value = '' %}
+                                                {% if edit_fields['fields'][field]['options'] is defined %}
+                                                    {% set value = edit_fields['fields'][field]['options']  %}
+                                                {% endif %}
+                                                {{ select('edit_fields['~ field ~'][options]', all_lists, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
+                                            </td>
+                                            <td>
+                                                {% set value = '' %}
+                                                {% if edit_fields['fields'][field]['model'] is defined %}
+                                                    {% set value = edit_fields['fields'][field]['model']  %}
+                                                {% endif %}
+                                                {{ select('edit_fields['~ field ~'][model]', all_models, 'class': 'form-control input-sm', 'useEmpty': true, 'value': value) }}
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -91,11 +179,163 @@
                             </div>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-info pull-right">{{ t._('Save') }}</button>
-                    {{ end_form() }}
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        {{ t._('Add Panel') }}
+                        <i class="fa fa-fw fa-plus" style="cursor: pointer" onclick="addPanel(this);" order="0"></i>
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered dataTable" id="addSubpanelContent">
+                                    {% if detail_fields['subpanels'] is defined %}
+                                        {% for i, subpanel in detail_fields['subpanels'] %}
+                                            <tr>
+                                                <td width="15%" align="center">
+                                                    <input type="text" name="subpanels[{{ i }}][name]" class="form-control input-sm" placeholder="{{ t._('Subpanel name') }}" value="{{ i }}">
+                                                    (<a href="javascript:void(0)" onclick="loadSupanelOptions(this, '{{ i }}')">edit</a>)
+                                                </td>
+                                                <td width="10%">
+                                                    <select name="subpanels[{{ i }}][type]" class="form-control input-sm" onchange="loadSupanelOptions(this, '{{ i }}')">
+                                                        <option></option>
+                                                        <option value="one-many"{% if subpanel['type'] == 'one-many' %} selected{% endif %}>one-many</option>
+                                                        <option value="many-many"{% if subpanel['type'] == 'many-many' %} selected{% endif %}>many-many</option>
+                                                    </select>
+                                                </td>
+                                                <td width="75%">
+                                                    <div id="panelContent{{ i }}">
+                                                        <table class="table table-bordered dataTable">
+                                                            <tr>
+                                                                <td width="20%">{{ t._('Current model') }}</td>
+                                                                <td>
+                                                                    {{ subpanel['current_model'] }}
+                                                                    <input type="hidden" name="subpanels[{{ i }}][current_model]" value="{{ subpanel['current_model'] }}">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>{{ t._('Primary field') }}</td>
+                                                                <td>
+                                                                    {{ subpanel['current_field'] }}
+                                                                    <input type="hidden" name="subpanels[{{ i }}][current_field]" value="{{ subpanel['current_field'] }}">
+                                                                </td>
+                                                            </tr>
+
+                                                            {% if subpanel['type'] == 'many-many' %}
+                                                                <tr>
+                                                                    <td>{{ t._('Mid model') }}</td>
+                                                                    <td>
+                                                                        {{ subpanel['mid_model'] }}
+                                                                        <input type="hidden" name="subpanels[{{ i }}][mid_model]" value="{{ subpanel['mid_model'] }}">
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td>{{ t._('Mid field 01') }}</td>
+                                                                    <td>
+                                                                        {{ subpanel['mid_field1'] }}
+                                                                        <input type="hidden" name="subpanels[{{ i }}][mid_field1]" value="{{ subpanel['mid_field1'] }}">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>{{ t._('Mid field 02') }}</td>
+                                                                    <td>
+                                                                        {{ subpanel['mid_field2'] }}
+                                                                        <input type="hidden" name="subpanels[{{ i }}][mid_field2]" value="{{ subpanel['mid_field2'] }}">
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            {% endif %}
+
+                                                            <tr>
+                                                                <td>{{ t._('Related model') }}</td>
+                                                                <td>
+                                                                    {{ subpanel['rel_model'] }}
+                                                                    <input type="hidden" name="subpanels[{{ i }}][rel_model]" value="{{ subpanel['rel_model'] }}">
+                                                                </td>
+                                                            </tr>
+                                                            <tfoot>
+                                                            <tr>
+                                                                <td>{{ t._('Show fields') }}</td>
+                                                                <td>
+                                                                    <table class="table table-bordered dataTable">
+                                                                        {% for field, options in subpanel['list'] %}
+                                                                            <tr>
+                                                                                <td>{{ field }}</td>
+                                                                                <td>
+                                                                                    {{ options['type'] }}
+                                                                                    <input type="hidden" name="subpanels[{{ i }}][list][{{ field }}][type]" value="{{ options['type'] }}">
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{ options['label'] }}
+                                                                                    <input type="hidden" name="subpanels[{{ i }}][list][{{ field }}][label]" value="{{ options['label'] }}">
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-info pull-right">{{ t._('Save') }}</button>
+        </div>
+    </div>
+    {{ end_form() }}
 </section>
+
+<script type="text/javascript">
+    function addPanel(obj) {
+        var i = $(obj).attr('order');
+        var html = '' +
+            '<tr>' +
+            '<td width="15%"><input type="text" name="subpanels[' + i + '][name]" class="form-control input-sm" placeholder="{{ t._('Subpanel name') }}"></td>' +
+            '<td width="10%"><select name="subpanels[' + i + '][type]" class="form-control input-sm" onchange="loadSupanelOptions(this, \'' + i + '\')"><option></option><option value="one-many">one-many</option><option value="many-many">many-many</option></select></td>' +
+            '<td width="75%"><div id="panelContent' + i + '"></div></td>';
+        $('#addSubpanelContent').append(html);
+        i = parseInt(i) + 1;
+        $(obj).attr('order', i);
+    }
+
+    function loadSupanelOptions(obj, i) {
+        $.get('{{ url() }}/{{ carofw['backendUrl'] }}/builder/load_subpanel?model_name={{ model_name }}&type=' + $(obj).val() + '&i=' + i, function(data) {
+            $(document.getElementById('panelContent' + i)).html(data);
+        })
+    }
+
+    function loadRelModelConfig(obj, type, i) {
+        var model_name = $(obj).val();
+        $.get('{{ url() }}/{{ carofw['backendUrl'] }}/builder/load_relmodelfields?model_name=' + model_name + '&type=' + type + '&i=' + i, function (data) {
+            if (type == 'rel')
+                $(document.getElementById('subpanelConfig' + i)).html(data);
+
+            if (type == 'mid')
+                $(document.getElementById('subpanelMidConfig' + i)).html(data);
+        });
+    }
+</script>

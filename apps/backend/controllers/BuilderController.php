@@ -13,9 +13,9 @@ use Modules\Backend\Helpers\CsvHelper;
 
 class BuilderController extends ControllerCustom
 {
-    public $types = array(
+    public $types = [
         'int', 'date', 'varchar', 'decimal', 'datetime', 'char', 'text', 'float', 'boolean', 'double', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'bigint', 'json', 'jsonb'
-    );
+    ];
 
     /**
      * @param $model_name
@@ -139,16 +139,16 @@ class BuilderController extends ControllerCustom
             if ($fields) {
                 foreach ($fields as $field) {
                     $databases[$table]['fields'][$field['name']] = array(
-                        'type' => (int) $field['type'],
-                        'size' => (int) $field['size'],
-                        'notNull' => (bool) $field['notnull']
+                        'type' => (int)$field['type'],
+                        'size' => (int)$field['size'],
+                        'notNull' => (bool)$field['notnull']
                     );
                 }
             }
 
             $databases[$table]['indexes'] = array();
             if ($indexes) {
-                foreach($indexes as $index) {
+                foreach ($indexes as $index) {
                     $databases[$table]['indexes'][$index['name']] = array(
                         'type' => $index['type'],
                         'fields' => explode(',', $index['fields'])
@@ -221,16 +221,23 @@ class BuilderController extends ControllerCustom
 
     public function edit_layoutAction($model_name = null)
     {
+        // save layout
         if ($this->request->isPost()) {
+            //$this->view->disable(); echo '<pre>'; print_r($this->request->getPost()); die();
             $model_name = $this->request->getPost('model_name');
             //$model = $this->getModel($model_name);
 
-            $fields = $this->request->getPost('fields');
+            // detail view / edit view layout
+            $detail_view['fields'] = $this->request->getPost('detail_fields');
+            $edit_view['fields'] = $this->request->getPost('edit_fields');
 
+            // title
+            $detail_view['title'] = $edit_view['title'] = $this->request->getPost('title_field');
+
+            // list view layout
+            $list_fields = $this->request->getPost('list_fields');
             $list_view = array();
-            $edit_view = array();
-            $detail_view = array();
-            foreach ($fields as $field => $options) {
+            foreach ($list_fields as $field => $options) {
                 if ($options['type']) {
                     if ($options['search']) {
                         $options['search'] = 1;
@@ -243,18 +250,34 @@ class BuilderController extends ControllerCustom
                         $options['link'] = 1;
                     }
 
-                    if (!empty($options['list'])) {
-                        $list_view['fields'][$field] = $options;
+                    $list_view['fields'][$field] = $options;
+                }
+            }
+
+            // subpanel layout
+            $subpanels = $this->request->getPost('subpanels');
+            foreach ($subpanels as $subpanel) {
+                if ($subpanel['name']) {
+                    $detail_view['subpanels'][$subpanel['name']] = [
+                        'type' => $subpanel['type'],
+                        'current_model' => $subpanel['current_model'],
+                        'current_field' => $subpanel['current_field'],
+                        'rel_model' => $subpanel['rel_model'],
+                        'rel_field' => $subpanel['rel_field']
+                    ];
+
+                    // mid rel model
+                    if ($subpanel['type'] == 'many-many') {
+                        $detail_view['subpanels'][$subpanel['name']]['mid_model'] = $subpanel['mid_model'];
+                        $detail_view['subpanels'][$subpanel['name']]['mid_field1'] = $subpanel['mid_field1'];
+                        $detail_view['subpanels'][$subpanel['name']]['mid_field2'] = $subpanel['mid_field2'];
                     }
 
-                    if (!empty($options['edit'])) {
-                        $edit_view['title'] = 'name';
-                        $edit_view['fields'][$field] = $options;
-                    }
-
-                    if (!empty($options['detail'])) {
-                        $detail_view['title'] = 'name';
-                        $detail_view['fields'][$field] = $options;
+                    // list layout
+                    foreach ($subpanel['list'] as $subpanel_list_field => $subpanel_list) {
+                        if ($subpanel_list['label']) {
+                            $detail_view['subpanels'][$subpanel['name']]['list'][$subpanel_list_field] = $subpanel_list;
+                        }
                     }
                 }
             }
@@ -272,25 +295,30 @@ class BuilderController extends ControllerCustom
             return $this->backendRedirect('/builder/edit_layout/' . $model_name);
         }
 
+        // view layout
         $model = $this->getModel($model_name);
         $fields = $model->allFields();
-        
-        $this->view->model_name = $model_name;
+
+        $layout_fields = [];
+        foreach ($fields['fields'] as $field => $options) {
+            $layout_fields[$field] = $field;
+        }
+
         // all fields
         $this->view->fields = $fields['fields'];
+        $this->view->layout_fields = $layout_fields;
+
+        $this->view->model_name = $model_name;
+
+        // title field
+        $this->view->title_field = $model->detail_view['title'];
+
         // selected fields
-        $this->view->list_fields = array_merge($model->list_view, $model->edit_view, $model->detail_view);
+        $this->view->list_fields = $model->list_view;
+        $this->view->edit_fields = $model->edit_view;
+        $this->view->detail_fields = $model->detail_view;
         // all type
-        $this->view->types = array(
-            'text' => 'Text',
-            'number' => 'Number',
-            'select' => 'Select',
-            'image' => 'Image',
-            'multiimage' => 'Multi Image',
-            'relate' => 'Relate',
-            'textarea' => 'TextArea',
-            'note' => 'Note'
-        );
+        $this->view->types = $model->getFieldTypes();
         // all model
         $this->view->all_models = $model->getAllModels();
         // all list dropdown
@@ -299,6 +327,54 @@ class BuilderController extends ControllerCustom
             $all_lists[$list_dropdown] = $list_dropdown;
         }
         $this->view->all_lists = $all_lists;
+    }
+
+    public function load_subpanelAction()
+    {
+        $this->view->setTemplateAfter('ajax');
+
+        $type = $this->request->get('type');
+        $model_name = $this->request->get('model_name');
+
+        $current_model = $this->getModel($model_name);
+        $current_fields = $current_model->allFields();
+
+        // option all current model fields
+        $options_current_fields = '<option value="id">id</option>';
+        foreach ($current_fields['fields'] as $field => $options) {
+            $options_current_fields .= '<option value="' . $field . '">' . $field . '</option>';
+        }
+        $this->view->options_current_fields = $options_current_fields;
+
+        $this->view->type = $type;
+        $this->view->model_name = $model_name;
+        $this->view->models = $current_model->getAllModels();
+        $this->view->i = $this->request->get('i');
+    }
+
+    public function load_relmodelfieldsAction()
+    {
+        $this->view->setTemplateAfter('ajax');
+
+        $model_name = $this->request->get('model_name');
+        $model = $this->getModel($model_name);
+        $fields = $model->allFields();
+
+        // options fields
+        $options_fields = '<option value="id">id</option>';
+        foreach ($fields['fields'] as $field => $options) {
+            $options_fields .= '<option value="' . $field . '">' . $field . '</option>';
+        }
+        $this->view->options_fields = $options_fields;
+
+        // list view for subpanel
+        $this->view->fields = $fields['fields'];
+
+        // view
+        $this->view->model_name = $model_name;
+        $this->view->type = $this->request->get('type');
+        $this->view->field_types = $model->getFieldTypes();
+        $this->view->i = $this->request->get('i');
     }
 
     /**
@@ -327,7 +403,7 @@ class BuilderController extends ControllerCustom
                     } else {
                         $msg = '';
                         foreach ($model->getMessages() as $m) {
-                            $msg .= $this->t->_((string) $m) . ' | ';
+                            $msg .= $this->t->_((string)$m) . ' | ';
                         }
                         $message[] = 'Error: ' . $msg . 'Detail: ' . implode(', ', $d);
                     }
@@ -338,7 +414,7 @@ class BuilderController extends ControllerCustom
 
             $this->backendRedirect('/builder/import_csv');
         }
-        
+
         if ($model_name) {
             $this->view->title = $this->t->_('Import CSV: ') . $model_name;
         } else {
@@ -370,7 +446,7 @@ class BuilderController extends ControllerCustom
         // get header csv file
         $csvObj = new CsvHelper($file_path, true, ",");
         $this->view->header = $csvObj->getHeader();
-        
+
         // get all fields
         $model = $this->getModel($this->request->getPost('model'));
         $table = $model->getSource();

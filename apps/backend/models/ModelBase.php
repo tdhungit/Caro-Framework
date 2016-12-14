@@ -212,12 +212,13 @@ class ModelBase extends Model
 
     /**
      * All Fields on Model 
-     * 
+     *
+     * @param $table
      * @return mixed
      */
-    public function allFields()
+    public function allFields($table = '')
     {
-        $table = $this->getSource();
+        $table = ($table) ? $table : $this->getSource();
         $tables = $this->getAllDatabase();
         
         return $tables[$table];
@@ -256,6 +257,20 @@ class ModelBase extends Model
             }
         }
         return $models;
+    }
+
+    public function getFieldTypes()
+    {
+        return [
+            'text' => 'Text',
+            'number' => 'Number',
+            'select' => 'Select',
+            'image' => 'Image',
+            'multiimage' => 'Multi Image',
+            'relate' => 'Relate',
+            'textarea' => 'TextArea',
+            'note' => 'Note'
+        ];
     }
 
 }
