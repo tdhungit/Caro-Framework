@@ -50,7 +50,7 @@ class Module
             $view->setTemplateAfter('default');
 
             $view->registerEngines(array(
-                ".tpl" => function ($view, $di) {
+                ".twig" => function ($view, $di) {
                     $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
                     $volt->setOptions(array(
                         "compiledPath" => "../apps/cache/volt/"
