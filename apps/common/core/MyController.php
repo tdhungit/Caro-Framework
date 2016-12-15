@@ -20,20 +20,40 @@ class MyController extends Controller
 {
     // relate model
     protected $model_name;
+
     // base
     protected $controller_name;
     protected $action_name;
+
     // translation
     protected $t;
+
+    // module name
+    protected $module_name = null;
 
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
+
+        // set viewDir
+        if (!$this->module_name) {
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
+            $this->view->setLayoutsDir('../../common/layouts/backend');
+        } else {
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
+            $this->view->setLayoutsDir('../../../../common/layouts/backend');
+        }
+
+        // layout default
+        $this->view->setTemplateAfter('/default');
+
         // config
         $this->view->setVar('carofw', $this->carofw);
+
         // language
         $this->t = $this->getTranslation();
         $this->view->setVar('t', $this->t);
+
         // controller, action
         $this->view->setVar('current_controller', $this->controller_name);
         $this->view->setVar('current_action', $this->action_name);

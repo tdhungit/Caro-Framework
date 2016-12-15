@@ -259,6 +259,10 @@ class ModelBase extends Model
         return $models;
     }
 
+    /**
+     * All field types
+     * @return array
+     */
     public function getFieldTypes()
     {
         return [

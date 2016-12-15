@@ -20,6 +20,7 @@ class Module
             'Modules\Core' => APP_PATH . 'apps/common/core/',
             'Modules\Frontend\Controllers' => __DIR__ . '/controllers/',
             'Modules\Frontend\Models' => __DIR__ . '/models/',
+            'Modules\Frontend\Src' => __DIR__ . '/src/',
         ));
 
         $loader->register();

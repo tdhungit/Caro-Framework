@@ -33,10 +33,26 @@ class SettingsController extends ControllerCustom
      */
     public function repairAction()
     {
+        // repair database
+        $this->_repairDatabase();
+
+        // repair router
+        $this->_repairBackendRouter();
+        $this->_repairFrontendRouter();
+
+        $this->flash->success('Repair success!');
+        $this->backendRedirect('/settings');
+    }
+
+    /**
+     * Repair database
+     */
+    private function _repairDatabase()
+    {
         if (is_file(__DIR__ . "/../../config/database_structures.ini.php")) {
             $tables = include  __DIR__ . "/../../config/database_structures.ini.php";
         } else {
-            $tables = include __DIR__ . "/../../config/database_structures.php";   
+            $tables = include __DIR__ . "/../../config/database_structures.php";
         }
 
         foreach ($tables as $table_name => $table_data) {
@@ -146,9 +162,45 @@ class SettingsController extends ControllerCustom
                 $this->db->createTable($table_name, null, $new_columns);
             }
         }
+    }
 
-        $this->flash->success('Repair success!');
-        $this->backendRedirect('/settings');
+    /**
+     * Repair backend router
+     */
+    private function _repairBackendRouter()
+    {
+        // module folder
+        $module_folder = APP_PATH . 'apps/backend/src';
+        $modules = include APP_PATH . 'apps/config/modules.php';
+
+        // current router
+        $router = include APP_PATH . 'apps/backend/config/router.php';
+
+        // merge module router
+        foreach ($modules['backend'] as $module => $enable) {
+            if ($enable == true && is_file($module_folder . '/' . $module . '/config/router.php')) {
+                $module_router = include $module_folder . '/' . $module . '/config/router.php';
+                $module_router_fixed = [];
+
+                foreach ($module_router as $url => $options) {
+                    $options['namespace'] = 'Modules\\Backend\\Src\\'. $module .'\\Controllers';
+                    $options['module'] = 'backend';
+                    $module_router_fixed[$url] = $options;
+                }
+
+                $router = array_merge($router, $module_router_fixed);
+            }
+        }
+
+        $router_file = APP_PATH . 'apps/backend/config/router.ini.php';
+        $file = fopen($router_file, 'w');
+        fwrite($file, "<?php\n\nreturn " . var_export($router, true) . ";\n\n");
+        fclose($file);
+    }
+
+    private function _repairFrontendRouter()
+    {
+
     }
 
     /**

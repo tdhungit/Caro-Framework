@@ -16,9 +16,9 @@ function getCaroRouter($config)
     $router->removeExtraSlashes(true);
 
     // backend
-    $backend = include APP_PATH . 'apps/backend/config/router.php';
+    $backend = include APP_PATH . 'apps/backend/config/router.ini.php';
     // front end
-    $frontend = include APP_PATH . 'apps/frontend/config/router.php';
+    $frontend = include APP_PATH . 'apps/frontend/config/router.ini.php';
 
     // all router
     $routes = array_merge($backend, $frontend);

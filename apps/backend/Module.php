@@ -28,9 +28,10 @@ class Module
             'Modules\Core' => APP_PATH . 'apps/common/core/',
             'Modules\Backend\Controllers' => __DIR__ . '/controllers/',
             'Modules\Backend\Models' => __DIR__ . '/models/',
-            'Modules\Backend\Helpers' => __DIR__ . '/helpers',
+            'Modules\Backend\Helpers' => __DIR__ . '/helpers/',
             'Modules\Backend\Plugins' => __DIR__ . '/plugins/',
-            'Modules\Backend\Libraries' => __DIR__ . '/libraries',
+            'Modules\Backend\Libraries' => __DIR__ . '/libraries/',
+            'Modules\Backend\Src' => __DIR__ . '/src/',
         ));
 
         $loader->register();
@@ -64,10 +65,6 @@ class Module
         $di['view'] = function () {
 
             $view = new View();
-
-            $view->setViewsDir(__DIR__ . '/views/');
-            $view->setLayoutsDir('../../common/layouts/backend/');
-            $view->setTemplateAfter('/default');
 
             $view->registerEngines(array(
                 ".twig" => function ($view, $di) {
