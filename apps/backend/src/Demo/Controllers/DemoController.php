@@ -14,6 +14,7 @@ use Modules\Backend\Controllers\ControllerCustom;
 class DemoController extends ControllerCustom
 {
     protected $module_name = 'Demo';
+    protected $model_name = 'Users';
 
     public function indexAction()
     {

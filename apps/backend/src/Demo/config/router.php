@@ -7,6 +7,11 @@
  */
 
 return [
+    '/demo/:controller/:action/:params' => [
+        'controller' => 1,
+        'action' => 2,
+        'params' => 3
+    ],
     '/demo/demo' => [
         'controller' => 'Demo',
         'action' => 'index'

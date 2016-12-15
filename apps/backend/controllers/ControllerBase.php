@@ -313,7 +313,11 @@ class ControllerBase extends MyController
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/list');
+            if ($this->module_name) {
+                $this->view->pick('../../../views/view_default/list');
+            } else {
+                $this->view->pick('view_default/list');
+            }
         }
     }
 
@@ -357,7 +361,11 @@ class ControllerBase extends MyController
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/detail');
+            if ($this->module_name) {
+                $this->view->pick('../../../views/view_default/detail');
+            } else {
+                $this->view->pick('view_default/detail');
+            }
         }
     }
 
@@ -399,7 +407,11 @@ class ControllerBase extends MyController
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/edit');
+            if ($this->module_name) {
+                $this->view->pick('../../../views/view_default/edit');
+            } else {
+                $this->view->pick('view_default/edit');
+            }
         }
     }
 
@@ -462,7 +474,11 @@ class ControllerBase extends MyController
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
-            $this->view->pick('view_default/popup');
+            if ($this->module_name) {
+                $this->view->pick('../../../views/view_default/popup');
+            } else {
+                $this->view->pick('view_default/popup');
+            }
         }
     }
 

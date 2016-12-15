@@ -27,6 +27,14 @@ return array (
     'action' => 'execute',
     'params' => 1,
   ),
+  '/demo/:controller/:action/:params' => 
+  array (
+    'controller' => 1,
+    'action' => 2,
+    'params' => 3,
+    'namespace' => 'Modules\\Backend\\Src\\Demo\\Controllers',
+    'module' => 'backend',
+  ),
   '/demo/demo' => 
   array (
     'controller' => 'Demo',
