@@ -167,12 +167,38 @@ class BuilderController extends ControllerBase
 
             $databases[$table]['fields'] = array();
             if ($fields) {
+                $model_field = '';
+
                 foreach ($fields as $field) {
                     $databases[$table]['fields'][$field['name']] = array(
                         'type' => (int)$field['type'],
                         'size' => (int)$field['size'],
                         'notNull' => (bool)$field['notnull']
                     );
+
+                    $model_field .= "\tpublic \${$field['name']};\n";
+                }
+
+                if ($this->request->getPost('is_override')) {
+                    // write model backend
+                    $model_file = APP_PATH . "apps/backend/models/{$model_name}.php";
+                    $file = fopen($model_file, 'w');
+                    $content = "<?php\n\nnamespace Modules\\Backend\\Models;\n\n";
+                    $content .= "class $model_name extends ModelBase \n{\n";
+                    $content .= $model_field;
+                    $content .= "}";
+                    fwrite($file, $content);
+                    fclose($file);
+
+                    // write model front-end
+                    $model_file_front = APP_PATH . "apps/frontend/models/{$model_name}.php";
+                    $file = fopen($model_file_front, 'w');
+                    $content = "<?php\n\nnamespace Modules\\Frontend\\Models;\n\n";
+                    $content .= "class $model_name extends ModelBase\n{\n";
+                    $content .= $model_field;
+                    $content .= "}";
+                    fwrite($file, $content);
+                    fclose($file);
                 }
             }
 

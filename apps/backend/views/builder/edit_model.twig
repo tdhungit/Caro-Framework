@@ -102,7 +102,9 @@
                                         </tbody>
                                     </table>
 
-                                    <button type="submit" class="btn btn-info pull-right">{{ t._('Save') }}</button>
+                                    <input type="hidden" name="is_override" value="0">
+                                <button type="submit" class="btn btn-info pull-right" onclick="$('input[name=is_override]').val('1')">{{ t._('Save & Override model') }}</button>
+                                    <button type="submit" class="btn btn-info pull-right" style="margin-right: 10px">{{ t._('Save') }}</button>
                                 {{ end_form() }}
                             </div>
                         </div>
