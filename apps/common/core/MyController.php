@@ -38,14 +38,14 @@ class MyController extends Controller
         // set viewDir
         if (!$this->module_name) {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
-            $this->view->setLayoutsDir('../../common/layouts/backend');
+            $this->view->setLayoutsDir('../../common/layouts/backend/');
         } else {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
             $this->view->setLayoutsDir('../../../../common/layouts/backend');
         }
 
         // layout default
-        $this->view->setTemplateAfter('/default');
+        $this->view->setTemplateAfter('default');
 
         // config
         $this->view->setVar('carofw', $this->carofw);
