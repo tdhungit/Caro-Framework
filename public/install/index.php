@@ -9,7 +9,7 @@
  * File: index.php
  */
 
-define('APP_PATH', str_replace('\public', '', realpath('..')) . '/');
+define('APP_PATH', str_replace('public', '', realpath('..')));
 
 if (!empty($_POST)) {
     $db_host = $_POST['dbhost'];
@@ -22,10 +22,15 @@ if (!empty($_POST)) {
     $user_password = $_POST['password'];
     $user_password2 = $_POST['password2'];
 
+    $baseurl = $_POST['baseurl'];
+    $backendprefix = $_POST['backendprefix'];
+    $pagetitle = $_POST['pagetitle'];
+
     //print_r($_POST);
 
     if ($db_host && $db_user && $db_name
         && $user_name && $user_email && $user_password && $user_password2
+        && $baseurl && $backendprefix && $pagetitle
     ) {
         if ($user_password == $user_password2) {
             // Create connection
@@ -41,16 +46,22 @@ if (!empty($_POST)) {
                 ";
 
                 if ($conn->multi_query($sql) === TRUE) {
-                    $caro_db = "
-                    adapter = Mysql\n
-                    host = {$db_host}\n
-                    username = {$db_user}\n
-                    password = {$db_pwd}\n
-                    name = {$db_name}
-                    ";
-
-                    $file = fopen(APP_PATH . "apps/config/database.ini", "w");
+                    $caro_db = "adapter = Mysql\n";
+                    $caro_db .= "host = {$db_host}\n";
+                    $caro_db .= "username = {$db_user}\n";
+                    $caro_db .= "password = {$db_pwd}\n";
+                    $caro_db .= "name = {$db_name}";
+                    $file = fopen(APP_PATH . "apps/config/database.ini", 'w');
                     fwrite($file, $caro_db);
+                    fclose($file);
+
+                    $caro_config = "[application]\n";
+                    $caro_config .= "baseUrl = {$baseurl}\n";
+                    $caro_config .= "backendUrl = {$backendprefix}\n";
+                    $caro_config .= "title = {$pagetitle}\n";
+                    $caro_config .= "theme = caro";
+                    $file = fopen(APP_PATH . "apps/config/config.ini", 'w');
+                    fwrite($file, $caro_config);
                     fclose($file);
 
                     header('Location: ../../admin');
@@ -70,6 +81,9 @@ if (!empty($_POST)) {
     }
 }
 
+$current_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$current_url = str_replace('/public/install/', '', $current_url);
+
 ?>
 
 <!DOCTYPE html>
@@ -87,6 +101,8 @@ if (!empty($_POST)) {
     <script src="../themes/caro/js/html5.js"></script>
     <![endif]-->
     <link href="../themes/caro/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -103,30 +119,33 @@ if (!empty($_POST)) {
         <form action="index.php" method="post" class="form-horizontal" style="padding: 20px; padding-top: 30px; border: 1px solid #fff;">
             <div class="row">
                 <div class="col-xs-6">
-
                     <h4 style="text-align: center">Database Config</h4>
+
                     <div class="form-group">
                         <label for="dbhost" class="col-sm-4 control-label">DB Host</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="dbhost" name="dbhost" placeholder="DB Host" required>
+                            <input type="text" class="form-control" id="dbhost" name="dbhost" value="localhost" placeholder="DB Host" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="dbusername" class="col-sm-4 control-label">DB User</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="dbusername" name="dbusername" placeholder="DB User" required>
+                            <input type="text" class="form-control" id="dbusername" name="dbusername" value="root" placeholder="DB User" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="dbpassword" class="col-sm-4 control-label">DB Password</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="dbpassword" name="dbpassword" placeholder="DB Password">
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="dbname" class="col-sm-4 control-label">DB Name</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="dbname" name="dbname" placeholder="DB Name" required>
+                            <input type="text" class="form-control" id="dbname" name="dbname" value="caroframework" placeholder="DB Name" required>
                         </div>
                     </div>
 
@@ -135,24 +154,28 @@ if (!empty($_POST)) {
 
                 <div class="col-xs-6">
                     <h4 style="text-align: center">User Admin Config</h4>
+
                     <div class="form-group">
                         <label for="username" class="col-sm-4 control-label">Username</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            <input type="text" class="form-control" id="username" name="username" value="admin" placeholder="Username" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="email" class="col-sm-4 control-label">Email</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                            <input type="email" class="form-control" id="email" name="email" value="support@carodev.com" placeholder="Email" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="password" class="col-sm-4 control-label">Password</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="password2" class="col-sm-4 control-label">Password Again</label>
                         <div class="col-sm-8">
@@ -160,14 +183,41 @@ if (!empty($_POST)) {
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="row" style="margin: 20px 0; border-top: 1px solid #fff">
+                <div class="col-xs-12">
+                    <h4 style="text-align: center">Page Config</h4>
+
+                    <div class="form-group">
+                        <label for="username" class="col-sm-4 control-label">Base Url</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="baseurl" name="baseurl" value="http://<?php echo $current_url ?>" placeholder="Base Url" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="col-sm-4 control-label">Backend prefix</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="backendprefix" name="backendprefix" value="admin" placeholder="Backend prefix" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username" class="col-sm-4 control-label">Page title</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="pagetitle" name="pagetitle" value="CaroFramework" placeholder="Page title" required>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6">
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Sign in</button>
+                            <button type="submit" class="btn btn-default">Install</button>
                         </div>
                     </div>
                 </div>

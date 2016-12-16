@@ -22,6 +22,8 @@
     <!-- Alert -->
     <link rel="stylesheet" href="{{ static_url() }}/themes/backend/css/sweetalert.css">
 
+    <link rel="shortcut icon" href="{{ url() }}/favicon.ico" type="image/x-icon">
+
     <script>
         var base_url = '{{ url() }}';
         var backend_url = '{{ url('/' ~ carofw['backendUrl']) }}';
@@ -62,7 +64,7 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                {% if current_user.avatar %}
+                                {% if current_user.avatar is defined and current_user.avatar %}
                                     <img src="{{ current_user.avatar }}" class="img-circle" alt="User Image" width="17px">
                                 {% else %}
                                     <img src="{{ static_url() }}/themes/backend/img/avatar.png" class="img-circle" alt="User Image" width="17px">
