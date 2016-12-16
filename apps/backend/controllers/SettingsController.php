@@ -418,6 +418,19 @@ class SettingsController extends ControllerBase
         $this->view->config = $config;
 
         $this->view->data_config = $data_config;
+
+        // get theme
+        $themes = [];
+        $folder_theme = APP_PATH . 'public/themes';
+        $scan_themes = scandir($folder_theme);
+
+        foreach ($scan_themes as $sub_folder) {
+            if (substr($sub_folder, 0, 1) != '.' && $sub_folder != 'backend') {
+                $themes[$sub_folder] = $sub_folder;
+            }
+        }
+
+        $this->view->themes = $themes;
     }
 
 }
