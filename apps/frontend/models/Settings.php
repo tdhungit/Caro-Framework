@@ -13,18 +13,30 @@ use Modules\Core\MyMail;
 
 class Settings extends ModelBase
 {
+    /**
+     * @param $mailSettings
+     */
     public function setMailSettings($mailSettings)
     {
         $mymail = new MyMail();
         $mymail->setMailSettings($mailSettings);
     }
 
+    /**
+     * @return array
+     */
     public function getDefaultSettings()
     {
         $mymail = new MyMail();
         return $mymail->getDefaultSettings($this);
     }
 
+    /**
+     * @param $to
+     * @param $subject
+     * @param $body
+     * @return mixed
+     */
     public function sendMail($to, $subject, $body)
     {
         $mymail = new MyMail();

@@ -13,6 +13,9 @@ use Phalcon\Mvc\Url;
 
 class MyUrl extends Url
 {
+    /**
+     * @var string backend url
+     */
     public $backendUrl;
 
     /**

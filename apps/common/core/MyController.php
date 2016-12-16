@@ -18,31 +18,42 @@ use Phalcon\Translate\Adapter\NativeArray;
 
 class MyController extends Controller
 {
-    // relate model
-    protected $model_name;
-
-    // base
-    protected $controller_name;
-    protected $action_name;
-
-    // translation
-    protected $t;
-
-    // module name
+    /**
+     * @var null|string module name
+     */
     protected $module_name = null;
 
+    /**
+     * @var null|string extend model name (override model_name)
+     */
+    protected $ext_model_name = null;
+
+    /**
+     * @var string related model
+     */
+    protected $model_name;
+
+    /**
+     * @var string current controller name
+     */
+    protected $controller_name;
+
+    /**
+     * @var string current action name
+     */
+    protected $action_name;
+
+    /**
+     * @var NativeArray translation variable
+     */
+    protected $t;
+
+    /**
+     * init controller
+     */
     protected function initialize()
     {
         $this->tag->prependTitle('Caro Framework | ');
-
-        // set viewDir
-        if (!$this->module_name) {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
-            $this->view->setLayoutsDir('../../common/layouts/backend/');
-        } else {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
-            $this->view->setLayoutsDir('../../../../common/layouts/backend/');
-        }
 
         // layout default
         $this->view->setTemplateAfter('default');
@@ -59,6 +70,9 @@ class MyController extends Controller
         $this->view->setVar('current_action', $this->action_name);
     }
 
+    /**
+     * @param Dispatcher $dispatcher
+     */
     public function beforeExecuteRoute(Dispatcher $dispatcher)
     {
         $this->controller_name = $dispatcher->getControllerName();

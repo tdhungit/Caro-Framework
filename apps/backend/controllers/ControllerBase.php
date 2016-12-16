@@ -18,18 +18,39 @@ use Modules\Core\MyController;
 
 class ControllerBase extends MyController
 {
+    /**
+     * @var bool ajax view
+     */
     protected $is_ajax = false;
 
-    // base controller
+    /**
+     * @var string action list name
+     */
     protected $action_list = 'list';
+    /**
+     * @var string action detail name
+     */
     protected $action_detail = 'detail';
+    /**
+     * @var string action edit name
+     */
     protected $action_edit = 'edit';
+    /**
+     * @var string action delete name
+     */
     protected $action_delete = 'delete';
-    // action
+    /**
+     * @var null|string link action detail
+     */
     protected $link_detail = null;
-    // button action
+    /**
+     * @var null|array button action
+     */
     protected $link_action = null;
 
+    /**
+     * @var null|string where condition
+     */
     protected $where = null;
 
     /**
@@ -39,6 +60,16 @@ class ControllerBase extends MyController
     {
         parent::initialize();
         $this->tag->appendTitle('Admin Page | ');
+
+        // set viewDir
+        if (!$this->module_name) {
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
+            $this->view->setLayoutsDir('../../common/layouts/backend/');
+        } else {
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
+            $this->view->setLayoutsDir('../../../../common/layouts/backend/');
+        }
+
         // auth
         $auth = $this->session->get('auth');
         if ($auth) {
@@ -57,13 +88,23 @@ class ControllerBase extends MyController
      */
     protected function getModel($model_name = null)
     {
-        $model_focus = $this->model_name;
+        if ($this->ext_model_name) {
+            $model_focus = $this->ext_model_name;
+        } else {
+            $model_focus = $this->model_name;
+        }
+
         if ($model_name) {
             $model_focus = $model_name;
         }
 
         if ($model_focus) {
-            $model_path = '\\Modules\Backend\Models\\' . $model_focus;
+            if ($this->module_name && !$this->ext_model_name) {
+                $model_path = '\\Modules\\Backend\\Src\\' . $this->module_name . '\\Models\\' . $model_focus;
+            } else {
+                $model_path = '\\Modules\\Backend\\Models\\' . $model_focus;
+            }
+
             $model = new $model_path();
             $model->initialize();
             if (empty($model->menu)) {

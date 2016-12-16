@@ -15,6 +15,18 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ModelBase extends Model
 {
+    /**
+     * init model
+     */
+    public function initialize() {
+
+    }
+
+    /**
+     * @param null $data
+     * @param null $whiteList
+     * @return bool
+     */
     public function create($data = null, $whiteList = null)
     {
         if (empty($this->created)) {

@@ -14,7 +14,7 @@ use Modules\Backend\Controllers\ControllerBase;
 class DemoController extends ControllerBase
 {
     protected $module_name = 'Demo';
-    protected $model_name = 'Users';
+    protected $ext_model_name = 'Users';
 
     public function indexAction()
     {

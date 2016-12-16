@@ -17,16 +17,38 @@ use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ModelBase extends Model
 {
+    /**
+     * @var string default namespace
+     */
     public $name_base = "Modules\\Backend\\Models\\";
-    // config view
+    /**
+     * @var array config list view
+     */
     public $list_view = array();
+    /**
+     * @var array config detail view
+     */
     public $detail_view = array();
+    /**
+     * @var array config edit view
+     */
     public $edit_view = array();
+    /**
+     * @var array config menu
+     */
     public $menu = array();
-    // config custom query
+    /**
+     * @var null|string config custom query
+     */
     static public $custom_conditions = null;
+    /**
+     * @var null|array config custom query
+     */
     static public $custom_bind = null;
 
+    /**
+     * init model
+     */
     public function initialize()
     {
         $class_name = str_replace($this->name_base, '', get_class($this));

@@ -13,7 +13,14 @@ require_once APP_PATH . 'apps/common/third_party/swiftmailer5/swift_required.php
 
 class MyMail extends Component
 {
+    /**
+     * @var
+     */
     protected $_transport;
+
+    /**
+     * @var
+     */
     protected $mailSettings;
 
     /**
