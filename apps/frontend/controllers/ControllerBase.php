@@ -15,14 +15,19 @@ class ControllerBase extends MyController
         parent::initialize();
         $this->tag->setTitle('Caro Framework');
 
+        $theme = 'caro';
+
         // set viewDir
         if (!$this->module_name) {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
-            $this->view->setLayoutsDir('../../common/layouts/backend/');
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/' . $theme . '/');
+            $this->view->setLayoutsDir('../../../common/layouts/' . $theme . '/');
         } else {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
-            $this->view->setLayoutsDir('../../../../common/layouts/backend/');
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/' . $theme . '/');
+            $this->view->setLayoutsDir('../../../../../common/layouts/' . $theme . '/');
         }
+
+        // global variable
+        $this->view->setVar('theme_uri', '/themes/' . $theme);
     }
 
     /**

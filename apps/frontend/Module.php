@@ -46,10 +46,6 @@ class Module
         $di['view'] = function () use ($config) {
             $view = new View();
 
-            $view->setViewsDir($config->application->viewsDir);
-            $view->setLayoutsDir('../../../common/layouts/'. $config->system_view->theme . '/');
-            $view->setTemplateAfter('default');
-
             $view->registerEngines(array(
                 ".twig" => function ($view, $di) {
                     $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
@@ -59,8 +55,6 @@ class Module
                     return $volt;
                 }
             ));
-            // global url
-            $view->setVar('theme_uri', '/themes/' . $config->system_view->theme);
 
             return $view;
         };
