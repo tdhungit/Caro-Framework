@@ -9,11 +9,11 @@
  * File: const.php
  */
 
-return array(
-    'app_list_strings' => array(
-        'users_status_list' => array(
+return [
+    'app_list_strings' => [
+        'users_status_list' => [
             'Active' => 'Active',
             'Inactive' => 'Inactive'
-        )
-    ),
-);
+        ]
+    ],
+];

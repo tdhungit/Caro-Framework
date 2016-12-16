@@ -41,15 +41,16 @@ if (!empty($_POST)) {
                 ";
 
                 if ($conn->multi_query($sql) === TRUE) {
-                    $caro_db = array(
-                        'adapter'  => 'Mysql',
-                        'host'     => $db_host,
-                        'username' => $db_user,
-                        'password' => $db_pwd,
-                        'name'     => $db_name,
-                    );
-                    $file = fopen(APP_PATH . "apps/config/database.php", "w");
-                    fwrite($file, "<?php\n return " . var_export($caro_db, true) . ";\n");
+                    $caro_db = "
+                    adapter = Mysql\n
+                    host = {$db_host}\n
+                    username = {$db_user}\n
+                    password = {$db_pwd}\n
+                    name = {$db_name}
+                    ";
+
+                    $file = fopen(APP_PATH . "apps/config/database.ini", "w");
+                    fwrite($file, $caro_db);
                     fclose($file);
 
                     header('Location: ../../admin');

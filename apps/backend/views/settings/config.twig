@@ -1,0 +1,35 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        {{ t._('Global Config') }}
+    </h1>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                {{ form('/'~ carofw['backendUrl'] ~'/settings/config', 'method': 'post', 'class': 'form-horizontal', 'id': 'global-config') }}
+                <div class="box-body">
+                    {% for key, data in data_config %}
+                        <h4 style="color: #0000cc">{{ key }}</h4>
+
+                        {% for conf in data %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{{ t._(conf) }}</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="{{ key }}[{{ conf }}]" class="form-control" value="{{ config.application[conf] }}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right" value="CONFIRM">{{ t._('Save') }}</button>
+                </div>
+                {{ end_form() }}
+            </div>
+        </div>
+    </div>
+</section>

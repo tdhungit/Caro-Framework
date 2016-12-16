@@ -10,5 +10,5 @@
  */
 
 return new \Phalcon\Config(array(
-	'database' => include __DIR__ . '/../../config/database.php',
+	'database' => new \Phalcon\Config\Adapter\Ini(__DIR__ . '/../../config/database.ini'),
 ));

@@ -19,8 +19,26 @@ use Phalcon\Text;
 
 class SettingsController extends ControllerBase
 {
+    /**
+     * @var string model_name
+     */
     protected $model_name = 'Settings';
 
+    /**
+     * @var array data config
+     */
+    private $data_config = [
+        'application' => [
+            'baseUrl',
+            'backendUrl',
+            'title',
+            'theme'
+        ],
+    ];
+
+    /**
+     * dashboard
+     */
     public function indexAction()
     {
 
@@ -198,6 +216,9 @@ class SettingsController extends ControllerBase
         fclose($file);
     }
 
+    /**
+     * Repair front-end router
+     */
     private function _repairFrontendRouter()
     {
 
@@ -358,6 +379,45 @@ class SettingsController extends ControllerBase
                 $this->backendRedirect('/settings/mail_config');
             }
         }
+    }
+
+    /**
+     * config global variable
+     *
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
+    public function configAction()
+    {
+        $this->tag->appendTitle('Global Config');
+
+        $data_config = $this->data_config;
+
+        $file_config = APP_PATH . '/apps/config/config.ini';
+
+        if ($this->request->isPost()) {
+            $post = $this->request->getPost();
+
+            $write_config = '';
+
+            foreach ($post as $group => $conf) {
+                $write_config .= "[{$group}]\n";
+
+                foreach ($conf as $key => $value) {
+                    $write_config .= "{$key} = {$value}\n";
+                }
+            }
+
+            $file = fopen($file_config, 'w');
+            fwrite($file, $write_config);
+            fclose($file);
+
+            return $this->backendRedirect('/settings/config');
+        }
+
+        $config = new \Phalcon\Config\Adapter\Ini($file_config);
+        $this->view->config = $config;
+
+        $this->view->data_config = $data_config;
     }
 
 }
