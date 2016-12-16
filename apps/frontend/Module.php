@@ -10,7 +10,9 @@ use Phalcon\Db\Adapter\Pdo\Mysql as MySQLAdapter;
 
 class Module
 {
-
+    /**
+     * register namespace
+     */
     public function registerAutoloaders()
     {
 
@@ -26,6 +28,11 @@ class Module
         $loader->register();
     }
 
+    /**
+     * register services
+     *
+     * @param DiInterface $di
+     */
     public function registerServices(DiInterface $di)
     {
 

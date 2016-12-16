@@ -18,10 +18,11 @@ use Phalcon\Events\Manager as EventsManager;
 
 class Module
 {
-
+    /**
+     * register namespace
+     */
     public function registerAutoloaders()
     {
-
         $loader = new Loader();
 
         $loader->registerNamespaces(array(
@@ -37,6 +38,11 @@ class Module
         $loader->register();
     }
 
+    /**
+     * register services
+     *
+     * @param DiInterface $di
+     */
     public function registerServices(DiInterface $di)
     {
 
