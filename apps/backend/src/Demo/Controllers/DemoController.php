@@ -10,11 +10,12 @@ namespace Modules\Backend\Src\Demo\Controllers;
 
 
 use Modules\Backend\Controllers\ControllerBase;
+use Modules\Backend\Src\Demo\Models\Users;
 
 class DemoController extends ControllerBase
 {
     protected $module_name = 'Demo';
-    protected $ext_model_name = 'Users';
+    protected $model_name = 'Demo';
 
     public function indexAction()
     {

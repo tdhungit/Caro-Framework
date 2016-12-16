@@ -13,6 +13,9 @@ use Modules\Backend\Helpers\CsvHelper;
 
 class BuilderController extends ControllerBase
 {
+    /**
+     * @var array database types
+     */
     public $types = [
         'int', 'date', 'varchar', 'decimal', 'datetime', 'char', 'text', 'float', 'boolean', 'double', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'bigint', 'json', 'jsonb'
     ];
@@ -35,6 +38,9 @@ class BuilderController extends ControllerBase
         return $table;
     }
 
+    /**
+     * all model
+     */
     public function indexAction()
     {
         $models = array();
@@ -50,6 +56,12 @@ class BuilderController extends ControllerBase
         $this->view->models = $models;
     }
 
+    /**
+     * edit model
+     *
+     * @param $model_name
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
     public function edit_modelAction($model_name)
     {
         $model = $this->getModel($model_name);
@@ -80,6 +92,14 @@ class BuilderController extends ControllerBase
         $this->view->model_name = $model_name;
     }
 
+    /**
+     * add new field to model
+     *
+     * @param $name
+     * @param $type
+     * @param $size
+     * @param $notnull
+     */
     public function ajax_add_fieldAction($name, $type, $size, $notnull)
     {
         $this->view->types = $this->types;
@@ -91,6 +111,13 @@ class BuilderController extends ControllerBase
         $this->view->setTemplateAfter('ajax');
     }
 
+    /**
+     * add indexes to model
+     *
+     * @param $model_name
+     * @param $number
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
     public function ajax_add_indexAction($model_name, $number)
     {
         $model = $this->getModel($model_name);
@@ -118,6 +145,9 @@ class BuilderController extends ControllerBase
         $this->view->setTemplateAfter('ajax');
     }
 
+    /**
+     * update fields to model
+     */
     public function update_fieldsAction()
     {
         $this->view->disable();
@@ -164,61 +194,128 @@ class BuilderController extends ControllerBase
         $this->backendRedirect('/builder/edit_model/' . $model_name);
     }
 
+    /**
+     * create new model
+     */
     public function create_modelAction()
     {
         if ($this->request->isPost()) {
+            $main_module = $this->request->getPost('main_module');
+            $module_name = $this->request->getPost('module_name');
             $model_name = $this->request->getPost('model_name');
-            if ($model_name) {
-                $model_file = APP_PATH . "apps/backend/models/$model_name.php";
-                $model_file_front = APP_PATH . "apps/frontend/models/$model_name.php";
 
-                if (is_file($model_file)) {
-                    $this->flash->error('Exits this model!');
-                } else {
-                    if (is_file(APP_PATH . 'apps/config/database_structures.ini.php')) {
-                        $databases = include APP_PATH . 'apps/config/database_structures.ini.php';
-                    } else {
-                        $databases = include APP_PATH . 'apps/config/database_structures.php';
-                    }
+            // check model name
+            if (!$model_name) {
+                $this->flash->error($this->t->_('Please input model name!'));
+                return $this->backendRedirect('/builder/create_model');
+            }
 
-                    $databases[strtolower($model_name)] = array(
-                        'fields' => array(),
-                        'indexes' => array(),
-                    );
+            // check module name
+            if ($main_module != 'core' && !$module_name) {
+                $this->flash->error($this->t->_('Please input module name!'));
+                return $this->backendRedirect('/builder/create_model');
+            }
 
-                    // write db
-//                    $file = fopen(APP_PATH . "apps/config/database_structures.ini.php", "w");
-//                    fwrite($file, "<?php\n\n return " . var_export($databases, true) . ";\n");
-//                    fclose($file);
+            $model_file = APP_PATH . "apps/backend/models/{$model_name}.php";
+            $model_file_front = APP_PATH . "apps/frontend/models/{$model_name}.php";
 
-                    // write model
-                    $file = fopen($model_file, "w");
-                    $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelBase \n{\n\n}";
+            if ($main_module == 'core') {
+                $model_file_module = null;
+            } else {
+                @mkdir(APP_PATH . "apps/{$main_module}/src/{$module_name}");
+                @mkdir(APP_PATH . "apps/{$main_module}/src/{$module_name}/Models");
+                @mkdir(APP_PATH . "apps/{$main_module}/src/{$module_name}/Controllers");
+                @mkdir(APP_PATH . "apps/{$main_module}/src/{$module_name}/config");
+                @mkdir(APP_PATH . "apps/{$main_module}/src/{$module_name}/views");
+                $model_file_module = APP_PATH . "apps/{$main_module}/src/{$module_name}/Models/{$model_name}.php";
+            }
+
+            if (is_file($model_file) || is_file($model_file_front) || is_file($model_file_module)) {
+                $this->flash->error('Exits this model!');
+                return $this->backendRedirect('/builder/create_model');
+            }
+
+            $ucfirst_main_module = ucfirst($main_module);
+
+            // write model backend
+            $file = fopen($model_file, 'w');
+            $content = "<?php\n\nnamespace Modules\\Backend\\Models;\n\nclass $model_name extends ModelBase \n{\n\n}";
+            fwrite($file, $content);
+            fclose($file);
+
+            // write model front-end
+            $file = fopen($model_file_front, 'w');
+            $content = "<?php\n\nnamespace Modules\\Frontend\\Models;\n\nclass $model_name extends ModelBase\n{\n\n}";
+            fwrite($file, $content);
+            fclose($file);
+
+            // write controller
+            if ($main_module == 'core') { // write core controller
+                $controller_file = APP_PATH . "apps/backend/controllers/{$model_name}Controller.php";
+                if (!is_file($controller_file)) {
+                    $file = fopen($controller_file, 'w');
+                    $content = "<?php\n\nnamespace Modules\\Backend\\Controllers;\n\n";
+                    $content .= "class {$model_name}Controller extends ControllerBase \n{\n";
+                    $content .= "\tprotected \$model_name = '$model_name';\n\n";
+                    $content .= "\tpublic function indexAction()\n\t{\n\t\t\$this->listAction();\n\t}\n}";
                     fwrite($file, $content);
                     fclose($file);
-                    // frontend
-                    if (!is_file($model_file_front)) {
-                        $file = fopen($model_file_front, "w");
-                        $content = "<?php\n\nnamespace Modules\Frontend\Models;\n\nclass $model_name extends ModelBase\n{\n\n}";
-                        fwrite($file, $content);
-                        fclose($file);
-                    }
+                }
+            } else { // write module controller and model
+                // write model module
+                $file = fopen($model_file_module, 'w');
+                $content = "<?php\n\nnamespace Modules\\{$ucfirst_main_module}\\Src\\{$module_name}\\Models;\n\n\n";
+                $content .= "class $model_name extends \\Modules\\{$ucfirst_main_module}\\Models\\{$model_name}\n{\n\n}";
+                fwrite($file, $content);
+                fclose($file);
 
-                    // write controller
-                    $controller_file = APP_PATH . "apps/backend/controllers/{$model_name}Controller.php";
-                    if (!is_file($controller_file)) {
-                        $file = fopen($controller_file, "w");
-                        $content = "<?php\n\nnamespace Modules\Backend\Controllers;\n\nclass {$model_name}Controller extends ControllerBase \n{\n\tprotected \$model_name = '$model_name';\n\n\tpublic function indexAction()\n\t{\n\t\t\$this->listAction();\n\t}\n}";
-                        fwrite($file, $content);
-                        fclose($file);
-                    }
+                // write controller
+                $controller_file = APP_PATH . "apps/{$main_module}/src/{$module_name}/Controllers/{$model_name}Controller.php";
+                if (!is_file($controller_file)) {
+                    $file = fopen($controller_file, 'w');
+                    $content = "<?php\n\nnamespace Modules\\{$ucfirst_main_module}\\Src\\{$module_name}\\Controllers;\n\n\n";
+                    $content .= "use Modules\\{$ucfirst_main_module}\\Controllers\\ControllerBase;\n\n";
+                    $content .= "class {$model_name}Controller extends ControllerBase \n{\n";
+                    $content .= "\tprotected \$module_name = '{$module_name}';\n\n";
+                    $content .= "\tprotected \$model_name = '{$model_name}';\n\n";
+                    $content .= "\tpublic function indexAction()\n";
+                    $content .= "\t{\n\t\t\$this->listAction();\n\t}\n}";
+                    fwrite($file, $content);
+                    fclose($file);
                 }
 
-                $this->backendRedirect('/builder');
+                // write router
+                $router_file = APP_PATH . "apps/{$main_module}/src/{$module_name}/config/router.php";
+                $file = fopen($router_file, 'w');
+                $default_router = [
+                    '/module/' . strtolower($module_name) . '/:controller/:action/:params' => [
+                        'controller' => 1,
+                        'action' => 2,
+                        'params' => 3,
+                        'namespace' => "Modules\\{$ucfirst_main_module}\\Src\\{$module_name}\\Controllers",
+                        'module' => $main_module
+                    ]
+                ];
+                fwrite($file, "<?php\n\n return " . var_export($default_router, true) . ';');
+                fclose($file);
+
+                // write view readme file
+                $view_file = APP_PATH . "apps/{$main_module}/src/{$module_name}/views/readme.txt";
+                $file = fopen($view_file, 'w');
+                fwrite($file, 'Views file with ext: *.twig');
+                fclose($file);
             }
+
+            $this->flash->success($this->t->_('Successful!'));
+            $this->backendRedirect('/builder');
         }
     }
 
+    /**
+     * edit layout list/edit/detail/subpanel
+     *
+     * @param null $model_name
+     */
     public function edit_layoutAction($model_name = null)
     {
         // save layout
@@ -329,6 +426,9 @@ class BuilderController extends ControllerBase
         $this->view->all_lists = $all_lists;
     }
 
+    /**
+     * load subpanel to edit layout
+     */
     public function load_subpanelAction()
     {
         $this->view->setTemplateAfter('ajax');
@@ -352,6 +452,9 @@ class BuilderController extends ControllerBase
         $this->view->i = $this->request->get('i');
     }
 
+    /**
+     * load all fields in model
+     */
     public function load_relmodelfieldsAction()
     {
         $this->view->setTemplateAfter('ajax');
