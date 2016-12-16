@@ -9,7 +9,7 @@
 namespace Modules\Backend\Controllers;
 
 
-class MenusController extends ControllerCustom
+class MenusController extends ControllerBase
 {
     protected $model_name = 'Menus';
 

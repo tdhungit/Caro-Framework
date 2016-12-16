@@ -12,7 +12,7 @@
 namespace Modules\Backend\Models;
 
 
-class UserGroups extends ModelCustom
+class UserGroups extends ModelBase
 {
     public $id;
     public $created;

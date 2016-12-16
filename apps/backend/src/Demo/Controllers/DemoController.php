@@ -9,9 +9,9 @@
 namespace Modules\Backend\Src\Demo\Controllers;
 
 
-use Modules\Backend\Controllers\ControllerCustom;
+use Modules\Backend\Controllers\ControllerBase;
 
-class DemoController extends ControllerCustom
+class DemoController extends ControllerBase
 {
     protected $module_name = 'Demo';
     protected $model_name = 'Users';

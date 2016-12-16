@@ -9,7 +9,7 @@
 namespace Modules\Backend\Models;
 
 
-class Menus extends ModelCustom
+class Menus extends ModelBase
 {
     public $name;
     public $controller;

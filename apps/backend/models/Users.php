@@ -14,7 +14,7 @@ use Phalcon\Mvc\Model\Validator\PresenceOf;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 use Phalcon\Validation;
 
-class Users extends ModelCustom
+class Users extends ModelBase
 {
     public $id;
     public $created;

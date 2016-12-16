@@ -12,7 +12,7 @@
 namespace Modules\Backend\Models;
 
 
-class AuthRoles extends ModelCustom
+class AuthRoles extends ModelBase
 {
     public $id;
     public $created;

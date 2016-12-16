@@ -41,7 +41,7 @@ class MyController extends Controller
             $this->view->setLayoutsDir('../../common/layouts/backend/');
         } else {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
-            $this->view->setLayoutsDir('../../../../common/layouts/backend');
+            $this->view->setLayoutsDir('../../../../common/layouts/backend/');
         }
 
         // layout default

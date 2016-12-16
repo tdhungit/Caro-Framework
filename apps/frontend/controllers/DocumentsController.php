@@ -12,7 +12,7 @@
 namespace Modules\Frontend\Controllers;
 
 
-class DocumentsController extends ControllerCustom
+class DocumentsController extends ControllerBase
 {
     public function indexAction()
     {

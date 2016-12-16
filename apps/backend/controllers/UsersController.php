@@ -13,7 +13,7 @@ namespace Modules\Backend\Controllers;
 
 use Modules\Backend\Models\AuthRoles;
 
-class UsersController extends ControllerCustom
+class UsersController extends ControllerBase
 {
     protected $model_name = 'Users';
 

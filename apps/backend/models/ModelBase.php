@@ -251,7 +251,6 @@ class ModelBase extends Model
         foreach (glob($model_path) as $model) {
             $name = basename($model, '.php');
             if ($name != 'ModelBase'
-                && $name != 'ModelCustom'
                 && $name != 'CaroLogs') {
                 $models[$name] = $name;
             }

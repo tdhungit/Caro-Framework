@@ -11,7 +11,7 @@ namespace Modules\Frontend\Models;
 
 use Modules\Core\MyMail;
 
-class Settings extends ModelCustom
+class Settings extends ModelBase
 {
     public function setMailSettings($mailSettings)
     {

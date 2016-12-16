@@ -11,7 +11,7 @@ namespace Modules\Backend\Models;
 
 use Modules\Core\MyMail;
 
-class Settings extends ModelCustom
+class Settings extends ModelBase
 {
     public $id;
     public $created;

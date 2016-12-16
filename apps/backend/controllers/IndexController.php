@@ -17,7 +17,7 @@ use Modules\Backend\Models\UserGroups;
 use Modules\Backend\Models\UserGroupsUsers;
 use Modules\Backend\Models\Users;
 
-class IndexController extends ControllerCustom
+class IndexController extends ControllerBase
 {
 
     private function _setSessionUser($user)

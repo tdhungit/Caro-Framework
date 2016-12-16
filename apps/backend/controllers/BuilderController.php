@@ -11,7 +11,7 @@ namespace Modules\Backend\Controllers;
 
 use Modules\Backend\Helpers\CsvHelper;
 
-class BuilderController extends ControllerCustom
+class BuilderController extends ControllerBase
 {
     public $types = [
         'int', 'date', 'varchar', 'decimal', 'datetime', 'char', 'text', 'float', 'boolean', 'double', 'tinyblob', 'blob', 'mediumblob', 'longblob', 'bigint', 'json', 'jsonb'
@@ -42,7 +42,7 @@ class BuilderController extends ControllerCustom
 
         foreach (glob($model_path) as $model) {
             $name = basename($model, '.php');
-            if ($name != 'ModelBase' && $name != 'ModelCustom' && $name != 'CaroLogs') {
+            if ($name != 'ModelBase' && $name != 'CaroLogs') {
                 $models[] = $name;
             }
         }
@@ -193,13 +193,13 @@ class BuilderController extends ControllerCustom
 
                     // write model
                     $file = fopen($model_file, "w");
-                    $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
+                    $content = "<?php\n\nnamespace Modules\Backend\Models;\n\nclass $model_name extends ModelBase \n{\n\n}";
                     fwrite($file, $content);
                     fclose($file);
                     // frontend
                     if (!is_file($model_file_front)) {
                         $file = fopen($model_file_front, "w");
-                        $content = "<?php\n\nnamespace Modules\Frontend\Models;\n\nclass $model_name extends ModelCustom \n{\n\n}";
+                        $content = "<?php\n\nnamespace Modules\Frontend\Models;\n\nclass $model_name extends ModelBase\n{\n\n}";
                         fwrite($file, $content);
                         fclose($file);
                     }
@@ -208,7 +208,7 @@ class BuilderController extends ControllerCustom
                     $controller_file = APP_PATH . "apps/backend/controllers/{$model_name}Controller.php";
                     if (!is_file($controller_file)) {
                         $file = fopen($controller_file, "w");
-                        $content = "<?php\n\nnamespace Modules\Backend\Controllers;\n\nclass {$model_name}Controller extends ControllerCustom \n{\n\tprotected \$model_name = '$model_name';\n\n\tpublic function indexAction()\n\t{\n\t\t\$this->listAction();\n\t}\n}";
+                        $content = "<?php\n\nnamespace Modules\Backend\Controllers;\n\nclass {$model_name}Controller extends ControllerBase \n{\n\tprotected \$model_name = '$model_name';\n\n\tpublic function indexAction()\n\t{\n\t\t\$this->listAction();\n\t}\n}";
                         fwrite($file, $content);
                         fclose($file);
                     }
@@ -426,7 +426,7 @@ class BuilderController extends ControllerCustom
 
         foreach (glob($model_path) as $model) {
             $name = basename($model, '.php');
-            if ($name != 'ModelBase' && $name != 'ModelCustom' && $name != 'CaroLogs') {
+            if ($name != 'ModelBase' && $name != 'CaroLogs') {
                 $models[$name] = $name;
             }
         }
