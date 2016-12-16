@@ -7,7 +7,7 @@
  */
 
 return [
-    '/demo/:controller/:action/:params' => [
+    '/module/demo/:controller/:action/:params' => [
         'controller' => 1,
         'action' => 2,
         'params' => 3

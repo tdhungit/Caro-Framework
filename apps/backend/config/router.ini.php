@@ -27,7 +27,7 @@ return array (
     'action' => 'execute',
     'params' => 1,
   ),
-  '/module/demo/:controller/:action/:params' =>
+  '/module/demo/:controller/:action/:params' => 
   array (
     'controller' => 1,
     'action' => 2,

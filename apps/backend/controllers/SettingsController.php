@@ -55,8 +55,8 @@ class SettingsController extends ControllerBase
         $this->_repairDatabase();
 
         // repair router
-        $this->_repairBackendRouter();
-        $this->_repairFrontendRouter();
+        $this->_repairRouter('backend');
+        $this->_repairRouter('frontend');
 
         $this->flash->success('Repair success!');
         $this->backendRedirect('/settings');
@@ -68,7 +68,7 @@ class SettingsController extends ControllerBase
     private function _repairDatabase()
     {
         if (is_file(__DIR__ . "/../../config/database_structures.ini.php")) {
-            $tables = include  __DIR__ . "/../../config/database_structures.ini.php";
+            $tables = include __DIR__ . "/../../config/database_structures.ini.php";
         } else {
             $tables = include __DIR__ . "/../../config/database_structures.php";
         }
@@ -104,7 +104,8 @@ class SettingsController extends ControllerBase
                         if ($index == $c_index) {
                             if (
                                 $index_data['fields'] != $c_index_fields->getColumns()
-                                || $index_data['type'] != $c_index_fields->getType()) {
+                                || $index_data['type'] != $c_index_fields->getType()
+                            ) {
                                 $this->db->dropIndex($table_name, null, $c_index);
                                 $create_index = true;
                             } else {
@@ -165,11 +166,11 @@ class SettingsController extends ControllerBase
                     )
                 );
 
-                foreach($table_data['fields'] as $field_name => $options) {
+                foreach ($table_data['fields'] as $field_name => $options) {
                     $new_columns['columns'][] = new Column($field_name, $options);
                 }
 
-                foreach($table_data['indexes'] as $index => $index_data) {
+                foreach ($table_data['indexes'] as $index => $index_data) {
                     if (strtolower($index_data['type']) == 'index') {
                         $new_columns['indexes'][] = new Index($index, $index_data['fields']);
                     } else {
@@ -185,14 +186,16 @@ class SettingsController extends ControllerBase
     /**
      * Repair backend router
      */
-    private function _repairBackendRouter()
+    private function _repairRouter($main_module)
     {
+        $ucfirst_main_module = ucfirst($main_module);
+
         // module folder
-        $module_folder = APP_PATH . 'apps/backend/src';
+        $module_folder = APP_PATH . 'apps/' . $main_module . '/src';
         $modules = include APP_PATH . 'apps/config/modules.php';
 
         // current router
-        $router = include APP_PATH . 'apps/backend/config/router.php';
+        $router = include APP_PATH . 'apps/' . $main_module . '/config/router.php';
 
         // merge module router
         foreach ($modules['backend'] as $module => $enable) {
@@ -201,8 +204,8 @@ class SettingsController extends ControllerBase
                 $module_router_fixed = [];
 
                 foreach ($module_router as $url => $options) {
-                    $options['namespace'] = 'Modules\\Backend\\Src\\'. $module .'\\Controllers';
-                    $options['module'] = 'backend';
+                    $options['namespace'] = 'Modules\\' . $ucfirst_main_module . '\\Src\\' . $module . '\\Controllers';
+                    $options['module'] = $main_module;
                     $module_router_fixed[$url] = $options;
                 }
 
@@ -210,18 +213,10 @@ class SettingsController extends ControllerBase
             }
         }
 
-        $router_file = APP_PATH . 'apps/backend/config/router.ini.php';
+        $router_file = APP_PATH . 'apps/' . $main_module . '/config/router.ini.php';
         $file = fopen($router_file, 'w');
         fwrite($file, "<?php\n\nreturn " . var_export($router, true) . ";\n\n");
         fclose($file);
-    }
-
-    /**
-     * Repair front-end router
-     */
-    private function _repairFrontendRouter()
-    {
-
     }
 
     /**
