@@ -54,10 +54,6 @@ class SettingsController extends ControllerBase
         // repair database
         $this->_repairDatabase();
 
-        // repair router
-        $this->_repairRouter('backend');
-        $this->_repairRouter('frontend');
-
         $this->flash->success('Repair success!');
         $this->backendRedirect('/settings');
     }
@@ -181,6 +177,28 @@ class SettingsController extends ControllerBase
                 $this->db->createTable($table_name, null, $new_columns);
             }
         }
+    }
+
+    /**
+     * Clear cache
+     */
+    public function clear_cacheAction()
+    {
+        // clear cache router
+        $this->_repairRouter('backend');
+        $this->_repairRouter('frontend');
+
+        // clear cache volt
+        $cache_files = glob(APP_PATH . 'apps/cache/volt/*.php');
+        foreach ($cache_files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+
+        // success
+        $this->flash->success('Clear success!');
+        $this->backendRedirect('/settings');
     }
 
     /**

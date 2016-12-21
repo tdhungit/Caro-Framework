@@ -24,6 +24,7 @@ class Users extends ModelBase
     public $email;
     public $password;
     public $name;
+    public $avatar;
     public $status;
 
     public $list_view = array(
