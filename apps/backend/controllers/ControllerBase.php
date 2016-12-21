@@ -290,6 +290,22 @@ class ControllerBase extends MyController
         }
     }
 
+    /**
+     * Delete Record
+     *
+     * @param $id
+     * @param $model_name
+     * @return mixed
+     */
+    protected function deleteRecord($id, $model_name = null)
+    {
+        // get model
+        $model = $this->getModel($model_name);
+        $data = $model::findFirst($id);
+        $data->deleted = 1;
+        return $data->update();
+    }
+
     // BASE ACTION //
     /**
      * List
@@ -306,10 +322,7 @@ class ControllerBase extends MyController
             $this->backendRedirect('/dashboard');
         }
 
-        $query_urls = $this->request->getQuery();
-        unset($query_urls['_url']);
-        unset($query_urls['submit']);
-        unset($query_urls['page']);
+        $query_urls = $this->url->currentQuery($this->request->getQuery(), ['page']);
 
         // search
         $search_opt = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
@@ -350,7 +363,7 @@ class ControllerBase extends MyController
         $this->view->link_action = $this->link_action;
 
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
-        $this->view->current_url = $this->url->backendUrl("/$controller/$action", $query_urls);
+        $this->view->current_url = $this->url->currentUrl($query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -473,10 +486,7 @@ class ControllerBase extends MyController
         $this->view->setTemplateAfter('ajax');
         $model = $this->getModel($rel_model);
 
-        $query_urls = $this->request->getQuery();
-        unset($query_urls['_url']);
-        unset($query_urls['submit']);
-        unset($query_urls['page']);
+        $query_urls = $this->url->currentQuery($this->request->getQuery(), ['page']);
 
         // search
         $search_opt = $this->getFieldsSearch($query_urls, $model->list_view['fields']);
@@ -510,7 +520,8 @@ class ControllerBase extends MyController
         $this->view->subpanel_name = $subpanel_name;
 
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
-        $this->view->current_uri = '/' . $this->url->backendUrl . "/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
+        //'/' . $this->url->backendUrl . "/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
+        $this->view->current_uri = $this->router->getRewriteUri();
         $this->view->current_url = $this->url->get($this->view->current_uri, $query_urls);
 
         $exists = $this->view->exists($controller . '/' . $action);
@@ -641,22 +652,6 @@ class ControllerBase extends MyController
 
             $this->backendRedirect('/' . $this->controller_name . '/' . $action_detail . '/' . $id);
         }
-    }
-
-    /**
-     * Delete Record
-     *
-     * @param $id
-     * @param $model_name
-     * @return mixed
-     */
-    protected function deleteRecord($id, $model_name = null)
-    {
-        // get model
-        $model = $this->getModel($model_name);
-        $data = $model::findFirst($id);
-        $data->deleted = 1;
-        return $data->update();
     }
 
     /**
