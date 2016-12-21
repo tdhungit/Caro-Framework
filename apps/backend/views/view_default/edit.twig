@@ -31,6 +31,11 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
                                     <div class="col-sm-10">
+                                        {#set path from path core#}
+                                        {% if module_name %}
+                                            <?php $this->view->setPartialsDir('../../../views/'); ?>
+                                        {% endif %}
+
                                         <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/edit.twig')) { ?>
                                             {{ partial('view_custom/fields/' ~ view['type'] ~ '/edit') }}
                                         <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/edit.twig')) { ?>

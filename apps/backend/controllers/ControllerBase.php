@@ -76,8 +76,12 @@ class ControllerBase extends MyController
             $current_user = Users::findFirst($auth['id']);
             $this->view->setVar('current_user', $current_user);
         }
+
         // menus
         $this->view->setVar('current_menus', $this->getAllMenus());
+
+        // current module
+        $this->view->setVar('module_name', $this->module_name);
     }
 
     /**

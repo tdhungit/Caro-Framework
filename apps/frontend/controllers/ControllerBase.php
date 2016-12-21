@@ -28,6 +28,9 @@ class ControllerBase extends MyController
 
         // global variable
         $this->view->setVar('theme_uri', '/themes/' . $theme);
+
+        // current module
+        $this->view->setVar('module_name', $this->module_name);
     }
 
     /**

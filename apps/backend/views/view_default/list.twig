@@ -62,6 +62,11 @@
                                                 <tr>
                                                     {% for name, view in list_view['fields'] %}
                                                         <td>
+                                                            {#set path from path core#}
+                                                            {% if module_name %}
+                                                                <?php $this->view->setPartialsDir('../../../views/'); ?>
+                                                            {% endif %}
+
                                                             <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/list.twig')) { ?>
                                                                 {{ partial('view_custom/fields/' ~ view['type'] ~ '/list') }}
                                                             <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/list.twig')) { ?>
