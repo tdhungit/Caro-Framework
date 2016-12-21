@@ -26,8 +26,24 @@
                             <input type="hidden" name="id" value="{{ data.id }}" />
                         {% endif %}
 
-                        {# check type and render with type #}
-                        {% include 'view_default/fields_type_edit.twig' %}
+                        {% for name, view in edit_view['fields'] %}
+                            {% if view['type'] != 'hidden' %}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">{{ view['label'] }} {% if view['required'] is defined and view['required'] %}<span class="required">*</span>{% endif %}</label>
+                                    <div class="col-sm-10">
+                                        <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/edit.twig')) { ?>
+                                            {{ partial('view_custom/fields/' ~ view['type'] ~ '/edit') }}
+                                        <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/edit.twig')) { ?>
+                                            {{ partial('view_default/fields/' ~ view['type'] ~ '/edit') }}
+                                        <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_custom/base/edit.twig')) { ?>
+                                            {{ partial('view_custom/fields/base/edit') }}
+                                        <?php } else { ?>
+                                            {{ partial('view_default/fields/base/edit') }}
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
 
                         <div class="box-footer">
                             <button type="reset" class="btn pull-right" name="action">{{ t._('Cancel') }}</button>

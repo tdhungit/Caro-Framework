@@ -1,0 +1,7 @@
+<div class="caro-image-content" style="padding-bottom: 5px;">
+    {% if data is not null %}<img src="{{ data.readAttribute(name) }}" class="img-thumbnail" style="height: 200px;">{% endif %}
+</div>
+<span class="btn btn-default btn-file">
+    Browse <input type="file" class="caro-upload-image" location="images">
+    <input type="hidden" name="{{ name }}" class="caro-value-upload" value="{% if data is not null %}{{ data.readAttribute(name) }}{% endif %}">
+</span>

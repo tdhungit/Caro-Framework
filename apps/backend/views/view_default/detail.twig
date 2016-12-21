@@ -31,8 +31,15 @@
                                 <tr>
                                     <td width="33%"><b>{{ view['label'] }}</b></td>
                                     <td>
-                                        {# check type and render with type #}
-                                        {% include 'view_default/fields_type_detail.twig' %}
+                                        <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/detail.twig')) { ?>
+                                            {{ partial('view_custom/fields/' ~ view['type'] ~ '/detail') }}
+                                        <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/detail.twig')) { ?>
+                                            {{ partial('view_default/fields/' ~ view['type'] ~ '/detail') }}
+                                        <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_custom/base/detail.twig')) { ?>
+                                            {{ partial('view_custom/fields/base/detail') }}
+                                        <?php } else { ?>
+                                            {{ partial('view_default/fields/base/detail') }}
+                                        <?php } ?>
                                     </td>
                                 </tr>
                             {% endfor %}

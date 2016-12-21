@@ -1,0 +1,9 @@
+<?php
+    if (!empty($data)) {
+        $multiimages = explode(',', $data->$name);
+    }
+?>
+
+{% for img in multiimages %}
+    <img src="{{ img }}" class="img-thumbnail" style="height: 200px;">
+{% endfor %}

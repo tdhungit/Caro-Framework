@@ -1,0 +1,5 @@
+{% if data is not null %}
+    {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'value': data.readAttribute(name), 'class': 'form-control') }}
+{% else %}
+    {{ select(name, carofw['app_list_strings'][view['options']], 'using': ['id', 'name'], 'class': 'form-control') }}
+{% endif %}

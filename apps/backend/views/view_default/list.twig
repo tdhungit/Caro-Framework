@@ -62,8 +62,16 @@
                                                 <tr>
                                                     {% for name, view in list_view['fields'] %}
                                                         <td>
-                                                            {# check type and render with type #}
-                                                            {% include 'view_default/fields_type_list.twig' %}
+                                                            <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/list.twig')) { ?>
+                                                                {{ partial('view_custom/fields/' ~ view['type'] ~ '/list') }}
+                                                            <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/list.twig')) { ?>
+                                                                {{ partial('view_default/fields/' ~ view['type'] ~ '/list') }}
+                                                            <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_custom/base/list.twig')) { ?>
+                                                                {{ partial('view_custom/fields/base/list') }}
+                                                            <?php } else { ?>
+                                                                {{ partial('view_default/fields/base/list') }}
+                                                            <?php } ?>
+                                                            {{ partial('view_default/fields/config/list') }}
                                                         </td>
                                                     {% endfor %}
 

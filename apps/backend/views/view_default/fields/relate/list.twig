@@ -1,0 +1,16 @@
+<?php
+    $model_path = '\\Modules\Backend\Models\\' . $view['model'];
+    $model = new $model_path();
+    $model->initialize();
+    unset($options);
+    if (!empty($row->$name)) {
+        $options = $model::findFirst($row->$name);
+    }
+?>
+
+{% if options is defined %}
+    {% set key = model.detail_view['title'] %}
+    {% set value = options.readAttribute(key) %}
+{% else %}
+    {% set value = '' %}
+{% endif %}

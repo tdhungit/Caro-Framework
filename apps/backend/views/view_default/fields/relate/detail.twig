@@ -1,0 +1,14 @@
+<?php
+    $model_path = '\\Modules\Backend\Models\\' . $view['model'];
+    ${$view['model']} = new $model_path();
+    ${$view['model']}->initialize();
+    if (!empty($data->$name)) {
+        $options = ${$view['model']}::findFirst($data->$name);
+        $dv = ${$view['model']}->detail_view;
+        $key = $dv['title'];
+    }
+?>
+
+{% if options is defined %}
+    {{ options.readAttribute(key) }}
+{% endif %}
