@@ -64,10 +64,10 @@ class ControllerBase extends MyController
         // set viewDir
         if (!$this->module_name) {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
-            $this->view->setLayoutsDir('../../common/layouts/backend/');
+            $this->view->setLayoutsDir('layout/');
         } else {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/');
-            $this->view->setLayoutsDir('../../../../common/layouts/backend/');
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . $this->module_name . '/views/');
+            $this->view->setLayoutsDir('../../../views/layout/');
         }
 
         // auth

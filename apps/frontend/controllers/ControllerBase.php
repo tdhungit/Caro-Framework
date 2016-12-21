@@ -20,10 +20,10 @@ class ControllerBase extends MyController
         // set viewDir
         if (!$this->module_name) {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/' . $theme . '/');
-            $this->view->setLayoutsDir('../../../common/layouts/' . $theme . '/');
+            $this->view->setLayoutsDir('layout/');
         } else {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/' . $theme . '/');
-            $this->view->setLayoutsDir('../../../../../common/layouts/' . $theme . '/');
+            $this->view->setLayoutsDir('../../../views/' . $theme . '/layout/');
         }
 
         // global variable
