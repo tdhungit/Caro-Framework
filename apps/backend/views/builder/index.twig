@@ -19,7 +19,7 @@
                     <div class="dataTables_wrapper form-inline dt-bootstrap">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table class="table table-bordered table-hover dataTable">
+                                <table class="table table-bordered dataTable">
                                     <thead>
                                         <tr role="row">
                                             <th class="header">{{ t._('Model Name') }}</th>
@@ -42,6 +42,104 @@
                                             </tr>
                                         {% endfor %}
                                     </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ t._('Backend modules') }}</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered dataTable">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="header">{{ t._('Module') }}</th>
+                                        <th class="header">{{ t._('Action') }}</th>
+                                    </tr>
+                                    </thead>
+                                    {% for name, config in modules['backend'] %}
+                                        <tr>
+                                            <td>
+                                                {{ name }}
+                                                {% if config == 1 %}
+                                                    <i class="fa fa-check-circle" style="color: #00a65a"></i>
+                                                {% else %}
+                                                    <i class="fa fa-times-circle" style="color: #9f191f"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if config == 1 %}
+                                                    <a href="{{ url() }}/{{ carofw['backendUrl'] }}/builder/endi_module/backend/disable/{{ name }}" class="btn btn-danger btn-xs" title="{{ t._('Disable') }}">
+                                                        <i class="fa fa-times-circle"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ url() }}/{{ carofw['backendUrl'] }}/builder/endi_module/backend/enable/{{ name }}" class="btn btn-success btn-xs" title="{{ t._('Enable') }}">
+                                                        <i class="fa fa-check-circle"></i>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="box box-default">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ t._('Frontend modules') }}</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered dataTable">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="header">{{ t._('Module') }}</th>
+                                        <th class="header">{{ t._('Action') }}</th>
+                                    </tr>
+                                    </thead>
+                                    {% for name, config in modules['frontend'] %}
+                                        <tr>
+                                            <td>
+                                                {{ name }}
+                                                {% if config == 1 %}
+                                                    <i class="fa fa-check-circle" style="color: #00a65a"></i>
+                                                {% else %}
+                                                    <i class="fa fa-check-circle" style="color: #9f191f"></i>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if config == 1 %}
+                                                    <a href="{{ url() }}/{{ carofw['backendUrl'] }}/builder/endi_module/frontend/disable/{{ name }}" class="btn btn-danger btn-xs" title="{{ t._('Disable') }}">
+                                                        <i class="fa fa-times-circle"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{{ url() }}/{{ carofw['backendUrl'] }}/builder/endi_module/frontend/enable/{{ name }}" class="btn btn-success btn-xs" title="{{ t._('Enable') }}">
+                                                        <i class="fa fa-check-circle"></i>
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </table>
                             </div>
                         </div>

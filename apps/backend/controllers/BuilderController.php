@@ -43,6 +43,7 @@ class BuilderController extends ControllerBase
      */
     public function indexAction()
     {
+        // get models
         $models = array();
         $model_path = APP_PATH . '/apps/backend/models/*.php';
 
@@ -54,6 +55,11 @@ class BuilderController extends ControllerBase
         }
 
         $this->view->models = $models;
+
+        // get modules
+        $modules = include APP_PATH . 'apps/config/modules.php';
+
+        $this->view->modules = $modules;
     }
 
     /**
@@ -335,6 +341,34 @@ class BuilderController extends ControllerBase
             $this->flash->success($this->t->_('Successful!'));
             $this->backendRedirect('/builder');
         }
+    }
+
+    /**
+     * enable or disable module
+     * @param $core
+     * @param $config
+     * @param $module
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     */
+    public function endi_moduleAction($core, $config, $module)
+    {
+        if ($config == 'enable') {
+            $config = 1;
+        } else {
+            $config = 0;
+        }
+
+        $file_config = APP_PATH . 'apps/config/modules.php';
+        $modules = include $file_config;
+
+        $modules[$core][$module] = $config;
+
+        $file = fopen($file_config, 'w');
+        fwrite($file, "<?php\n\nreturn " . var_export($modules, true) . ';');
+        fclose($file);
+
+        $this->flash->success($this->t->_('Success! Please clear cache to apply this action!'));
+        return $this->backendRedirect('/builder');
     }
 
     /**
