@@ -53,7 +53,11 @@ class DocumentsController extends ControllerBase
     {
         $page = $this->request->getQuery('step');
 
-        $this->tag->prependTitle($this->documents_page[$page]);
+        if (empty($this->documents_page[$page])) {
+            $this->tag->prependTitle('Overview');
+        } else {
+            $this->tag->prependTitle($this->documents_page[$page]);
+        }
 
         if (is_file(APP_PATH . 'apps/frontend/views/caro/documents/' . $page . '.twig')) {
             $this->view->pick('documents/' . $page);
