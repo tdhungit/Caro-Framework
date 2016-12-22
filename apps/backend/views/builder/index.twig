@@ -3,7 +3,11 @@
         {{ t._('List Models') }}
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ url('/'~carofw['backendUrl']~'/builder/create_model') }}"><i class="fa fa-plus"></i> Add new model</a></li>
+        <li>
+            <a href="{{ url('/'~carofw['backendUrl']~'/builder/create_model') }}" class="btn btn-info btn-xs">
+                <i class="fa fa-plus"></i> {{ t._('Add new module') }}
+            </a>
+        </li>
     </ol>
 </section>
 
@@ -19,14 +23,22 @@
                                     <thead>
                                         <tr role="row">
                                             <th class="header">{{ t._('Model Name') }}</th>
-                                            <th class="header"></th>
+                                            <th class="header">{{ t._('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for model in models %}
                                             <tr>
-                                                <td><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_model/' ~ model) }}">{{ model }}</a></td>
-                                                <td><a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_layout/' ~ model) }}">{{ t._('Edit Layout') }}</a></td>
+                                                <td>{{ model }}</td>
+                                                <td>
+                                                    <a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_layout/' ~ model) }}" class="btn btn-warning btn-xs" title="{{ t._('Edit layouts') }}">
+                                                        <i class="fa fa-bars"></i>
+                                                    </a>
+
+                                                    <a href="{{ url('/' ~ carofw['backendUrl'] ~ '/builder/edit_model/' ~ model) }}" class="btn btn-warning btn-xs" title="{{ t._('Edit fields') }}">
+                                                        <i class="fa fa-database"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>
