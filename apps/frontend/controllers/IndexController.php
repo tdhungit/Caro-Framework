@@ -13,7 +13,9 @@ namespace Modules\Frontend\Controllers;
 
 class IndexController extends ControllerBase
 {
-
+    /**
+     * Homepage
+     */
     public function indexAction()
     {
 
