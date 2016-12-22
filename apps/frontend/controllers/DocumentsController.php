@@ -14,6 +14,19 @@ namespace Modules\Frontend\Controllers;
 
 class DocumentsController extends ControllerBase
 {
+    public $documents_page = [
+        'install_phalcon' => 'Install PhalconPHP',
+        'start' => 'Getting Start',
+        'structure' => 'Caro Framework Structure',
+        'backend_crud' => 'Create Module with CRUD',
+        'backend_layout' => 'Create/Edit module layout',
+        'fields_type' => 'Fields Type',
+        'subpanels' => 'Sub Panels',
+        'permissions' => 'Permissions',
+        'api' => 'REST API',
+        'logs' => 'Logs',
+    ];
+
     /**
      * initialize
      */
@@ -21,13 +34,16 @@ class DocumentsController extends ControllerBase
     {
         parent::initialize();
 
-        $this->tag->setTitle('Caro Framework | Documents');
+        $this->tag->setTitle(' - Caro Framework Documents');
 
         $this->view->setViewsDir(APP_PATH . 'apps/frontend/views/caro/');
         $this->view->setLayoutsDir('layouts/');
         $this->view->setTemplateAfter('document');
 
         $this->view->setVar('theme_uri', '/themes/caro');
+
+        // documents sub page
+        $this->view->setVar('documents_page', $this->documents_page);
     }
 
     /**
@@ -36,33 +52,15 @@ class DocumentsController extends ControllerBase
     public function indexAction()
     {
         $page = $this->request->getQuery('step');
-        switch ($page) {
-            case 'start':
-                $this->view->pick('documents/start');
-                break;
-            case 'structure':
-                $this->view->pick('documents/structure');
-                break;
-            case 'backend_crud':
-                $this->view->pick('documents/backend_crud');
-                break;
-            case 'fields_type':
-                $this->view->pick('documents/fields_type');
-                break;
-            case 'subpanels':
-                $this->view->pick('documents/subpanels');
-                break;
-            case 'permissions':
-                $this->view->pick('documents/permissions');
-                break;
-            case 'api':
-                $this->view->pick('documents/api');
-                break;
-            case 'logs':
-                $this->view->pick('documents/logs');
-                break;
-            default:
-                break;
+
+        $this->tag->prependTitle($this->documents_page[$page]);
+
+        if (is_file(APP_PATH . 'apps/frontend/views/caro/documents/' . $page . '.twig')) {
+            $this->view->pick('documents/' . $page);
+        } else {
+            $this->view->pick('documents/index');
         }
+
+        $this->view->setVar('page', $page);
     }
 }

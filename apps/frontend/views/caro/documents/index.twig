@@ -13,19 +13,19 @@
     Caro Framework is not only about performance, our goal is to make it robust, rich in features and easy to use!
 </p>
 
+<h3>Require:</h3>
+<p>
+    - PHP 5.4 or higher<br>
+    - Phalcon PHP Framework 2.0 or higher
+</p>
+
 <h3 id="table-of-contents">Table of Contents</h3>
 <ul>
     <li>Installation</li>
     <ul>
         <li><a href="https://docs.phalconphp.com/en/latest/reference/install.html" target="_blank">Install PhalconPHP extension</a></li>
-        <li><a href="http://carophp.com">Download Caro Framework</a></li>
-        <li><a href="{{ url('/documents?step=start') }}">Getting started</a></li>
-        <li><a href="{{ url('/documents?step=structure') }}">Caro Framework Structure</a></li>
-        <li><a href="{{ url('/documents?step=backend_crud') }}">Backend Module CRUD</a></li>
-        <li><a href="{{ url('/documents?step=fields_type') }}">Fields Type</a></li>
-        <li><a href="{{ url('/documents?step=subpanels') }}">Sub Panels</a></li>
-        <li><a href="{{ url('/documents?step=permissions') }}">Permissions</a></li>
-        <li><a href="{{ url('/documents?step=api') }}">REST API</a></li>
-        <li><a href="{{ url('/documents?step=logs') }}">Logs</a></li>
+        {% for step, label in documents_page %}
+            <li><a href="{{ url('/documents') }}?step={{ step }}">{{ label }}</a></li>
+        {% endfor %}
     </ul>
 </ul>

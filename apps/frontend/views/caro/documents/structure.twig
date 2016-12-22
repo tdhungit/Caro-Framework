@@ -1,27 +1,95 @@
 <h3 id="caro-structure">Caro Framework structure</h3>
-<pre><img src="{{ static_url() }}/themes/caro/images/documents/structure.jpg" /></pre>
+<pre><img src="{{ static_url() }}/themes/caro/images/documents/structure.png" width="300px" /></pre>
 <p> </p>
+
 <ul>
     <li>
         apps: application core
+
         <ul>
-            <li>backend: admin module with MVC model</li>
-            <li>frontend: frontend module with MVC model</li>
-            <li>cache: file cache</li>
             <li>
-                common: core file
+                backend: admin module with MVC model
+
                 <ul>
-                    <li>core: libraries core</li>
-                    <li>layouts: layouts</li>
+                    <li>config: backend module config</li>
+                    <li>controllers: backend core controller</li>
+                    <li>helpers: backend core helpers</li>
+                    <li>models: backend core models</li>
+                    <li>permissions: permission file config</li>
+                    <li>plugins: backend plugins class</li>
+                    <li>
+                        src: custom module - we should code in here<br>
+                        module include:
+
+                        <ul>
+                            <li>Controllers</li>
+                            <li>Models</li>
+                            <li>config</li>
+                            <li>views (*.twig)</li>
+                        </ul>
+                    </li>
+                    <li>views: backend core views file (*.twig)</li>
                 </ul>
             </li>
-            <li>config: file config: application, database, const</li>
+
+            <li>cache: file cache</li>
+
+            <li>
+                common: core libraries
+                <ul>
+                    <li>core: libraries core</li>
+                    <li>third_party: other libraries</li>
+                </ul>
+            </li>
+
+            <li>
+                config: file config
+
+                <ul>
+                    <li>config.ini: application config</li>
+                    <li>const.php: application const variable</li>
+                    <li>database.ini: database information</li>
+                    <li>database_structure.php: setup database table/column...</li>
+                    <li>modules.php: new custom modules</li>
+                    <li>router.php: application router</li>
+                </ul>
+            </li>
+
+            <li>
+                frontend: frontend module with MVC model
+
+                <ul>
+                    <li>config: frontend module config</li>
+                    <li>controllers: frontend core controller</li>
+                    <li>models: frontend core models</li>
+                    <li>
+                        src: custom module - we should code in here<br>
+                        module include:
+
+                        <ul>
+                            <li>Controllers</li>
+                            <li>Models</li>
+                            <li>config</li>
+                            <li>views (*.twig)</li>
+                        </ul>
+                    </li>
+                    <li>views: frontend core views file (*.twig)</li>
+                </ul>
+            </li>
+
+            <li>language: language file - file name: country_code.php</li>
+
+            <li>logs: log file - write when user object CaroLogs</li>
         </ul>
     </li>
+
     <li>
         public
+
         <ul>
-            <li>themes</li>
+            <li>install: remove when install success</li>
+            <li>themes: application themes</li>
+            <li>uploads: file upload save in here</li>
             <li>index.php: bootstrap</li>
         </ul>
     </li>

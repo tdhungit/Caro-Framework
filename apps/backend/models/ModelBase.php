@@ -286,16 +286,24 @@ class ModelBase extends Model
      */
     public function getFieldTypes()
     {
-        return [
-            'text' => 'Text',
-            'number' => 'Number',
-            'select' => 'Select',
-            'image' => 'Image',
-            'multiimage' => 'Multi Image',
-            'relate' => 'Relate',
-            'textarea' => 'TextArea',
-            'note' => 'Note'
-        ];
+        $types = [];
+
+        $core_fields_folder = scandir(APP_PATH . 'apps/backend/views/view_default/fields');
+        $custom_fields_folder = @scandir(APP_PATH . 'apps/backend/view_custom/views/fields');
+
+        foreach ($core_fields_folder as $type) {
+            if (substr($type, 0, 1) != '.' && !in_array($type, ['base', 'config', 'customCode'])) {
+                $types[$type] = $type;
+            }
+        }
+
+        foreach ($custom_fields_folder as $type) {
+            if (!in_array($type, ['.', '..', 'base', 'config'])) {
+                $types[$type] = $type;
+            }
+        }
+
+        return $types;
     }
 
 }

@@ -20,6 +20,9 @@
         * {
             font-family: "Gotham Rounded A","Gotham Rounded B","Helvetica Neue",Helvetica,Arial,sans-serif,"Helvetica Neue","Helvetica","Roboto","Arial",sans-serif;
         }
+        a.active {
+            color: orange;
+        }
     </style>
 </head>
 <body>
@@ -35,55 +38,24 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav in" id="side-menu">
                     <li>
-                        <a href="{{ url('') }}" class="active">
+                        <a href="{{ url('') }}">
                             <i class="fa fa-check fa-fw"></i> Home Page
                         </a>
                     </li>
+
                     <li>
-                        <a href="{{ url('/documents') }}" class="active">
+                        <a href="{{ url('/documents') }}"{% if not page %} class="active"{% endif %}>
                             <i class="fa fa-check fa-fw"></i> Overview
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ url('/documents?step=start') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Getting Start
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=structure') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Caro Framework Structure
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=backend_crud') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Backend Module CRUD
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=fields_type') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Fields Type
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=subpanels') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Sub Panels
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=permissions') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Permissions
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=api') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> REST API
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/documents?step=logs') }}" class="active">
-                            <i class="fa fa-check fa-fw"></i> Logs
-                        </a>
-                    </li>
+
+                    {% for step, label in documents_page %}
+                        <li>
+                            <a href="{{ url('/documents') }}?step={{ step }}"{% if page == step %} class="active"{% endif %}>
+                                <i class="fa fa-check fa-fw"></i> {{ label }}
+                            </a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -95,8 +67,8 @@
         <div class="col-lg-12">
             <br><br>
             <p class="pull-right">
-                ©Copyright 2015 Jacky - CaroCRM<sup>TM</sup>. &nbsp;
-                <a href="http://www.bootply.com">Template from Bootply</a>
+                ©Copyright 2015 CaroDev<sup>TM</sup>. &nbsp;
+                <a href="http://www.carodev.com">CaroDev.com</a>
             </p>
             <br><br>
         </div>

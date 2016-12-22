@@ -1,0 +1,54 @@
+<h3>Install PhalconPHP</h3>
+
+<ul>
+    <li>
+        <h4>Ubuntu</h4>
+        <pre>curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash</pre>
+        <pre>sudo apt-get install php5-phalcon</pre>
+    </li>
+
+    <li>
+        <h4>Compilation</h4>
+
+        <ul>
+            <li>
+                Install libs
+
+                <ul>
+                    <li>
+                        Ubuntu
+                        <pre>sudo apt-get install php5-dev php5-mysql gcc libpcre3-dev</pre>
+                    </li>
+                    <li>
+                        Centos or Fedora
+                        <pre>sudo yum install php-devel php-mysqlnd gcc libtool pcre-devel</pre>
+                    </li>
+                    <li>
+                        RHEL
+                        <pre>sudo yum install php-devel php-mysql gcc libtool pcre-devel</pre>
+                    </li>
+                    <li>
+                        Suse
+                        <pre>yast2 -i php5-pear php5-devel php5-mysql gcc libtool pcre-devel</pre>
+                    </li>
+                    <li>
+                        Mac OS X
+                        <pre>brew tap homebrew/dupes</pre>
+                        <pre>brew tap homebrew/versions</pre>
+                        <pre>brew tap homebrew/php</pre>
+                        <pre>brew install php5x php5x-phalcon # Where "x" - minor number of PHP</pre>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                Compilation
+
+                <pre>git clone --depth=1 git://github.com/phalcon/cphalcon.git</pre>
+                <pre>cd cphalcon/build</pre>
+                <pre>sudo ./install</pre>
+                <pre>extension=phalcon.so # add to php.ini or add to con.d/phalcon.ini</pre>
+            </li>
+        </ul>
+    </li>
+</ul>

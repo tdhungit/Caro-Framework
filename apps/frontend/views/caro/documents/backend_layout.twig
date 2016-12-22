@@ -1,0 +1,19 @@
+<h3>Create/Edit module layout for backend</h3>
+
+<pre>--> Module Builder --> edit layouts</pre>
+
+<pre><img src="{{ static_url() }}/themes/caro/images/documents/edit_layout.png" width="100%" /></pre>
+
+<ul>
+    <li>Choose title field: We will use it to show in title page</li>
+    <li>type: choose type --> field types detail --> <a href="{{ url('/documents?step=fields_type') }}">Click here</a></li>
+    <li>label: Field title --> to show on UI</li>
+    <li>options: if field_type is "select" --> we need to choose options (define in /config/const.php)</li>
+    <li>relate: if field_type is "relate" --> we need to choose related model</li>
+    <li>search: true when you want to search it in list view</li>
+    <li>link: true when you want to add link detail in list view</li>
+</ul>
+
+<h4>The same for detail view and edit view</h4>
+
+<h4>We you click save. CaroFramework will create config file in backend/config/(model_name).conf.php</h4>

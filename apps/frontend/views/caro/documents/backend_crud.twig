@@ -1,100 +1,43 @@
-<h3 id="backend-module">Backend Module</h3>
-<p>Create table database in apps/config/database_structures.php. Example table name: example</p>
-<p>Create model: models/Example.php</p>
-<pre>
-namespace Modules\Backend\Models;
+<h3 id="backend-module">Create new module</h3>
 
-class Example extends ModelBase
-{
-    public $id; // default
-    public $created; // default
-    public $user_created_id; // default
-    public $deleted; // default
-    ... // var like column in database table example
+<pre>Goto Module Builder --> add new module</pre>
 
-    // config list view
-    public $list_view = array(
-        'fields' => array(
-            'name' => array(
-                'type' => 'text',
-                'label' => 'Name',
-                'link' => true
-            ),
-            'description' => array(
-                'type' => 'text',
-                'label' => 'Description'
-            )
-        )
-    );
+<ul>
+    <li>Backend or Front-end: choose core module</li>
+    <li>Module name: If you choose core: we will create MVC in core module (backend or frontend). And create new folder when not exist in src folder (backend or frontend).</li>
+    <li>Model name: new database model</li>
+</ul>
 
-    // config detail view
-    public $edit_view = array(
-        'title' => 'name',
-        'fields' => array(
-            'name' => array(
-                'type' => 'text',
-                'label' => 'Name',
-                'required' => true
-            ),
-            'description' => array(
-                'type' => 'textarea',
-                'label' => 'Description',
-                'required' => true
-            ),
-        )
-    );
+<pre>Click Save</pre>
 
-    // config edit view
-    public $detail_view = array(
-        'title' => 'name',
-        'fields' => array(
-            'name' => array(
-                'type' => 'text',
-                'label' => 'Name'
-            ),
-            'description' => array(
-                'type' => 'text',
-                'label' => 'Description'
-            ),
-        ),
-        'subpanels' => array(
-            'user_groups' => array(
-                'type' => 'one-many',
-                'current_model' => 'AuthRoles',
-                'current_field' => 'id',
-                'rel_model' => 'UserGroups',
-                'rel_field' => 'role_id',
-                'list' => array(
-                    'name' => array(
-                        'type' => 'text',
-                        'label' => 'Name',
-                    ),
-                    'status' => array(
-                        'type' => 'select',
-                        'label' => 'Status'
-                    ),
-                )
-            )
-        )
-    );
-}
-</pre>
+We have:
 
-<p>Create controller: controllers/exampleController.php</p>
-<pre>
-namespace Modules\Backend\Controllers;
+<p>Create new core model</p>
+<ul>
+    <li>new model in backend/models</li>
+    <li>new controller in backend/controllers</li>
+    <li>new model in frontend/models</li>
+</ul>
 
-class ExampleController extends ControllerBase
-{
-    protected $model_name = 'Example'; // model relate
+<p>Create module</p>
+<ul>
+    <li>new core model in /backend/models/</li>
+    <li>new controller in backend/controllers</li>
+    <li>new module in src folder with: Controllers/, Models/, config/, views/</li>
+</ul>
 
-}
-</pre>
-
-<p>We will have list/detail/edit page</p>
+<p>If you choose core module is core. We will have list/detail/edit page</p>
 <pre>
     http://example.com/admin/list : list
     http://example.com/admin/edit : create
     http://example.com/admin/edit/1 : edit item id=1
     http://example.com/admin/delete/1 : delete item id=1
+</pre>
+
+<p>If you choose core module is backend. We will have list/detail/edit page</p>
+<pre>
+    http://example.com/module/(module_name)/list : list
+    http://example.com/module/(module_name)/edit : create
+    http://example.com/module/(module_name)/edit/1 : edit item id=1
+    http://example.com/module/(module_name)/delete/1 : delete item id=1
 </pre>
