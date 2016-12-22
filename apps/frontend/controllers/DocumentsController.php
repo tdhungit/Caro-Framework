@@ -14,9 +14,27 @@ namespace Modules\Frontend\Controllers;
 
 class DocumentsController extends ControllerBase
 {
+    /**
+     * initialize
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->tag->setTitle('Caro Framework | Documents');
+
+        $this->view->setViewsDir(APP_PATH . 'apps/frontend/views/caro/');
+        $this->view->setLayoutsDir('layouts/');
+        $this->view->setTemplateAfter('document');
+
+        $this->view->setVar('theme_uri', '/themes/caro');
+    }
+
+    /**
+     * Documents
+     */
     public function indexAction()
     {
-        $this->view->setTemplateAfter('document');
         $page = $this->request->getQuery('step');
         switch ($page) {
             case 'start':
