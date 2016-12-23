@@ -16,6 +16,11 @@ use Phalcon\Dispatcher;
 use Phalcon\Mvc\Controller;
 use Phalcon\Translate\Adapter\NativeArray;
 
+/**
+ * Class MyController
+ * @package Modules\Core
+ * @property Array $carofw
+ */
 class MyController extends Controller
 {
     /**

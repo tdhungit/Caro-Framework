@@ -16,6 +16,10 @@ use Modules\Backend\Models\Menus;
 use Modules\Backend\Models\Users;
 use Modules\Core\MyController;
 
+/**
+ * Class ControllerBase
+ * @package Modules\Backend\Controllers
+ */
 class ControllerBase extends MyController
 {
     /**

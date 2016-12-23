@@ -1,0 +1,74 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        {{ t._('Application const create/edit') }}
+    </h1>
+</section>
+
+<section class="content">
+    {{ form('/'~ carofw['backendUrl'] ~'/settings/const_edit', 'method': 'post', 'class': 'form-horizontal', 'id': 'const_edit-config') }}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">{{ t._('Choose key which you need to edit') }}</h3>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ t._('Choose key') }}</label>
+                            <div class="col-sm-10">
+                                {{ select('mkey', main_keys, 'useEmpty': true, 'class': 'form-control', 'onchange': 'loadData(this, false)') }}
+                            </div>
+                        </div>
+
+                        <div id="mkey-container"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ t._('Select box content') }}</label>
+                            <div class="col-sm-10" id="key-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-info pull-right" value="CONFIRM">{{ t._('Save') }}</button>
+            </div>
+        </div>
+    {{ end_form() }}
+</section>
+
+<script type="text/javascript">
+    function loadData(mkey, key) {
+        if ($(mkey).val() && key == false) {
+            $.get('{{ url() }}/{{ carofw['backendUrl'] }}/settings/const_edit/' + $(mkey).val(), function (data) {
+                var html = '<div class="form-group">' +
+                    '<label class="col-sm-2 control-label">{{ t._('Choose select box') }}</label>' +
+                    '<div class="col-sm-10">' +
+                    '<select name="const['+ $(mkey).val() +']" class="form-control" onchange="loadData(\''+ $(mkey).val() +'\', this)">' + data + '</select>' +
+                    '</div>' +
+                    '</div>';
+
+                $('#mkey-container').html(html);
+            });
+        }
+
+        if (mkey && $(key).val()) {
+            $.get('{{ url() }}/{{ carofw['backendUrl'] }}/settings/const_edit/' + mkey + '/' + $(key).val(), function (data) {
+                $('#key-container').html(data);
+            });
+        }
+    }
+
+    function addSelect(mkey, key) {
+        var select_string = '<div class="form-group">';
+        select_string += '<div class="col-sm-5"><input name="const[' + mkey + '][' + key + '][value][]" class="form-control" value=""></div>';
+        select_string += '<div class="col-sm-7"><input name="const[' + mkey + '][' + key + '][label][]" class="form-control" value=""></div>';
+        select_string += '</div>';
+
+        $(document.getElementById('select-box-content')).append(select_string);
+    }
+</script>

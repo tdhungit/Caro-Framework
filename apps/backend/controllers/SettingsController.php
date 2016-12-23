@@ -446,4 +446,61 @@ class SettingsController extends ControllerBase
         $this->view->themes = $themes;
     }
 
+    /**
+     * application const create/edit
+     */
+    public function const_editAction($mkey = null, $key = null)
+    {
+        $const_strings = include APP_PATH . 'apps/config/const.php';
+
+        if ($this->request->isPost()) {
+            $this->view->disable();
+
+            echo '<pre>';
+            print_r($this->request->getPost());
+        }
+
+        if (!$mkey && !$key) {
+            $main_keys = [];
+            foreach ($const_strings as $main_key => $value) {
+                $main_keys[$main_key] = $main_key;
+            }
+
+            $this->view->main_keys = $main_keys;
+
+        } else if ($mkey && !$key) {
+            $this->view->disable();
+
+            $keys_select = '<option value=""></option>';
+
+            foreach ($const_strings[$mkey] as $select_key => $value) {
+                $keys_select .= '<option value="' . $select_key . '">' . $select_key . '</option>';
+            }
+
+            echo $keys_select;
+            die();
+
+        } else if ($mkey && $key) {
+            $this->view->disable();
+
+            $select_string = '';
+
+            foreach ($const_strings[$mkey][$key] as $value => $label) {
+                $select_string .= '<div class="form-group">';
+                $select_string .= '<div class="col-sm-5"><input name="const[' . $mkey . '][' . $key . '][value][]" class="form-control" value="' . $value . '"></div>';
+                $select_string .= '<div class="col-sm-7"><input name="const[' . $mkey . '][' . $key . '][label][]" class="form-control" value="' . $label . '"></div>';
+                $select_string .= '</div>';
+            }
+
+            echo $select_string
+                . '<div id="select-box-content"></div>'
+                . '<button type="button" class="btn" onclick="addSelect(\'' . $mkey . '\', \'' . $key . '\')">' . $this->t->_('Add') . '</button>';
+            die();
+
+        } else {
+            $this->flash->error($this->t->_('Have some error. Please try again!'));
+            return $this->backendRedirect('/settings/const_edit');
+        }
+    }
+
 }
