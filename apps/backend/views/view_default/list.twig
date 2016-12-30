@@ -17,6 +17,11 @@
     </ol>
 </section>
 
+{#set path from path core#}
+{% if module_name %}
+    <?php $this->view->setPartialsDir('../../../views/'); ?>
+{% endif %}
+
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
@@ -66,11 +71,6 @@
                                                 <tr>
                                                     {% for name, view in list_view['fields'] %}
                                                         <td>
-                                                            {#set path from path core#}
-                                                            {% if module_name %}
-                                                                <?php $this->view->setPartialsDir('../../../views/'); ?>
-                                                            {% endif %}
-
                                                             <?php if (is_file(APP_PATH . 'apps/backend/views/view_custom/fields/' . $view['type'] . '/list.twig')) { ?>
                                                                 {{ partial('view_custom/fields/' ~ view['type'] ~ '/list') }}
                                                             <?php } else if (is_file(APP_PATH . 'apps/backend/views/view_default/fields/' . $view['type'] . '/list.twig')) { ?>
@@ -136,6 +136,12 @@
             </div>
         </div>
     </div>
+
+    {% if partials is defined and partials %}
+        {% for patial in partials %}
+            <div class="row">{{ partial(partial) }}</div>
+        {% endfor %}
+    {% endif %}
 </section>
 
 <script type="text/javascript">
