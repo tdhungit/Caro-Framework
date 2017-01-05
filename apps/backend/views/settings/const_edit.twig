@@ -1,3 +1,8 @@
+<script>
+    var get_mkey = '{{ mkey }}';
+    var get_key = '{{ key }}';
+</script>
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
@@ -18,24 +23,24 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ t._('Choose key') }}</label>
                             <div class="col-sm-10">
-                                {{ select('mkey', main_keys, 'useEmpty': true, 'class': 'form-control', 'onchange': 'loadData(this, false)') }}
+                                <input type="hidden" name="key" id="current-key">
+                                {{ select('mkey', main_keys, 'useEmpty': true, 'class': 'form-control', 'id': 'select-mkey', 'onchange': 'loadData(this, false)') }}
                             </div>
                         </div>
 
-                        <div id="mkey-container"></div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ t._('Choose select list') }}</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="select-key"></select>
+                            </div>
+                        </div>
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">{{ t._('Select box content') }}</label>
+                            <label class="col-sm-2 control-label">{{ t._('Edit content') }}</label>
                             <div class="col-sm-10" id="key-container"></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-info pull-right" value="CONFIRM">{{ t._('Save') }}</button>
             </div>
         </div>
     {{ end_form() }}
@@ -45,19 +50,21 @@
     function loadData(mkey, key) {
         if ($(mkey).val() && key == false) {
             $.get('{{ url() }}/{{ carofw['backendUrl'] }}/settings/const_edit/' + $(mkey).val(), function (data) {
-                var html = '<div class="form-group">' +
-                    '<label class="col-sm-2 control-label">{{ t._('Choose select box') }}</label>' +
-                    '<div class="col-sm-10">' +
-                    '<select name="const['+ $(mkey).val() +']" class="form-control" onchange="loadData(\''+ $(mkey).val() +'\', this)">' + data + '</select>' +
-                    '</div>' +
-                    '</div>';
+                $('#select-key').attr('name', 'const['+ $(mkey).val() +']');
+                $('#select-key').attr('onchange', 'loadData(\''+ $(mkey).val() +'\', this)');
+                $('#select-key').html(data);
 
-                $('#mkey-container').html(html);
+                if (get_mkey && get_key) {
+                    $('#select-key').val(get_key);
+                    $('#current-key').val(get_key);
+                    $('#select-key').change();
+                }
             });
         }
 
         if (mkey && $(key).val()) {
             $.get('{{ url() }}/{{ carofw['backendUrl'] }}/settings/const_edit/' + mkey + '/' + $(key).val(), function (data) {
+                $('#current-key').val($(key).val());
                 $('#key-container').html(data);
             });
         }
@@ -71,4 +78,36 @@
 
         $(document.getElementById('select-box-content')).append(select_string);
     }
+
+    function createNewKey(mkey, obj) {
+        var key = $(obj).parents('.form-group').children('.col-sm-6').children('.form-control').val();
+        $.post(backend_url + '/settings/const_edit', {
+            mkey: mkey,
+            key: key,
+            is_new: 1
+        }, function (data) {
+            swal({
+                title: '{{ t._('Successful') }}',
+                text: '{{ t._('Create new key is successful') }}',
+                type: 'success'
+            }, function () {
+                location.href = data.url;
+            });
+        });
+    }
+
+    $(function () {
+        $('#const_edit-config').submit(function (e) {
+            var data = $(this).serialize();
+            $.post(backend_url + '/settings/const_edit', data, function (result) {
+                swal(result.title, result.message, result.type);
+            });
+            e.preventDefault();
+        });
+
+        if (get_mkey) {
+            $('#select-mkey').val(get_mkey);
+            $('#select-mkey').change();
+        }
+    });
 </script>

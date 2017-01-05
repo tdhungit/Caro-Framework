@@ -17,6 +17,10 @@
                         <i class="fa fa-wrench"></i> {{ t._('Page Config') }}
                     </a>
 
+                    <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings/const_edit') }}" class="btn btn-app">
+                        <i class="fa fa-wrench"></i> {{ t._('Dropdown box Config') }}
+                    </a>
+
                     <a href="{{ url('/'~ carofw['backendUrl'] ~'/settings/mail_config') }}" class="btn btn-app">
                         <i class="fa fa-envelope"></i> {{ t._('Mail Config') }}
                     </a>

@@ -451,31 +451,80 @@ class SettingsController extends ControllerBase
      */
     public function const_editAction($mkey = null, $key = null)
     {
-        $const_strings = include APP_PATH . 'apps/config/const.php';
+        $file_const = APP_PATH . 'apps/config/const.php';
+        $const_strings = include $file_const;
 
+        // save const setting
         if ($this->request->isPost()) {
             $this->view->disable();
+            header('Content-Type: application/json');
 
-            echo '<pre>';
-            print_r($this->request->getPost());
+            $const = $this->request->getPost('const');
+            $mkey = $this->request->getPost('mkey');
+            $key = $this->request->getPost('key');
+
+            if ($this->request->getPost('is_new') == 1) {
+                $const_strings[$mkey][$key] = [];
+
+                $file = fopen($file_const, 'w');
+                fwrite($file, "<?php\n\nreturn " . var_export($const_strings, true) . ";\n");
+                fclose($file);
+
+                echo json_encode([
+                    'mkey' => $mkey,
+                    'key' => $key,
+                    'url' => $this->url->get($this->router->getRewriteUri(), ['mkey' => $mkey, 'key' => $key])
+                ]);
+                die();
+            }
+
+            if ($mkey && $key) {
+                $const_strings[$mkey][$key] = [];
+                foreach ($const[$mkey][$key]['label'] as $k => $label) {
+                    $const_strings[$mkey][$key][$label] = $const[$mkey][$key]['value'][$k];
+                }
+
+                $file = fopen($file_const, 'w');
+                fwrite($file, "<?php\n\nreturn " . var_export($const_strings, true) . ";\n");
+                fclose($file);
+
+                echo json_encode([
+                    'type' => 'success',
+                    'title' => $this->t->_('Successful'),
+                    'message' => $this->t->_('You saved successful')
+                ]);
+                die();
+            }
+
+            echo json_encode([
+                'type' => 'error',
+                'title' => $this->t->_('Error'),
+                'message' => $this->t->_('Have some error. Please try again')
+            ]);
+            die();
         }
 
+        // load const setting
         if (!$mkey && !$key) {
             $main_keys = [];
             foreach ($const_strings as $main_key => $value) {
                 $main_keys[$main_key] = $main_key;
             }
 
+            $this->view->mkey = $this->request->get('mkey');
+            $this->view->key = $this->request->get('key');
             $this->view->main_keys = $main_keys;
 
         } else if ($mkey && !$key) {
             $this->view->disable();
 
-            $keys_select = '<option value=""></option>';
+            $keys_select = '<option value="">' . $this->t->_('Please choose') . '</option>';
 
             foreach ($const_strings[$mkey] as $select_key => $value) {
                 $keys_select .= '<option value="' . $select_key . '">' . $select_key . '</option>';
             }
+
+            $keys_select .= '<option value="_new_key">' . $this->t->_('Create new key') . '</option>';
 
             echo $keys_select;
             die();
@@ -483,18 +532,34 @@ class SettingsController extends ControllerBase
         } else if ($mkey && $key) {
             $this->view->disable();
 
+            if ($key == '_new_key') {
+                echo '
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="_new_key" placeholder="' . $this->t->_('New key') . '">
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="button" class="btn btn-default" onclick="createNewKey(\'' . $mkey . '\', this)" value="' . $this->t->_('Create') . '">
+                        </div>
+                    </div>
+                ';
+                die();
+            }
+
             $select_string = '';
 
             foreach ($const_strings[$mkey][$key] as $value => $label) {
                 $select_string .= '<div class="form-group">';
                 $select_string .= '<div class="col-sm-5"><input name="const[' . $mkey . '][' . $key . '][value][]" class="form-control" value="' . $value . '"></div>';
-                $select_string .= '<div class="col-sm-7"><input name="const[' . $mkey . '][' . $key . '][label][]" class="form-control" value="' . $label . '"></div>';
+                $select_string .= '<div class="col-sm-5"><input name="const[' . $mkey . '][' . $key . '][label][]" class="form-control" value="' . $label . '"></div>';
+                $select_string .= '<div class="col-sm-2"><button type="button" class="btn btn-danger" onclick="$(this).parent().parent().remove()"><i class="fa fa-remove"></i></button></div>';
                 $select_string .= '</div>';
             }
 
             echo $select_string
                 . '<div id="select-box-content"></div>'
-                . '<button type="button" class="btn" onclick="addSelect(\'' . $mkey . '\', \'' . $key . '\')">' . $this->t->_('Add') . '</button>';
+                . '<button type="button" class="btn" onclick="addSelect(\'' . $mkey . '\', \'' . $key . '\')">' . $this->t->_('Add') . '</button>'
+                . '<button type="submit" class="btn btn-info" value="Save" style="margin-left: 5px">' . $this->t->_('Save') . '</button>';
             die();
 
         } else {
