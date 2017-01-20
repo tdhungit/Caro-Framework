@@ -104,20 +104,25 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="dataTables_info">
+                                        <?php
+                                            $query_urls = $this->url->currentQuery($this->request->getQuery(), ['page_' . $subpanel_name]);
+                                            $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
+                                            $current_url = $this->url->currentUrl($query_urls);
+                                        ?>
                                         <ul class="pagination" style="margin: 0; float: right">
                                             <li class="paginate_button previous"><a href="{{ current_url }}">First</a></li>
-                                            <li class="paginate_button previous"><a href="{{ current_url }}&page={{ subpanels[subpanel_name].before }}">Previous</a></li>
+                                            <li class="paginate_button previous"><a href="{{ current_url }}&page_{{ subpanel_name }}={{ subpanels[subpanel_name].before }}">Previous</a></li>
                                             <li class="paginate_button">
                                                 <a href="javascript:;" style="">
-                                                    <select style="margin: 0; width: auto;" onchange="location.href='{{ current_url }}&page=' + $(this).val();">
+                                                    <select style="margin: 0; width: auto;" onchange="location.href='{{ current_url }}&page_{{ subpanel_name }}=' + $(this).val();">
                                                         {% for i in 1..subpanels[subpanel_name].total_pages %}
                                                             <option{% if subpanels[subpanel_name].current == i %} selected{% endif %}>{{ i }}</option>
                                                         {% endfor %}
                                                     </select>
                                                 </a>
                                             </li>
-                                            <li class="paginate_button next"><a href="{{ current_url }}&page={{ subpanels[subpanel_name].next }}">Next</a></li>
-                                            <li class="paginate_button next"><a href="{{ current_url }}&page={{ subpanels[subpanel_name].last }}">Last</a></li>
+                                            <li class="paginate_button next"><a href="{{ current_url }}&page_{{ subpanel_name }}={{ subpanels[subpanel_name].next }}">Next</a></li>
+                                            <li class="paginate_button next"><a href="{{ current_url }}&page_{{ subpanel_name }}={{ subpanels[subpanel_name].last }}">Last</a></li>
                                         </ul>
                                     </div>
                                 </div>
