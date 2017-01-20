@@ -418,6 +418,7 @@ class ControllerBase extends MyController
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->menu = $model->menu;
+        $this->view->action_list = $this->action_list;
         $this->view->action_edit = $this->action_edit;
         $this->view->link_detail = $this->link_detail;
 
@@ -465,6 +466,7 @@ class ControllerBase extends MyController
         $this->view->controller = $controller;
         $this->view->action = $action;
         $this->view->menu = $model->menu;
+        $this->view->action_list = $this->action_list;
         $this->view->action_detail = $this->action_detail;
 
         $exists = $this->view->exists($controller . '/' . $action);

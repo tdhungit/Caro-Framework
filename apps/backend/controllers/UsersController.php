@@ -33,12 +33,15 @@ class UsersController extends ControllerBase
     public function detail_groupAction($id = null)
     {
         $this->model_name = 'UserGroups';
+        $this->action_list = 'groups';
+        $this->action_edit = 'edit_group';
         $this->detailAction($id);
     }
 
     public function edit_groupAction($id = null)
     {
         $this->model_name = 'UserGroups';
+        $this->action_list = 'groups';
         $this->action_detail = 'detail_group';
         $this->editAction($id);
     }
@@ -47,6 +50,7 @@ class UsersController extends ControllerBase
     {
         $this->model_name = 'AuthRoles';
         $this->action_detail = 'detail_role';
+        $this->action_edit = 'edit_role';
         $this->link_action = array(
             array(
                 'label' => $this->t->_('Edit'),
@@ -89,7 +93,7 @@ class UsersController extends ControllerBase
     public function detail_roleAction($id = null)
     {
         $this->model_name = 'AuthRoles';
-        $this->action_detail = 'detail_role';
+        $this->action_list = 'roles';
         $this->action_edit = 'edit_role';
         $this->detailAction($id);
     }
@@ -97,6 +101,7 @@ class UsersController extends ControllerBase
     public function edit_roleAction($id = null)
     {
         $this->model_name = 'AuthRoles';
+        $this->action_list = 'roles';
         $this->action_detail = 'detail_role';
         $this->editAction($id);
     }
