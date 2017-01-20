@@ -2545,6 +2545,7 @@ a:focus {
 .pagination > li > a {
   background: #fafafa;
   color: #666;
+  height: 34px;
 }
 .pagination.pagination-flat > li > a {
   border-radius: 0 !important;

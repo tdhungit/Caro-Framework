@@ -162,30 +162,35 @@ class ControllerBase extends MyController
     }
 
     /**
-     * @param array $defs
-     * @param Object $data
+     * @param $defs
+     * @param $data
+     * @param $currentPage
+     * @param $paginator_limit
      * @return array
      */
-    protected function getSubpanels($defs, $data)
+    protected function getSubpanels($defs, $data, $currentPage, $paginator_limit)
     {
         $subpanels = array();
         foreach ($defs as $name => $def) {
-            $subpanels[$name] = $this->getSubpanel($def, $data);
+            $subpanels[$name] = $this->getSubpanel($def, $data, $currentPage, $paginator_limit);
         }
         return $subpanels;
     }
 
     /**
-     * @param array $def
-     * @param Object $data
-     * @return array
+     * @param $def
+     * @param $data
+     * @param $currentPage
+     * @param $paginator_limit
+     * @return mixed
      */
-    protected function getSubpanel($def, $data)
+    protected function getSubpanel($def, $data, $currentPage, $paginator_limit)
     {
-        $panel = array();
         if ($def['type'] == 'one-many') {
             $rel_model = $this->getModel($def['rel_model']);
             $panel = $rel_model::find($def['rel_field'] . '=' . $data->id);
+
+            return $rel_model->pagination($panel, $paginator_limit, $currentPage);
 
         } else if ($def['type'] == 'many-many') {
             $namespace = 'Modules\Backend\Models\\';
@@ -206,8 +211,10 @@ class ControllerBase extends MyController
                 ->join($current_model, $current_field . '=' . $mid_field1)
                 ->where($current_field . '=' . $data->id)
                 ->getQuery()->execute();
+
+            $rel_model = $this->getModel($def['rel_model']);
+            return $rel_model->pagination($panel, $paginator_limit, $currentPage);
         }
-        return $panel;
     }
 
     /**
@@ -395,9 +402,13 @@ class ControllerBase extends MyController
             $data = $model::findFirst($id);
             // check subpanel
             $supanels = null;
+            $currentPage = $this->request->getQuery('page');
+            $paginator_limit = 20; // @TODO
             if (!empty($model->detail_view['subpanels'])) {
-                $supanels = $this->getSubpanels($model->detail_view['subpanels'], $data);
+                $supanels = $this->getSubpanels($model->detail_view['subpanels'], $data, $currentPage, $paginator_limit);
             }
+            $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
+            $this->view->current_url = $this->url->currentUrl($query_urls);
         }
 
         if ($data == null) {
