@@ -23,6 +23,11 @@ use Modules\Core\MyController;
 class ControllerBase extends MyController
 {
     /**
+     * @var string
+     */
+    protected $theme = 'caro';
+
+    /**
      * @var bool ajax view
      */
     protected $is_ajax = false;
@@ -65,13 +70,15 @@ class ControllerBase extends MyController
         parent::initialize();
         $this->tag->appendTitle('Admin Page | ');
 
+        $theme = $this->theme;
+
         // set viewDir
         if (!$this->module_name) {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/');
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/views/' . $theme . '/');
             $this->view->setLayoutsDir('layouts/');
         } else {
-            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . $this->module_name . '/views/');
-            $this->view->setLayoutsDir('../../../views/layouts/');
+            $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . $this->module_name . '/views/' . $theme . '/');
+            $this->view->setLayoutsDir('../../../../views/' . $theme . '/layouts/');
         }
 
         // auth
@@ -81,9 +88,11 @@ class ControllerBase extends MyController
             $this->view->setVar('current_user', $current_user);
         }
 
+        // global variable
+        $this->view->setVar('theme', $theme);
+        $this->view->setVar('theme_uri', '/themes/' . $theme);
         // menus
         $this->view->setVar('current_menus', $this->getAllMenus());
-
         // current module
         $this->view->setVar('module_name', $this->module_name);
     }
@@ -392,7 +401,7 @@ class ControllerBase extends MyController
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
             if ($this->module_name) {
-                $this->view->pick('../../../views/view_default/list');
+                $this->view->pick('../../../../views/' . $this->theme . '/view_default/list');
             } else {
                 $this->view->pick('view_default/list');
             }

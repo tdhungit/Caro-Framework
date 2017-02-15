@@ -19,7 +19,7 @@
 
 {#set path from path core#}
 {% if module_name %}
-    <?php $this->view->setPartialsDir('../../../views/'); ?>
+    <?php $this->view->setPartialsDir('../../../../views/' . $theme . '/'); ?>
 {% endif %}
 
 <section class="content">

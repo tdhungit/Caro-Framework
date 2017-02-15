@@ -8,6 +8,11 @@ use Modules\Core\MyController;
 class ControllerBase extends MyController
 {
     /**
+     * @var string
+     */
+    protected $theme = 'caro';
+
+    /**
      * init controller
      */
     protected function initialize()
@@ -15,7 +20,7 @@ class ControllerBase extends MyController
         parent::initialize();
         $this->tag->setTitle('Caro Framework');
 
-        $theme = 'caro';
+        $theme = $this->theme;
 
         // set viewDir
         if (!$this->module_name) {
@@ -23,12 +28,12 @@ class ControllerBase extends MyController
             $this->view->setLayoutsDir('layouts/');
         } else {
             $this->view->setViewsDir(APP_PATH . 'apps/' . $this->dispatcher->getModuleName() . '/src/' . '/' . $this->module_name . '/views/' . $theme . '/');
-            $this->view->setLayoutsDir('../../../views/' . $theme . '/layouts/');
+            $this->view->setLayoutsDir('../../../../views/' . $theme . '/layouts/');
         }
 
         // global variable
+        $this->view->setVar('theme', $theme);
         $this->view->setVar('theme_uri', '/themes/' . $theme);
-
         // current module
         $this->view->setVar('module_name', $this->module_name);
     }
