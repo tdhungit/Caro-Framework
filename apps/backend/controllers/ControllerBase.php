@@ -381,6 +381,14 @@ class ControllerBase extends MyController
         $query_urls = empty($query_urls) ? array('nosearch' => 1) : $query_urls;
         $this->view->current_url = $this->url->currentUrl($query_urls);
 
+        $ext = $this->dispatcher->getParam('format');
+        if ($ext == 'json') {
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            echo json_encode($this->view->getParamsToView());
+            return;
+        }
+
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
             if ($this->module_name) {
@@ -431,6 +439,14 @@ class ControllerBase extends MyController
         $this->view->action_edit = $this->action_edit;
         $this->view->link_detail = $this->link_detail;
 
+        $ext = $this->dispatcher->getParam('format');
+        if ($ext == 'json') {
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            echo json_encode($this->view->getParamsToView());
+            return;
+        }
+
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
             if ($this->module_name) {
@@ -477,6 +493,14 @@ class ControllerBase extends MyController
         $this->view->menu = $model->menu;
         $this->view->action_list = $this->action_list;
         $this->view->action_detail = $this->action_detail;
+
+        $ext = $this->dispatcher->getParam('format');
+        if ($ext == 'json') {
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            echo json_encode($this->view->getParamsToView());
+            return;
+        }
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {
@@ -542,6 +566,14 @@ class ControllerBase extends MyController
         //'/' . $this->url->backendUrl . "/$controller/$action/$rel_model/$current_model/$current_id/$subpanel_name";
         $this->view->current_uri = $this->router->getRewriteUri();
         $this->view->current_url = $this->url->get($this->view->current_uri, $query_urls);
+
+        $ext = $this->dispatcher->getParam('format');
+        if ($ext == 'json') {
+            $this->view->disable();
+            $this->response->setContentType('application/json', 'UTF-8');
+            echo json_encode($this->view->getParamsToView());
+            return;
+        }
 
         $exists = $this->view->exists($controller . '/' . $action);
         if (!$exists) {

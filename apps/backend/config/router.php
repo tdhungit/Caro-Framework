@@ -18,6 +18,13 @@ return [
         'action' => 2,
         'params' => 3
     ],
+    '/[ADMIN]/:controller/:action/:params.(json|xml)' => [
+        'module' => 'backend',
+        'controller' => 1,
+        'action' => 2,
+        'params' => 3,
+        'format' => 4
+    ],
     '/[ADMIN]/:controller' => [
         'module' => 'backend',
         'controller' => 1,
