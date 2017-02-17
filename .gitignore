@@ -4,3 +4,4 @@
 /apps/cache/volt/*.php
 /public/uploads/images
 /public/uploads/csv
+/public/themes/ngCaro/node_modules
