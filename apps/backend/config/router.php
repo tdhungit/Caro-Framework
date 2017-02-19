@@ -37,4 +37,10 @@ return [
         'action' => 'execute',
         'params' => 1
     ],
+    // Angular Config
+    '/[ADMIN]/{index}.chunk.js' => [
+        'module' => 'backend',
+        'controller' => 'angular-config',
+        'action' => 'chunks'
+    ],
 ];

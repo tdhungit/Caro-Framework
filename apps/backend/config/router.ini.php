@@ -35,6 +35,12 @@ return array(
             'action' => 'execute',
             'params' => 1,
         ),
+    '/[ADMIN]/{index}.chunk.js' =>
+        array(
+            'module' => 'backend',
+            'controller' => 'angular-config',
+            'action' => 'chunks'
+        ),
     '/module/demo/:controller/:action/:params' =>
         array(
             'controller' => 1,

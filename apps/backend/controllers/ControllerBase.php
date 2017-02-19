@@ -25,7 +25,7 @@ class ControllerBase extends MyController
     /**
      * @var string
      */
-    protected $theme = 'caro';
+    protected $theme = 'ngCaro';
 
     /**
      * @var bool ajax view
