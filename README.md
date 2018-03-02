@@ -1,5 +1,18 @@
 **Caro Framework - A php open source flexible and high performance base on Phalcon PHP**
 
+![alt text](./public/Screenshot.png?raw=true "Caro Framework")
+
+Feature
+- Complete PhalconPHP structure
+- Structure Frontend - Backend independence
+- Module structure
+- ACL
+- Module builder
+- Auto CRUD
+
+Contact me
+- Skype: tdhungit
+
 Require:
 - PHP 5.4 or higher
 - Phalcon PHP Framework 2.0 or higher
@@ -37,5 +50,6 @@ Install Phalcon PHP:
 - Go to browser: /install (http://example.com/install)
 - Enter info
 - Go to backend: /admin -> setting -> repair database
+- If error menu table when first access to admin page please refresh
 
 Get document: /documents (http://example.com/documents)
