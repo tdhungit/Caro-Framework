@@ -45,7 +45,7 @@ Install Phalcon PHP:
 - Restart web-server
 
 **Get Caro Framework**
-- git clone https://github.com/teamcarodev/Caro-Framework.git
+- git clone https://github.com/tdhungit/Caro-Framework.git
 - Create database
 - Go to browser: /install (http://example.com/install)
 - Enter info
